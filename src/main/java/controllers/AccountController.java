@@ -41,5 +41,19 @@ public class AccountController {
             System.out.println("비밀번호 : " + accountInformation.getUserPw());
 //        }
     }
+    public void updateAccount(AccountInformation accountInformation) throws Exception {
+        String sql = "UPDATE USER_ACCOUNTS SET USER_PW = ? WHERE ACCOUNT_ID = ?";
+//        try(Connection connection = getConnection();
+//            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+//            preparedStatement.setString(1, accountInformation.getUserPw());
+//            preparedStatement.setLong(2, accountInformation.getAccountId());
+//            preparedStatement.executeUpdate();
+            System.out.println(sql);
+            System.out.printf("비밀번호가 %s로 변경되었습니다.\n", accountInformation.getUserPw());
+            System.out.println("변경된 사용자 아이디 : " + accountInformation.getUserName());
+            System.out.println("계정 아이디 : " + accountInformation.getAccountId());
+//        }
+    }
+
 }
 
