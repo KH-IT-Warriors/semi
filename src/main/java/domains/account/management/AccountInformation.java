@@ -14,7 +14,7 @@ public class AccountInformation {
     @NonNull
     private long accountRoleId;
     @NonNull
-    private String accountUserId;
+    private String userName;
     @NonNull
-    private String accountUserPw;
+    private String userPw;
 }
