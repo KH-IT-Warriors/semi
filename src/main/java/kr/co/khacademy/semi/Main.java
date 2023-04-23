@@ -61,5 +61,17 @@ public class Main {
             .recentConnection(new Timestamp(System.currentTimeMillis()))
             .build();
         userController.insertUserInformation(userInformation1);
+
+        System.out.println("===============");
+
+        UserInformation userInformation2 = UserInformation.builder()
+            .accountId(100)
+            .name("수정함")
+            .phoneNumber("010-9876-9876")
+            .email("email2@modified.com")
+            .registeredTime(new Timestamp(System.currentTimeMillis()))
+            .recentConnection(new Timestamp(System.currentTimeMillis()))
+            .build();
+        userController.updateUserInformation(userInformation2);
     }
 }
