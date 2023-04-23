@@ -59,6 +59,7 @@ public class Main {
             .email("email@email.com")
             .registeredTime(new Timestamp(System.currentTimeMillis()))
             .recentConnection(new Timestamp(System.currentTimeMillis()))
+            .userGradeId(901)
             .build();
         userController.insertUserInformation(userInformation1);
 
@@ -71,6 +72,7 @@ public class Main {
             .email("email2@modified.com")
             .registeredTime(new Timestamp(System.currentTimeMillis()))
             .recentConnection(new Timestamp(System.currentTimeMillis()))
+            .userGradeId(903)
             .build();
         userController.updateUserInformation(userInformation2);
 
@@ -83,7 +85,8 @@ public class Main {
             .email("aaa@aaa.com")
             .registeredTime(new Timestamp(System.currentTimeMillis()))
             .recentConnection(new Timestamp(System.currentTimeMillis()))
-            .build(); // name 외에 다른 정보는 중요하지 않음
+            .userGradeId(0)
+            .build(); // accountId, name 외에 다른 정보는 중요하지 않음
         userController.deleteUserInformation(userInformation3);
     }
 }
