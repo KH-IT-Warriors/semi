@@ -12,15 +12,15 @@ public class UserInformation {
     @NonNull
     private long accountId;
     @NonNull
-    private String userName;
+    private String name;
     @NonNull
-    private String userPhoneNumber;
+    private String phoneNumber;
     @NonNull
-    private String userEmail;
+    private String email;
     @NonNull
-    private Timestamp userRegisteredTime;
+    private Timestamp registeredTime;
     @NonNull
-    private Timestamp userRecentConnectedTime;
+    private Timestamp recentConnection;
     @NonNull
     private long userGradeId;
 }
