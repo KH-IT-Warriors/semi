@@ -5,6 +5,8 @@ import domains.account.management.AccountInformation;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.List;
 
 public class AccountController {
 
@@ -52,6 +54,18 @@ public class AccountController {
             System.out.printf("비밀번호가 %s로 변경되었습니다.\n", accountInformation.getUserPw());
             System.out.println("변경된 사용자 아이디 : " + accountInformation.getUserName());
             System.out.println("계정 아이디 : " + accountInformation.getAccountId());
+//        }
+    }
+
+    public void deleteAccount(AccountInformation accountInformation) throws Exception {
+        String sql = "UPDATE USER_ACCOUNTS SET ACCOUNT_STATUS = ? WHERE ACCOUNT_ID = ?";
+//        try(Connection connection = getConnection();
+//            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+//            preparedStatement.setLong(1, 2L); // 삭제대기 상태 아이디
+//            preparedStatement.setLong(2, accountInformation.getAccountId());
+//            preparedStatement.executeUpdate();
+            System.out.println(sql);
+            System.out.printf("계정명 %s가 삭제 대기 상태로 전환 되었습니다.", accountInformation.getUserName());
 //        }
     }
 
