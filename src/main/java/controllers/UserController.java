@@ -56,4 +56,14 @@ public class UserController {
         System.out.println("변경된 전화번호 : " + userInformation.getPhoneNumber());
         System.out.println("변경된 이메일 : " + userInformation.getEmail());
     }
+
+    public void deleteUserInformation(UserInformation userInformation) throws Exception {
+        String sql = "DELETE FROM USER_INFORMATIONS WHERE ACCOUNT_ID = ?";
+//        try(Connection connection = getConnection();
+//            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+//            preparedStatement.setLong(1, userInformation.getAccountId());
+//            preparedStatement.executeUpdate();
+//        }
+        System.out.printf("%s 님의 개인정보가 삭제되었습니다.", userInformation.getName());
+    }
 }

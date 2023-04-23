@@ -73,5 +73,17 @@ public class Main {
             .recentConnection(new Timestamp(System.currentTimeMillis()))
             .build();
         userController.updateUserInformation(userInformation2);
+
+        System.out.println("===============");
+
+        UserInformation userInformation3 = UserInformation.builder()
+            .accountId(100)
+            .name("장길웅")
+            .phoneNumber("000-0000-0000")
+            .email("aaa@aaa.com")
+            .registeredTime(new Timestamp(System.currentTimeMillis()))
+            .recentConnection(new Timestamp(System.currentTimeMillis()))
+            .build(); // name 외에 다른 정보는 중요하지 않음
+        userController.deleteUserInformation(userInformation3);
     }
 }
