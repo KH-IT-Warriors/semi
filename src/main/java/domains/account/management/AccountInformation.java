@@ -1,5 +1,6 @@
 package domains.account.management;
 
+import domains.account.commons.Password;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -16,5 +17,5 @@ public class AccountInformation {
     @NonNull
     private String userName;
     @NonNull
-    private String userPw;
+    private Password userPw;
 }
