@@ -19,6 +19,7 @@ public class Main {
             .userName("userId012")
             .userPw(Password.of(100L, "qweR!234"))
             .build();
+
         accountController.insertAccount(accountInformation1);
 
         System.out.println("===============");
@@ -61,6 +62,7 @@ public class Main {
             .recentConnection(new Timestamp(System.currentTimeMillis()))
             .userGradeId(901L)
             .build();
+
         userController.insertUserInformation(userInformation1);
 
         System.out.println("===============");
