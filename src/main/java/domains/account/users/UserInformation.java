@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Builder
 public class UserInformation {
     @NonNull
-    private long accountId;
+    private Long accountId;
     @NonNull
     private String name;
     @NonNull
@@ -22,5 +22,5 @@ public class UserInformation {
     @NonNull
     private Timestamp recentConnection;
     @NonNull
-    private long userGradeId;
+    private Long userGradeId;
 }

@@ -3,10 +3,7 @@ package controllers;
 import domains.account.commons.Password;
 import domains.account.management.AccountInformation;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.List;
 
 public class AccountController {
@@ -30,7 +27,7 @@ public class AccountController {
     public void insertAccount(AccountInformation accountInformation) throws Exception {
         String sql = "INSERT INTO USER_ACCOUNTS VALUES(0, ?, ?, ?, ?)";
 //        try(Connection connection = getConnection();
-//            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+//            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);){
 //            preparedStatement.setLong(1, accountInformation.getAccountStatusId());
 //            preparedStatement.setLong(2, accountInformation.getAccountRoleId());
 //            preparedStatement.setString(3, accountInformation.getUserName());

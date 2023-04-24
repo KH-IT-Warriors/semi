@@ -9,11 +9,11 @@ import lombok.NonNull;
 @Builder
 public class AccountInformation {
     @NonNull
-    private long accountId;
+    private Long accountId;
     @NonNull
-    private long accountStatusId;
+    private Long accountStatusId;
     @NonNull
-    private long accountRoleId;
+    private Long accountRoleId;
     @NonNull
     private String userName;
     @NonNull
