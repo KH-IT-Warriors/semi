@@ -8,7 +8,7 @@ import lombok.NonNull;
 @Builder
 public class AccountRoleAndAuthority {
     @NonNull
-    private long accountRoleId;
+    private Long accountRoleId;
     @NonNull
-    private long accountAuthorityId;
+    private Long accountAuthorityId;
 }

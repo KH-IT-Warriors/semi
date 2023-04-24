@@ -8,11 +8,11 @@ import lombok.NonNull;
 @Builder
 public class UserGrade {
     @NonNull
-    private long userGradeId;
+    private Long userGradeId;
     @NonNull
     private String userGradeName;
     @NonNull
-    private double earningRate;
+    private Double earningRate;
     @NonNull
-    private int userGradeQualification;
+    private Integer userGradeQualification;
 }
