@@ -1,9 +1,6 @@
 package kr.co.khacademy.semi.dto;
 
-import domains.exceptions.InvalidPasswordException;
 import lombok.*;
-
-import java.util.Arrays;
 
 @Value(staticConstructor = "of")
 public class LoginRequest {
