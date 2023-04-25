@@ -36,4 +36,9 @@ public class AuthenticationManager {
     public void remove(Long accountId) {
         accountSessionMap.remove(accountId);
     }
+
+    public Boolean isAccountAuthenticated(HttpSession httpSession) {
+        Long accountId = (Long) httpSession.getAttribute("accountId");
+        return Optional.ofNullable(accountId).map(accountSessionMap::containsKey).orElse(Boolean.FALSE);
+    }
 }
