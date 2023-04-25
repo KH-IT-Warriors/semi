@@ -1,6 +1,5 @@
 package domains.account.management;
 
-import domains.account.commons.Password;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;

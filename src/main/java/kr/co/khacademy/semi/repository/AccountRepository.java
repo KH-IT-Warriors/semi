@@ -1,11 +1,18 @@
 package kr.co.khacademy.semi.repository;
 
+import kr.co.khacademy.semi.conf.MySqlDataSource;
 import kr.co.khacademy.semi.entity.Account;
-import kr.co.khacademy.semi.exception.UsernameNotFoundException;
+import kr.co.khacademy.semi.exception.login.sub.UsernameNotFoundException;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AccountRepository {
 
     private static final AccountRepository instance = new AccountRepository();
+    private static final MySqlDataSource mySqlDataSource = MySqlDataSource.getInstance();
 
     private AccountRepository() {
     }
@@ -14,13 +21,32 @@ public class AccountRepository {
         return instance;
     }
 
-    public Account findByUsername(String username) {
+    public Account findByUsername(String username) throws SQLException {
+        String sql = "SELECT * FROM USER_ACCOUNTS_TEST WHERE USER_NAME = ?";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+            preparedStatement.setString(1, username);
+            try(ResultSet resultSet = preparedStatement.executeQuery();){
+                if (resultSet.next()) {
+                    long id = resultSet.getLong("ID");
+                    long statusId = resultSet.getLong("STATUS_ID");
+                    long roleId = resultSet.getLong("ROLE_ID");
+                    return Account.builder()
+                        .id(id)
+                        .statusId(statusId)
+                        .roleId(roleId)
+                        .username(username)
+                        .build();
+                } else {
+                    throw new UsernameNotFoundException("아이디를 찾을 수 없습니다.");
+                }
+            }
+        }
         /*
          * TODO:
          *  1. username 을 사용하여 Account 테이블 조회하는 기능을 구현 하세요.
          *  2. 조회에 성공하면 Account 객체를 반환하세요.
          *  3. 조회에 실패하면 UsernameMissMatchException 예외를 발생 시키세요.
          */
-        throw new UsernameNotFoundException();
     }
 }

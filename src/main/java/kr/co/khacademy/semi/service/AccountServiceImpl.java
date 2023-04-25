@@ -3,11 +3,13 @@ package kr.co.khacademy.semi.service;
 import kr.co.khacademy.semi.dto.LoginRequest;
 import kr.co.khacademy.semi.entity.Account;
 import kr.co.khacademy.semi.entity.Password;
-import kr.co.khacademy.semi.exception.PasswordMissMatchException;
+import kr.co.khacademy.semi.exception.login.sub.PasswordMissMatchException;
 import kr.co.khacademy.semi.repository.AccountRepository;
 import kr.co.khacademy.semi.repository.PasswordRepository;
 import kr.co.khacademy.semi.common.encryption.BasicPasswordEncryptor;
 import kr.co.khacademy.semi.common.encryption.PasswordEncryptionProvider;
+
+import java.sql.SQLException;
 
 public class AccountServiceImpl implements AccountService {
 
@@ -30,21 +32,24 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Long login(LoginRequest loginRequest) {
-        Account account = accountRepository.findByUsername(loginRequest.getUsername());
-        Password password = passwordRepository.findByAccountId(account.getId());
+        try {
+            Account account = accountRepository.findByUsername(loginRequest.getUsername());
+            Password password = passwordRepository.findByAccountId(account.getId());
 
-        if (basicPasswordEncryptor.checkPassword(
-            loginRequest.getPlainPassword(),
-            password.getEncryptedPassword())
-        ) {
-            return account.getId();
-        }
-        throw new PasswordMissMatchException();
-
+            if (basicPasswordEncryptor.checkPassword(
+                loginRequest.getPlainPassword(),
+                password.getEncryptedPassword())
+            ) {
+                return account.getId();
+            }
+            throw new PasswordMissMatchException("비밀번호를 다시 입력해주세요.");
 //        Role role = roleRepository.findByRoleId(account.getRoleId());
 //        Set<Grant> grants = grantRepository.findAllByRoleId(role.getId());
 //        Set<Permission> permissions = grants.stream()
 //            .map(grant -> permissionRepository.findByPermissionId(grant.getPermissionId()))
 //            .collect(Collectors.toUnmodifiableSet());
+        } catch (SQLException sqlException) {
+            throw new RuntimeException("로그인에 실패하였습니다.");
+        }
     }
 }

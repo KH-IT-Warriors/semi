@@ -1,6 +1,9 @@
 package kr.co.khacademy.semi.dto;
 
+import domains.exceptions.InvalidPasswordException;
 import lombok.*;
+
+import java.util.Arrays;
 
 @Value(staticConstructor = "of")
 public class LoginRequest {
@@ -8,4 +11,9 @@ public class LoginRequest {
     String username;
 
     String plainPassword;
+
+    private LoginRequest(String username, String plainPassword){
+        this.username = username;
+        this.plainPassword = plainPassword;
+    }
 }
