@@ -32,4 +32,8 @@ public class AuthenticationManager {
     private void invalidateSession(HttpSession httpSession) {
         Optional.ofNullable(httpSession).ifPresent(HttpSession::invalidate);
     }
+
+    public void remove(Long accountId) {
+        accountSessionMap.remove(accountId);
+    }
 }
