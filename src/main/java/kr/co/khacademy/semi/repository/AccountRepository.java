@@ -3,6 +3,7 @@ package kr.co.khacademy.semi.repository;
 import kr.co.khacademy.semi.conf.MySqlDataSource;
 import kr.co.khacademy.semi.dto.JoinRequest;
 import kr.co.khacademy.semi.entity.Account;
+import kr.co.khacademy.semi.entity.UserInformation;
 import kr.co.khacademy.semi.exception.login.sub.UsernameNotFoundException;
 
 import java.sql.Connection;
@@ -63,6 +64,18 @@ public class AccountRepository {
                 resultSet.next();
                 return resultSet.getLong(1);
             }
+        }
+    }
+
+    public void updateInformation(UserInformation userInformation) throws SQLException {
+        String sql = "UPDATE USER_INFORMATIONS_TEST SET NAME = ?, PHONE_NUMBER = ?, EMAIL = ? WHERE ACCOUNT_ID = ?";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+            preparedStatement.setString(1, userInformation.getName());
+            preparedStatement.setString(2, userInformation.getPhoneNumber());
+            preparedStatement.setString(3, userInformation.getEmail());
+            preparedStatement.executeUpdate();
+            connection.commit();
         }
     }
 }
