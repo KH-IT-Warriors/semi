@@ -19,4 +19,8 @@ public class BasicPasswordEncryptor implements PasswordEncryptionProvider {
     public boolean checkPassword(String plainPassword, String encryptedPassword) {
         return passwordEncryptor.checkPassword(plainPassword, encryptedPassword);
     }
+
+    public String encryptPassword(String plainPassword) {
+        return passwordEncryptor.encryptPassword(plainPassword);
+    }
 }

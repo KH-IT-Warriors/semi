@@ -1,6 +1,7 @@
 package kr.co.khacademy.semi.repository;
 
 import kr.co.khacademy.semi.conf.MySqlDataSource;
+import kr.co.khacademy.semi.dto.JoinRequest;
 import kr.co.khacademy.semi.entity.Account;
 import kr.co.khacademy.semi.exception.login.sub.UsernameNotFoundException;
 
@@ -48,5 +49,20 @@ public class AccountRepository {
          *  2. 조회에 성공하면 Account 객체를 반환하세요.
          *  3. 조회에 실패하면 UsernameMissMatchException 예외를 발생 시키세요.
          */
+    }
+
+    public Long insertNewAccount(JoinRequest joinRequest) throws SQLException {
+        String sql = "INSERT INTO USER_ACCOUNTS_TEST VALUES(0, ?, ?, ?)";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setLong(1, 1);
+            preparedStatement.setLong(2, 1);
+            preparedStatement.setString(3, joinRequest.getUsername());
+            preparedStatement.executeUpdate();
+            try(ResultSet resultSet = preparedStatement.getGeneratedKeys();){
+                resultSet.next();
+                return resultSet.getLong(1);
+            }
+        }
     }
 }

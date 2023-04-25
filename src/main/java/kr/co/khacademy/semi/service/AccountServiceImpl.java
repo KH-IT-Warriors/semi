@@ -1,5 +1,6 @@
 package kr.co.khacademy.semi.service;
 
+import kr.co.khacademy.semi.dto.JoinRequest;
 import kr.co.khacademy.semi.dto.LoginRequest;
 import kr.co.khacademy.semi.entity.Account;
 import kr.co.khacademy.semi.entity.Password;
@@ -8,6 +9,7 @@ import kr.co.khacademy.semi.repository.AccountRepository;
 import kr.co.khacademy.semi.repository.PasswordRepository;
 import kr.co.khacademy.semi.common.encryption.BasicPasswordEncryptor;
 import kr.co.khacademy.semi.common.encryption.PasswordEncryptionProvider;
+import kr.co.khacademy.semi.repository.UserInformationRepository;
 
 import java.sql.SQLException;
 
@@ -22,6 +24,7 @@ public class AccountServiceImpl implements AccountService {
 //    private static final RoleRepository roleRepository = RoleRepository.getInstance();
 //    private static final GrantRepository grantRepository = GrantRepository.getInstance();
 //    private static final PermissionRepository permissionRepository = PermissionRepository.getInstance();
+    private static final UserInformationRepository userInformationRepository = UserInformationRepository.getInstance();
 
     private AccountServiceImpl() {
     }
@@ -50,6 +53,18 @@ public class AccountServiceImpl implements AccountService {
 //            .collect(Collectors.toUnmodifiableSet());
         } catch (SQLException sqlException) {
             throw new RuntimeException("로그인에 실패하였습니다.");
+        }
+    }
+    @Override
+    public boolean join(JoinRequest joinRequest) {
+        try {
+            Long createdAccountId = accountRepository.insertNewAccount(joinRequest);
+            String encryptedPassword = basicPasswordEncryptor.encryptPassword(joinRequest.getPlainPassword());
+            passwordRepository.insertNewPassword(createdAccountId, encryptedPassword);
+            userInformationRepository.insertNewUserInformation(createdAccountId, joinRequest);
+            return true;
+        } catch (SQLException sqlException) {
+            throw new RuntimeException("회원가입에 실패하였습니다.");
         }
     }
 }

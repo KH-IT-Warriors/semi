@@ -14,6 +14,7 @@ public class JoinRequest {
     String username;
     @With
     String plainPassword;
+    String name;
     String phoneNumber;
     String email;
 
@@ -27,7 +28,7 @@ public class JoinRequest {
     boolean pwHasSpecialWord;
     boolean pwBetween8And15;
 
-    private JoinRequest(String username, String plainPassword, String phoneNumber, String email){
+    private JoinRequest(String username, String plainPassword, String name, String phoneNumber, String email){
         if (!validatesUsername(username)) {
             InvalidUsernameException invalidUsernameException = new InvalidUsernameException("잘못된 형식의 아이디입니다.");
             invalidUsernameException.printStackTrace();
@@ -41,6 +42,8 @@ public class JoinRequest {
             throw invalidPasswordException;
         }
         this.plainPassword = plainPassword;
+
+        this.name = name;
 
         if (!validatesPhoneNumber(phoneNumber)) {
             InvalidPhoneNumberException invalidPhoneNumberException = new InvalidPhoneNumberException("잘못된 형식의 전화번호입니다.");
@@ -57,8 +60,8 @@ public class JoinRequest {
         this.email = email;
     }
 
-    public JoinRequest of(String username, String plainPassword, String phoneNumber, String email){
-        return new JoinRequest(username, plainPassword, phoneNumber, email);
+    public static JoinRequest of(String username, String plainPassword, String name, String phoneNumber, String email){
+        return new JoinRequest(username, plainPassword, name, phoneNumber, email);
     }
 
     private boolean validatesUsername(String username) {

@@ -43,4 +43,14 @@ public class PasswordRepository {
          *  3. 조회에 실패하면 AccountIdNotFoundException 예외를 발생 시키세요.
          */
     }
+
+    public void insertNewPassword(Long createdAccountId, String encryptedPassword) throws SQLException {
+        String sql = "INSERT INTO PASSWORD_TEST VALUES(?, ?)";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+            preparedStatement.setLong(1, createdAccountId);
+            preparedStatement.setString(2, encryptedPassword);
+            preparedStatement.executeUpdate();
+        }
+    }
 }
