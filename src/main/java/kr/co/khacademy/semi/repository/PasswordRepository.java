@@ -44,12 +44,12 @@ public class PasswordRepository {
          */
     }
 
-    public void insertNewPassword(Long createdAccountId, String encryptedPassword) throws SQLException {
+    public void insertNewPassword(Password password) throws SQLException {
         String sql = "INSERT INTO PASSWORD_TEST VALUES(?, ?)";
         try(Connection connection = mySqlDataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);){
-            preparedStatement.setLong(1, createdAccountId);
-            preparedStatement.setString(2, encryptedPassword);
+            preparedStatement.setLong(1, password.getAccountId());
+            preparedStatement.setString(2, password.getEncryptedPassword());
             preparedStatement.executeUpdate();
         }
     }
