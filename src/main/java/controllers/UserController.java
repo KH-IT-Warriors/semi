@@ -1,12 +1,10 @@
 package controllers;
 
-import domains.account.users.UserInformation;
+import kr.co.khacademy.semi.entity.UserInformation;
 import kr.co.khacademy.semi.conf.MySqlDataSource;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class UserController {
 

@@ -1,4 +1,4 @@
-package domains.account.users;
+package kr.co.khacademy.semi.entity;
 
 import lombok.Builder;
 import lombok.Data;
@@ -17,10 +17,7 @@ public class UserInformation {
     private String phoneNumber;
     @NonNull
     private String email;
-    @NonNull
     private Timestamp registeredTime;
-    @NonNull
     private Timestamp recentConnection;
-    @NonNull
     private Long userGradeId;
 }

@@ -81,6 +81,16 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateInformation(UpdateInformationRequest updateInformationRequest) {
-
+        try {
+            UserInformation userInformation = UserInformation.builder()
+                .accountId(updateInformationRequest.getAccountId())
+                .name(updateInformationRequest.getName())
+                .phoneNumber(updateInformationRequest.getPhoneNumber())
+                .email(updateInformationRequest.getEmail())
+                .build();
+            accountRepository.updateInformation(userInformation);
+        } catch (SQLException sqlException) {
+            throw new RuntimeException("회원정보 수정에 실패하였습니다.");
+        }
     }
 }
