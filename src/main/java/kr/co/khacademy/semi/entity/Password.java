@@ -1,11 +1,12 @@
 package kr.co.khacademy.semi.entity;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value(staticConstructor = "of")
 public class Password {
 
     private Long accountId;
 
     private String encryptedPassword;
+
 }
