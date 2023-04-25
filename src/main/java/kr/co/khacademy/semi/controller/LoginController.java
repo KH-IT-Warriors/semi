@@ -2,7 +2,7 @@ package kr.co.khacademy.semi.controller;
 
 import kr.co.khacademy.semi.common.auth.AuthenticationManager;
 import kr.co.khacademy.semi.dto.LoginRequest;
-import kr.co.khacademy.semi.exception.LoginFailedException;
+import kr.co.khacademy.semi.exception.login.LoginFailedException;
 import kr.co.khacademy.semi.service.AccountService;
 import kr.co.khacademy.semi.service.AccountServiceImpl;
 
