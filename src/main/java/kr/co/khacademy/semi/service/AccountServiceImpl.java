@@ -2,8 +2,10 @@ package kr.co.khacademy.semi.service;
 
 import kr.co.khacademy.semi.dto.JoinRequest;
 import kr.co.khacademy.semi.dto.LoginRequest;
+import kr.co.khacademy.semi.dto.UpdateInformationRequest;
 import kr.co.khacademy.semi.entity.Account;
 import kr.co.khacademy.semi.entity.Password;
+import kr.co.khacademy.semi.entity.UserInformation;
 import kr.co.khacademy.semi.exception.login.sub.PasswordMissMatchException;
 import kr.co.khacademy.semi.repository.AccountRepository;
 import kr.co.khacademy.semi.repository.PasswordRepository;
@@ -59,12 +61,26 @@ public class AccountServiceImpl implements AccountService {
     public boolean join(JoinRequest joinRequest) {
         try {
             Long createdAccountId = accountRepository.insertNewAccount(joinRequest);
+
             String encryptedPassword = basicPasswordEncryptor.encryptPassword(joinRequest.getPlainPassword());
-            passwordRepository.insertNewPassword(createdAccountId, encryptedPassword);
-            userInformationRepository.insertNewUserInformation(createdAccountId, joinRequest);
+            Password password = Password.of(createdAccountId, encryptedPassword);
+            passwordRepository.insertNewPassword(password);
+
+            UserInformation userInformation = UserInformation.builder()
+                .accountId(createdAccountId)
+                .name(joinRequest.getName())
+                .phoneNumber(joinRequest.getPhoneNumber())
+                .email(joinRequest.getEmail())
+                .build();
+            userInformationRepository.insertNewUserInformation(userInformation);
             return true;
         } catch (SQLException sqlException) {
             throw new RuntimeException("회원가입에 실패하였습니다.");
         }
+    }
+
+    @Override
+    public void updateInformation(UpdateInformationRequest updateInformationRequest) {
+
     }
 }
