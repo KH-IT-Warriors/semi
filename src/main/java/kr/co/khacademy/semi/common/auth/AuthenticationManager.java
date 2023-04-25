@@ -21,6 +21,15 @@ public class AuthenticationManager {
     public void login(Long accountId, HttpSession httpSession) {
         httpSession.setAttribute("accountId", accountId);
         HttpSession previousHttpSession = accountSessionMap.put(accountId, httpSession);
-        Optional.ofNullable(previousHttpSession).ifPresent(HttpSession::invalidate);
+        invalidateSession(previousHttpSession);
+    }
+
+    public void logout(Long accountId) {
+        HttpSession httpSession = accountSessionMap.remove(accountId);
+        invalidateSession(httpSession);
+    }
+
+    private void invalidateSession(HttpSession httpSession) {
+        Optional.ofNullable(httpSession).ifPresent(HttpSession::invalidate);
     }
 }
