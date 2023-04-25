@@ -3,6 +3,7 @@ package kr.co.khacademy.semi.service;
 import kr.co.khacademy.semi.dto.JoinRequest;
 import kr.co.khacademy.semi.dto.LoginRequest;
 import kr.co.khacademy.semi.dto.UpdateInformationRequest;
+import kr.co.khacademy.semi.entity.UserInformation;
 
 public interface AccountService {
 
@@ -11,4 +12,6 @@ public interface AccountService {
     boolean join(JoinRequest joinRequest);
 
     void updateInformation(UpdateInformationRequest updateInformationRequest);
+
+    UserInformation printUserInformation(Long accountId);
 }

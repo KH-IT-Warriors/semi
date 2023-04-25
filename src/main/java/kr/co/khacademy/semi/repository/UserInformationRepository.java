@@ -4,9 +4,7 @@ import kr.co.khacademy.semi.conf.MySqlDataSource;
 import kr.co.khacademy.semi.dto.JoinRequest;
 import kr.co.khacademy.semi.entity.UserInformation;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 
 public class UserInformationRepository {
@@ -27,6 +25,30 @@ public class UserInformationRepository {
             preparedStatement.setString(4, userInformation.getEmail());
             preparedStatement.executeUpdate();
             connection.commit();
+        }
+    }
+
+    public UserInformation findUserInformationById(Long accountId) throws SQLException {
+        String sql = "SELECT * FROM USER_INFORMATIONS_TEST";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();){
+            resultSet.next();
+            String name = resultSet.getString("NAME");
+            String phoneNumber = resultSet.getString("PHONE_NUMBER");
+            String email = resultSet.getString("EMAIL");
+            Timestamp registeredTime = resultSet.getTimestamp("REGISTERED_DATE");
+            Timestamp recentConnection = resultSet.getTimestamp("RECENT_CONNECTION");
+            Long userGradeId = resultSet.getLong("USER_GRADE_ID");
+            return UserInformation.builder()
+                .accountId(accountId)
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .email(email)
+                .registeredTime(registeredTime)
+                .recentConnection(recentConnection)
+                .userGradeId(userGradeId)
+                .build();
         }
     }
 }

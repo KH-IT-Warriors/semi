@@ -93,4 +93,13 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException("회원정보 수정에 실패하였습니다.");
         }
     }
+
+    @Override
+    public UserInformation printUserInformation(Long accountId) {
+        try {
+            return userInformationRepository.findUserInformationById(accountId);
+        } catch (SQLException sqlException) {
+            throw new RuntimeException();
+        }
+    }
 }
