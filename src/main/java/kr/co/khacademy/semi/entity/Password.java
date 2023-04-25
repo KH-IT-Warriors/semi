@@ -5,8 +5,7 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 public class Password {
 
-    private Long accountId;
+    Long accountId;
 
-    private String encryptedPassword;
-
+    String encryptedPassword;
 }
