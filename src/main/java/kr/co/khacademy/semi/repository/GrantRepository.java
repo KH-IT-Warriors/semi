@@ -1,7 +1,7 @@
 package kr.co.khacademy.semi.repository;
 
 import kr.co.khacademy.semi.entity.Grant;
-import kr.co.khacademy.semi.exception.RoleIdNotFoundException;
+import kr.co.khacademy.semi.exception.login.sub.RoleIdNotFoundException;
 
 import java.util.Set;
 
