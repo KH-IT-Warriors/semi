@@ -1,6 +1,7 @@
 package kr.co.khacademy.semi.controller;
 
 import kr.co.khacademy.semi.dto.UpdateInformationRequest;
+import kr.co.khacademy.semi.dto.UpdatePasswordRequest;
 import kr.co.khacademy.semi.entity.UserInformation;
 import kr.co.khacademy.semi.service.AccountService;
 import kr.co.khacademy.semi.service.AccountServiceImpl;
@@ -36,6 +37,11 @@ public class UserInformationController extends HttpServlet {
             UserInformation userInformation = accountService.printUserInformation(accountId);
             request.setAttribute("userInformation", userInformation);
             request.getRequestDispatcher("/WEB-INF/views/myPage.jsp").forward(request,response);
+        } else if (command.equals("/updatePassword.information")) {
+            Long accountId = (Long) request.getSession().getAttribute("accountId");
+            String plainPassword = request.getParameter("password");
+            UpdatePasswordRequest updatePasswordRequest = UpdatePasswordRequest.of(accountId, plainPassword);
+            accountService.updatePassword(updatePasswordRequest);
         }
     }
 }

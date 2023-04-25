@@ -45,12 +45,23 @@ public class PasswordRepository {
     }
 
     public void insertNewPassword(Password password) throws SQLException {
-        String sql = "INSERT INTO PASSWORD_TEST VALUES(?, ?)";
+        String sql = "INSERT INTO PASSWORDS_TEST VALUES(?, ?)";
         try(Connection connection = mySqlDataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);){
             preparedStatement.setLong(1, password.getAccountId());
             preparedStatement.setString(2, password.getEncryptedPassword());
             preparedStatement.executeUpdate();
+        }
+    }
+
+    public void updatePassword(Password password) throws SQLException {
+        String sql = "UPDATE PASSWORDS_TEST SET PASSWORD = ? WHERE ACCOUNT_ID = ?";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+            preparedStatement.setString(1, password.getEncryptedPassword());
+            preparedStatement.setLong(2, password.getAccountId());
+            preparedStatement.executeUpdate();
+            connection.commit();
         }
     }
 }
