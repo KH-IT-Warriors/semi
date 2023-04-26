@@ -23,10 +23,10 @@ public class PasswordRepository {
 
     public Password findByAccountId(Long accountId) throws SQLException {
         String sql = "SELECT * FROM PASSWORDS_TEST WHERE ACCOUNT_ID = ?";
-        try(Connection connection = mySqlDataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+        try (Connection connection = mySqlDataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
             preparedStatement.setLong(1, accountId);
-            try(ResultSet resultSet = preparedStatement.executeQuery();){
+            try (ResultSet resultSet = preparedStatement.executeQuery();) {
                 if (resultSet.next()) {
                     String password = resultSet.getString("PASSWORD");
                     return Password.of(accountId, password);
@@ -44,24 +44,25 @@ public class PasswordRepository {
          */
     }
 
-    public void insertNewPassword(Password password) throws SQLException {
-        String sql = "INSERT INTO PASSWORDS_TEST VALUES(?, ?)";
-        try(Connection connection = mySqlDataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
-            preparedStatement.setLong(1, password.getAccountId());
-            preparedStatement.setString(2, password.getEncryptedPassword());
-            preparedStatement.executeUpdate();
-        }
-    }
-
-    public void updatePassword(Password password) throws SQLException {
-        String sql = "UPDATE PASSWORDS_TEST SET PASSWORD = ? WHERE ACCOUNT_ID = ?";
-        try(Connection connection = mySqlDataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
-            preparedStatement.setString(1, password.getEncryptedPassword());
-            preparedStatement.setLong(2, password.getAccountId());
-            preparedStatement.executeUpdate();
-            connection.commit();
+    public Password save(Password password, boolean flag) throws SQLException {
+        if (flag) {
+            String sql = "INSERT INTO PASSWORDS_TEST VALUES(?, ?)";
+            try (Connection connection = mySqlDataSource.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+                preparedStatement.setLong(1, password.getAccountId());
+                preparedStatement.setString(2, password.getEncryptedPassword());
+                preparedStatement.executeUpdate();
+                return Password.of(password.getAccountId(), password.getEncryptedPassword());
+            }
+        } else {
+            String sql = "UPDATE PASSWORDS_TEST SET PASSWORD = ? WHERE ACCOUNT_ID = ?";
+            try (Connection connection = mySqlDataSource.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+                preparedStatement.setString(1, password.getEncryptedPassword());
+                preparedStatement.setLong(2, password.getAccountId());
+                preparedStatement.executeUpdate();
+                return Password.of(password.getAccountId(), password.getEncryptedPassword());
+            }
         }
     }
 }
