@@ -1,6 +1,6 @@
 package kr.co.khacademy.semi.controller;
 
-import kr.co.khacademy.semi.dto.ChangeUserInformationAdmin;
+import kr.co.khacademy.semi.dto.UpdateProfileAdminRequest;
 import kr.co.khacademy.semi.service.AccountServiceImpl;
 
 import javax.servlet.ServletException;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/changeUserInformation")
-public class UserInformationAdminController extends HttpServlet {
+public class ProfileAdminController extends HttpServlet {
     AccountServiceImpl accountService = AccountServiceImpl.getInstance();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -19,12 +19,12 @@ public class UserInformationAdminController extends HttpServlet {
         String name = request.getParameter("name");
         String phoneNumber = request.getParameter("phoneNumber");
         String email = request.getParameter("email");
-        String grade = request.getParameter("grade");
-        int bonusPoint = Integer.parseInt(request.getParameter("bonusPoint"));
+        Long gradeId = Long.parseLong(request.getParameter("gradeId"));
+        Long bonusPoint = Long.parseLong(request.getParameter("bonusPoint"));
 
-        ChangeUserInformationAdmin changeUserInformationAdmin
-            = ChangeUserInformationAdmin.of(accountId, name, phoneNumber, email, grade, bonusPoint);
-        accountService.updateInformation(changeUserInformationAdmin);
+        UpdateProfileAdminRequest updateProfileAdminRequest
+            = UpdateProfileAdminRequest.of(accountId, name, phoneNumber, email, gradeId, bonusPoint);
+        accountService.updateInformation(updateProfileAdminRequest);
     }
 
     @Override

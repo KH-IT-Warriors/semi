@@ -4,10 +4,9 @@ import kr.co.khacademy.semi.common.validator.AccountDataValidator;
 import kr.co.khacademy.semi.exception.join.sub.InvalidEmailException;
 import kr.co.khacademy.semi.exception.join.sub.InvalidPhoneNumberException;
 import lombok.Data;
-import lombok.Value;
 
 @Data
-public class UpdateInformationRequest {
+public class UpdateProfileRequest {
     AccountDataValidator accountDataValidator = AccountDataValidator.getInstance();
 
     private Long accountId;
@@ -16,7 +15,7 @@ public class UpdateInformationRequest {
     private String email;
 
 
-    private UpdateInformationRequest(Long accountId, String name, String phoneNumber, String email) {
+    private UpdateProfileRequest(Long accountId, String name, String phoneNumber, String email) {
         this.accountId = accountId;
         this.name = name;
 
@@ -31,7 +30,7 @@ public class UpdateInformationRequest {
         this.email = email;
     }
 
-    public static UpdateInformationRequest of(Long accountId, String name, String phoneNumber, String email) {
-        return new UpdateInformationRequest(accountId, name, phoneNumber, email);
+    public static UpdateProfileRequest of(Long accountId, String name, String phoneNumber, String email) {
+        return new UpdateProfileRequest(accountId, name, phoneNumber, email);
     }
 }

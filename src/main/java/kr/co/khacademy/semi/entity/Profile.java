@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 @Data
 @Builder
-public class UserInformation {
+public class Profile {
     @NonNull
     private Long accountId;
     @NonNull
@@ -19,5 +19,6 @@ public class UserInformation {
     private String email;
     private Timestamp registeredTime;
     private Timestamp recentConnection;
+    private Long bonusPoint;
     private Long userGradeId;
 }

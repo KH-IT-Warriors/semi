@@ -5,21 +5,21 @@ import kr.co.khacademy.semi.exception.update.sub.InvalidBonusPointException;
 import lombok.Data;
 
 @Data
-public class ChangeUserInformationAdmin {
+public class UpdateProfileAdminRequest {
     private Long accountId;
     private String name;
     private String phoneNumber;
     private String email;
-    private String grade;
-    private int bonusPoint;
+    private Long gradeId;
+    private Long bonusPoint;
 
-    private ChangeUserInformationAdmin(Long accountId, String name, String phoneNumber, String email, String grade,  int bonusPoint) {
+    private UpdateProfileAdminRequest(Long accountId, String name, String phoneNumber, String email, Long gradeId, Long bonusPoint) {
         this.accountId = accountId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
 
-        this.grade = grade;
+        this.gradeId = gradeId;
         if (bonusPoint > 0) {
             this.bonusPoint = bonusPoint;
         } else {
@@ -27,7 +27,7 @@ public class ChangeUserInformationAdmin {
         }
     }
 
-    public static ChangeUserInformationAdmin of(Long accountId, String name, String phoneNumber, String email, String grade, int bonusPoint) {
-        return new ChangeUserInformationAdmin(accountId, name, phoneNumber, email, grade, bonusPoint);
+    public static UpdateProfileAdminRequest of(Long accountId, String name, String phoneNumber, String email, Long gradeId, Long bonusPoint) {
+        return new UpdateProfileAdminRequest(accountId, name, phoneNumber, email, gradeId, bonusPoint);
     }
 }
