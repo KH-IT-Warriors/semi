@@ -1,5 +1,7 @@
 package kr.co.khacademy.semi.controller;
 
+import kr.co.khacademy.semi.common.auth.AuthenticationManager;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
