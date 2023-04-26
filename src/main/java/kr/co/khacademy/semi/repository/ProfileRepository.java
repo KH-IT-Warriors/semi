@@ -74,7 +74,7 @@ public class ProfileRepository {
         }
     }
 
-    public Profile findUserInformationById(Long accountId) throws SQLException {
+    public Profile findProfileById(Long accountId) throws SQLException {
         String sql = "SELECT * FROM PROFILES_TEST";
         try (Connection connection = mySqlDataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);

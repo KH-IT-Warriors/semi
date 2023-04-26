@@ -1,6 +1,7 @@
 package kr.co.khacademy.semi.repository;
 
 import kr.co.khacademy.semi.conf.MySqlDataSource;
+import kr.co.khacademy.semi.dto.FindUsernameRequest;
 import kr.co.khacademy.semi.dto.JoinRequest;
 import kr.co.khacademy.semi.entity.Account;
 import kr.co.khacademy.semi.exception.login.sub.UsernameNotFoundException;
@@ -24,10 +25,10 @@ public class AccountRepository {
 
     public Account findByUsername(String username) throws SQLException {
         String sql = "SELECT * FROM USER_ACCOUNTS_TEST WHERE USER_NAME = ?";
-        try(Connection connection = mySqlDataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+        try (Connection connection = mySqlDataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
             preparedStatement.setString(1, username);
-            try(ResultSet resultSet = preparedStatement.executeQuery();){
+            try (ResultSet resultSet = preparedStatement.executeQuery();) {
                 if (resultSet.next()) {
                     long id = resultSet.getLong("ID");
                     long statusId = resultSet.getLong("STATUS_ID");
@@ -54,13 +55,13 @@ public class AccountRepository {
 
     public Account save(JoinRequest joinRequest) throws SQLException {
         String sql = "INSERT INTO USER_ACCOUNTS_TEST VALUES(0, ?, ?, ?)";
-        try(Connection connection = mySqlDataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = mySqlDataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, 1);
             preparedStatement.setLong(2, 1);
             preparedStatement.setString(3, joinRequest.getUsername());
             preparedStatement.executeUpdate();
-            try(ResultSet resultSet = preparedStatement.getGeneratedKeys();){
+            try (ResultSet resultSet = preparedStatement.getGeneratedKeys();) {
                 resultSet.next();
                 Long id = resultSet.getLong(1);
                 Long statusId = 1L;
@@ -78,11 +79,32 @@ public class AccountRepository {
 
     public void deleteById(Long accountId) throws SQLException {
         String sql = "DELETE FROM USER_ACCOUNTS_TEST WHERE ID = ?";
-        try(Connection connection = mySqlDataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+        try (Connection connection = mySqlDataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
             preparedStatement.setLong(1, accountId);
             preparedStatement.executeUpdate();
             connection.commit();
+        }
+    }
+
+    public Account findByPhoneNumber(FindUsernameRequest findUsernameRequest) throws SQLException {
+        String sql = "SELECT USER_ACCOUNTS_TEST.* FROM USER_ACCOUNTS_TEST A JOIN USER_PROFILES_TEST P ON A.ID = P.ACCOUNT_ID WHERE PHONE_NUMBER = ?";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+            preparedStatement.setString(1, findUsernameRequest.getPhoneNumber());
+            try (ResultSet resultSet = preparedStatement.executeQuery();) {
+                resultSet.next();
+                Long id = resultSet.getLong("ID");
+                Long statusId = resultSet.getLong("STATUS_ID");
+                Long roleId = resultSet.getLong("ROLE_ID");
+                String username = resultSet.getString("USER_NAME");
+                return Account.builder()
+                    .id(id)
+                    .statusId(statusId)
+                    .roleId(roleId)
+                    .username(username)
+                    .build();
+            }
         }
     }
 }

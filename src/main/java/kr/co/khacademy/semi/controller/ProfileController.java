@@ -19,7 +19,7 @@ public class ProfileController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long accountId = (Long) request.getSession().getAttribute("accountId");
-        Profile profile = accountService.findUserInformation(accountId);
+        Profile profile = accountService.findProfileByAccountId(accountId);
         request.setAttribute("userInformation", profile);
         request.getRequestDispatcher("/WEB-INF/views/myPage.jsp").forward(request, response);
     }
@@ -41,7 +41,7 @@ public class ProfileController extends HttpServlet {
         String phoneNumber = request.getParameter("phoneNumber");
         String email = request.getParameter("email");
         UpdateProfileRequest updateProfileRequest = UpdateProfileRequest.of(accountId, name, phoneNumber, email);
-        accountService.updateInformation(updateProfileRequest);
+        accountService.updateProfile(updateProfileRequest);
         doGet(request, response);
     }
 }

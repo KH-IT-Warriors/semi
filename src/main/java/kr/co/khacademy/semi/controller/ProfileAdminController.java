@@ -24,7 +24,7 @@ public class ProfileAdminController extends HttpServlet {
 
         UpdateProfileAdminRequest updateProfileAdminRequest
             = UpdateProfileAdminRequest.of(accountId, name, phoneNumber, email, gradeId, bonusPoint);
-        accountService.updateInformation(updateProfileAdminRequest);
+        accountService.updateProfile(updateProfileAdminRequest);
     }
 
     @Override

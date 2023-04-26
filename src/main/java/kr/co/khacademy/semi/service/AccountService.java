@@ -1,9 +1,7 @@
 package kr.co.khacademy.semi.service;
 
-import kr.co.khacademy.semi.dto.JoinRequest;
-import kr.co.khacademy.semi.dto.LoginRequest;
-import kr.co.khacademy.semi.dto.UpdateProfileRequest;
-import kr.co.khacademy.semi.dto.UpdatePasswordRequest;
+import kr.co.khacademy.semi.dto.*;
+import kr.co.khacademy.semi.entity.Account;
 import kr.co.khacademy.semi.entity.Profile;
 
 public interface AccountService {
@@ -14,9 +12,11 @@ public interface AccountService {
 
     void updatePassword(UpdatePasswordRequest updatePasswordRequest);
 
-    void updateInformation(UpdateProfileRequest updateProfileRequest);
+    void updateProfile(UpdateProfileRequest updateProfileRequest);
 
-    Profile findUserInformation(Long accountId);
+    Profile findProfileByAccountId(Long accountId);
 
-    void deleteAccount(Long accountId);
+    void deleteAccountByAccountId(Long accountId);
+
+    Account findUsernameByPhoneNumber(FindUsernameRequest findUsernameRequest);
 }

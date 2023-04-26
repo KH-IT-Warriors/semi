@@ -97,7 +97,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void updateInformation(UpdateProfileRequest updateProfileRequest) {
+    public void updateProfile(UpdateProfileRequest updateProfileRequest) {
         try {
             Profile profile = Profile.builder()
                 .accountId(updateProfileRequest.getAccountId())
@@ -111,7 +111,7 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    public void updateInformation(UpdateProfileAdminRequest updateProfileAdminRequest) {
+    public void updateProfile(UpdateProfileAdminRequest updateProfileAdminRequest) {
         try {
             Profile profile = Profile.builder()
                 .accountId(updateProfileAdminRequest.getAccountId())
@@ -128,18 +128,27 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Profile findUserInformation(Long accountId) {
+    public Profile findProfileByAccountId(Long accountId) {
         try {
-            return profileRepository.findUserInformationById(accountId);
+            return profileRepository.findProfileById(accountId);
         } catch (SQLException sqlException) {
             throw new RuntimeException();
         }
     }
 
     @Override
-    public void deleteAccount(Long accountId) {
+    public void deleteAccountByAccountId(Long accountId) {
         try {
             accountRepository.deleteById(accountId);
+        } catch (SQLException sqlException) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public Account findUsernameByPhoneNumber(FindUsernameRequest findUsernameRequest) {
+        try {
+            return accountRepository.findByPhoneNumber(findUsernameRequest);
         } catch (SQLException sqlException) {
             throw new RuntimeException();
         }
