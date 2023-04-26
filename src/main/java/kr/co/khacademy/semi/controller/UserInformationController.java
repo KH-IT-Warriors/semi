@@ -18,30 +18,37 @@ public class UserInformationController extends HttpServlet {
     private static final AccountService accountService = AccountServiceImpl.getInstance();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+        Long accountId = (Long) request.getSession().getAttribute("accountId");
+        UserInformation userInformation = accountService.findUserInformation(accountId);
+        request.setAttribute("userInformation", userInformation);
+        request.getRequestDispatcher("/WEB-INF/views/myPage.jsp").forward(request,response);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String command = request.getRequestURI();
-        if (command.equals("/update.information")) {
+        if (command.equals("/updatePassword.information")) {
+            Long accountId = (Long) request.getSession().getAttribute("accountId");
+            String plainPassword = request.getParameter("password");
+            UpdatePasswordRequest updatePasswordRequest = UpdatePasswordRequest.of(accountId, plainPassword);
+            accountService.updatePassword(updatePasswordRequest);
+        } else if (command.equals("/update.information")) {
             Long accountId = (Long) request.getSession().getAttribute("accountId");
             String name = request.getParameter("name");
             String phoneNumber = request.getParameter("phoneNumber");
             String email = request.getParameter("email");
             UpdateInformationRequest updateInformationRequest = UpdateInformationRequest.of(accountId, name, phoneNumber, email);
             accountService.updateInformation(updateInformationRequest);
-            response.sendRedirect("/print.information");
-        } else if (command.equals("/print.information")) {
-            Long accountId = (Long) request.getSession().getAttribute("accountId");
-            UserInformation userInformation = accountService.printUserInformation(accountId);
-            request.setAttribute("userInformation", userInformation);
-            request.getRequestDispatcher("/WEB-INF/views/myPage.jsp").forward(request,response);
-        } else if (command.equals("/updatePassword.information")) {
-            Long accountId = (Long) request.getSession().getAttribute("accountId");
-            String plainPassword = request.getParameter("password");
-            UpdatePasswordRequest updatePasswordRequest = UpdatePasswordRequest.of(accountId, plainPassword);
-            accountService.updatePassword(updatePasswordRequest);
+            doGet(request, response);
         }
     }
 }
