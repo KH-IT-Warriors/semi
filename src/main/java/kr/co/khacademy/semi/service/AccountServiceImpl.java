@@ -3,15 +3,14 @@ package kr.co.khacademy.semi.service;
 import kr.co.khacademy.semi.dto.*;
 import kr.co.khacademy.semi.entity.Account;
 import kr.co.khacademy.semi.entity.Password;
-import kr.co.khacademy.semi.entity.UserGrade;
-import kr.co.khacademy.semi.entity.UserInformation;
+import kr.co.khacademy.semi.entity.Profile;
 import kr.co.khacademy.semi.exception.login.sub.PasswordMissMatchException;
 import kr.co.khacademy.semi.repository.AccountRepository;
 import kr.co.khacademy.semi.repository.PasswordRepository;
 import kr.co.khacademy.semi.common.encryption.BasicPasswordEncryptor;
 import kr.co.khacademy.semi.common.encryption.PasswordEncryptionProvider;
 import kr.co.khacademy.semi.repository.UserGradeRepository;
-import kr.co.khacademy.semi.repository.UserInformationRepository;
+import kr.co.khacademy.semi.repository.ProfileRepository;
 
 import java.sql.SQLException;
 
@@ -26,7 +25,7 @@ public class AccountServiceImpl implements AccountService {
 //    private static final RoleRepository roleRepository = RoleRepository.getInstance();
 //    private static final GrantRepository grantRepository = GrantRepository.getInstance();
 //    private static final PermissionRepository permissionRepository = PermissionRepository.getInstance();
-    private static final UserInformationRepository userInformationRepository = UserInformationRepository.getInstance();
+    private static final ProfileRepository profileRepository = ProfileRepository.getInstance();
     private static final UserGradeRepository userGradeRepository = UserGradeRepository.getInstance();
 
     private AccountServiceImpl() {
@@ -61,19 +60,23 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public boolean join(JoinRequest joinRequest) {
         try {
-            Long createdAccountId = accountRepository.insertNewAccount(joinRequest);
+            boolean isJoin = true;
+            Long createdAccountId = accountRepository.save(joinRequest).getId();
 
             String encryptedPassword = basicPasswordEncryptor.encryptPassword(joinRequest.getPlainPassword());
             Password password = Password.of(createdAccountId, encryptedPassword);
-            passwordRepository.insertNewPassword(password);
+            passwordRepository.save(password, isJoin);
 
-            UserInformation userInformation = UserInformation.builder()
+            Profile profile = Profile.builder()
                 .accountId(createdAccountId)
                 .name(joinRequest.getName())
                 .phoneNumber(joinRequest.getPhoneNumber())
                 .email(joinRequest.getEmail())
+                .registeredTime(null)
+                .recentConnection(null)
+                .bonusPoint(0L)
                 .build();
-            userInformationRepository.insertNewUserInformation(userInformation);
+            profileRepository.save(profile);
             return true;
         } catch (SQLException sqlException) {
             throw new RuntimeException("회원가입에 실패하였습니다.");
@@ -83,52 +86,51 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
         try {
+            boolean isJoin = false;
             Long id = updatePasswordRequest.getId();
             String encryptedPassword = basicPasswordEncryptor.encryptPassword(updatePasswordRequest.getPlainPassword());
             Password password = Password.of(id, encryptedPassword);
-            passwordRepository.updatePassword(password);
+            passwordRepository.save(password, isJoin);
         } catch (SQLException sqlException) {
             throw new RuntimeException();
         }
     }
 
     @Override
-    public void updateInformation(UpdateInformationRequest updateInformationRequest) {
+    public void updateInformation(UpdateProfileRequest updateProfileRequest) {
         try {
-            UserInformation userInformation = UserInformation.builder()
-                .accountId(updateInformationRequest.getAccountId())
-                .name(updateInformationRequest.getName())
-                .phoneNumber(updateInformationRequest.getPhoneNumber())
-                .email(updateInformationRequest.getEmail())
+            Profile profile = Profile.builder()
+                .accountId(updateProfileRequest.getAccountId())
+                .name(updateProfileRequest.getName())
+                .phoneNumber(updateProfileRequest.getPhoneNumber())
+                .email(updateProfileRequest.getEmail())
                 .build();
-            userInformationRepository.updateInformation(userInformation);
+            profileRepository.save(profile);
         } catch (SQLException sqlException) {
             throw new RuntimeException("회원정보 수정에 실패하였습니다.");
         }
     }
 
-    public void updateInformation(ChangeUserInformationAdmin changeUserInformationAdmin) {
+    public void updateInformation(UpdateProfileAdminRequest updateProfileAdminRequest) {
         try {
-            Long accountId = changeUserInformationAdmin.getAccountId();
-            Long gradeId = userGradeRepository.findUserGradeIdByName(changeUserInformationAdmin.getGrade());
-            userInformationRepository.updateGrade(accountId, gradeId);
-            // TODO: 마일리지 수정 기능 추가 >> 사용자 테이블에 합쳐도 되지 않나요?
-            UserInformation userInformation = UserInformation.builder()
-                .accountId(changeUserInformationAdmin.getAccountId())
-                .name(changeUserInformationAdmin.getName())
-                .phoneNumber(changeUserInformationAdmin.getPhoneNumber())
-                .email(changeUserInformationAdmin.getEmail())
+            Profile profile = Profile.builder()
+                .accountId(updateProfileAdminRequest.getAccountId())
+                .name(updateProfileAdminRequest.getName())
+                .phoneNumber(updateProfileAdminRequest.getPhoneNumber())
+                .email(updateProfileAdminRequest.getEmail())
+                .bonusPoint(updateProfileAdminRequest.getBonusPoint())
+                .userGradeId(updateProfileAdminRequest.getGradeId())
                 .build();
-            userInformationRepository.updateInformation(userInformation);
+            profileRepository.save(profile);
         } catch (SQLException sqlException) {
             throw new RuntimeException();
         }
     }
 
     @Override
-    public UserInformation findUserInformation(Long accountId) {
+    public Profile findUserInformation(Long accountId) {
         try {
-            return userInformationRepository.findUserInformationById(accountId);
+            return profileRepository.findUserInformationById(accountId);
         } catch (SQLException sqlException) {
             throw new RuntimeException();
         }
@@ -137,7 +139,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount(Long accountId) {
         try {
-            accountRepository.deleteAccount(accountId);
+            accountRepository.deleteById(accountId);
         } catch (SQLException sqlException) {
             throw new RuntimeException();
         }

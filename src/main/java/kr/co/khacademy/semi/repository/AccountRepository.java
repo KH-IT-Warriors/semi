@@ -3,7 +3,6 @@ package kr.co.khacademy.semi.repository;
 import kr.co.khacademy.semi.conf.MySqlDataSource;
 import kr.co.khacademy.semi.dto.JoinRequest;
 import kr.co.khacademy.semi.entity.Account;
-import kr.co.khacademy.semi.entity.UserInformation;
 import kr.co.khacademy.semi.exception.login.sub.UsernameNotFoundException;
 
 import java.sql.Connection;
@@ -53,7 +52,7 @@ public class AccountRepository {
          */
     }
 
-    public Long insertNewAccount(JoinRequest joinRequest) throws SQLException {
+    public Account save(JoinRequest joinRequest) throws SQLException {
         String sql = "INSERT INTO USER_ACCOUNTS_TEST VALUES(0, ?, ?, ?)";
         try(Connection connection = mySqlDataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -63,12 +62,21 @@ public class AccountRepository {
             preparedStatement.executeUpdate();
             try(ResultSet resultSet = preparedStatement.getGeneratedKeys();){
                 resultSet.next();
-                return resultSet.getLong(1);
+                Long id = resultSet.getLong(1);
+                Long statusId = 1L;
+                Long roleId = 1L;
+                String username = joinRequest.getUsername();
+                return Account.builder()
+                    .id(id)
+                    .statusId(statusId)
+                    .roleId(roleId)
+                    .username(username)
+                    .build();
             }
         }
     }
 
-    public void deleteAccount(Long accountId) throws SQLException {
+    public void deleteById(Long accountId) throws SQLException {
         String sql = "DELETE FROM USER_ACCOUNTS_TEST WHERE ID = ?";
         try(Connection connection = mySqlDataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);){
