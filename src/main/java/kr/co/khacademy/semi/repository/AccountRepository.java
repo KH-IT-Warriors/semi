@@ -67,4 +67,13 @@ public class AccountRepository {
         }
     }
 
+    public void deleteAccount(Long accountId) throws SQLException {
+        String sql = "DELETE FROM USER_ACCOUNTS_TEST WHERE ID = ?";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+            preparedStatement.setLong(1, accountId);
+            preparedStatement.executeUpdate();
+            connection.commit();
+        }
+    }
 }

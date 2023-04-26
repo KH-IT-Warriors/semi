@@ -40,4 +40,11 @@ public class JoinController extends HttpServlet {
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long accountId = (Long)request.getSession().getAttribute("accountId");
+        accountService.deleteAccount(accountId);
+        response.sendRedirect("/index.jsp");
+    }
 }

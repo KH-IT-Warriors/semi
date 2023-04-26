@@ -17,4 +17,6 @@ public interface AccountService {
     void updateInformation(UpdateInformationRequest updateInformationRequest);
 
     UserInformation findUserInformation(Long accountId);
+
+    void deleteAccount(Long accountId);
 }
