@@ -1,5 +1,7 @@
 package kr.co.khacademy.semi.controller;
 
+import kr.co.khacademy.semi.dto.FindPasswordRequest;
+import kr.co.khacademy.semi.dto.FindUsernameRequest;
 import kr.co.khacademy.semi.dto.UpdatePasswordRequest;
 import kr.co.khacademy.semi.service.AccountService;
 import kr.co.khacademy.semi.service.AccountServiceImpl;
@@ -21,7 +23,18 @@ public class PasswordController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String username = request.getParameter("username");
+        String name = request.getParameter("name");
+        String phoneNumber = request.getParameter("phoneNumber");
+        Boolean authorityResult = Boolean.valueOf(request.getParameter("authorityResult"));
+        if (authorityResult) {
+            FindPasswordRequest findPasswordRequest = FindPasswordRequest.of(username, name, phoneNumber);
+            Long accountId = accountService.findPasswordByPhoneNumber(findPasswordRequest).getAccountId();
+            request.setAttribute("accountId", accountId);
+            request.getRequestDispatcher("").forward(request, response);
+        } else {
+            throw new RuntimeException();
+        }
     }
 
     @Override

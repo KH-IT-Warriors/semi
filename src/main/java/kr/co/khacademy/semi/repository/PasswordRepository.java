@@ -1,6 +1,7 @@
 package kr.co.khacademy.semi.repository;
 
 import kr.co.khacademy.semi.conf.MySqlDataSource;
+import kr.co.khacademy.semi.dto.FindPasswordRequest;
 import kr.co.khacademy.semi.entity.Password;
 import kr.co.khacademy.semi.exception.login.sub.AccountIdNotFoundException;
 
@@ -62,6 +63,21 @@ public class PasswordRepository {
                 preparedStatement.setLong(2, password.getAccountId());
                 preparedStatement.executeUpdate();
                 return Password.of(password.getAccountId(), password.getEncryptedPassword());
+            }
+        }
+    }
+
+    public Password findByPhoneNumber(FindPasswordRequest findPasswordRequest) throws SQLException {
+        String sql = "SELECT PW.* FROM PASSWORDS_TEST PW JOIN USER_ACCOUNTS_TEST A ON PW.ACCOUNT_ID = A.ID JOIN USER_PROFILES_TEST P ON A.ID = P.ACCOUNT_ID WHERE USER_NAME = ? AND PHONE_NUMBER = ?";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+            preparedStatement.setString(1, findPasswordRequest.getUsername());
+            preparedStatement.setString(2, findPasswordRequest.getPhoneNumber());
+            try(ResultSet resultSet = preparedStatement.executeQuery();) {
+                resultSet.next();
+                Long accountId = resultSet.getLong("ACCOUNT_ID");
+                String encryptedPassword = resultSet.getString("PASSWORD");
+                return Password.of(accountId, encryptedPassword);
             }
         }
     }

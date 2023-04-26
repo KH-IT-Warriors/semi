@@ -153,4 +153,13 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException();
         }
     }
+
+    @Override
+    public Password findPasswordByPhoneNumber(FindPasswordRequest findPasswordRequest) {
+        try {
+            return passwordRepository.findByPhoneNumber(findPasswordRequest);
+        } catch (SQLException sqlException) {
+            throw new RuntimeException();
+        }
+    }
 }

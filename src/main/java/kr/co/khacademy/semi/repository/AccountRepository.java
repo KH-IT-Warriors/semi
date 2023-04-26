@@ -88,7 +88,7 @@ public class AccountRepository {
     }
 
     public Account findByPhoneNumber(FindUsernameRequest findUsernameRequest) throws SQLException {
-        String sql = "SELECT USER_ACCOUNTS_TEST.* FROM USER_ACCOUNTS_TEST A JOIN USER_PROFILES_TEST P ON A.ID = P.ACCOUNT_ID WHERE PHONE_NUMBER = ?";
+        String sql = "SELECT A.* FROM USER_ACCOUNTS_TEST A JOIN USER_PROFILES_TEST P ON A.ID = P.ACCOUNT_ID WHERE PHONE_NUMBER = ?";
         try(Connection connection = mySqlDataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
             preparedStatement.setString(1, findUsernameRequest.getPhoneNumber());

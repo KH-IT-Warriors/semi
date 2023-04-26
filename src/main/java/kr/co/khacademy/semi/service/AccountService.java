@@ -2,6 +2,7 @@ package kr.co.khacademy.semi.service;
 
 import kr.co.khacademy.semi.dto.*;
 import kr.co.khacademy.semi.entity.Account;
+import kr.co.khacademy.semi.entity.Password;
 import kr.co.khacademy.semi.entity.Profile;
 
 public interface AccountService {
@@ -19,4 +20,6 @@ public interface AccountService {
     void deleteAccountByAccountId(Long accountId);
 
     Account findUsernameByPhoneNumber(FindUsernameRequest findUsernameRequest);
+
+    Password findPasswordByPhoneNumber(FindPasswordRequest findPasswordRequest);
 }
