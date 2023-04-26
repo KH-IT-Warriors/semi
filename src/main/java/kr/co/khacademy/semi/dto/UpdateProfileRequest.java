@@ -9,10 +9,10 @@ import lombok.Data;
 public class UpdateProfileRequest {
     AccountDataValidator accountDataValidator = AccountDataValidator.getInstance();
 
-    private Long accountId;
-    private String name;
-    private String phoneNumber;
-    private String email;
+    Long accountId;
+    String name;
+    String phoneNumber;
+    String email;
 
 
     private UpdateProfileRequest(Long accountId, String name, String phoneNumber, String email) {

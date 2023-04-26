@@ -10,15 +10,9 @@ public class UpdatePasswordRequest {
     AccountDataValidator accountDataValidator = AccountDataValidator.getInstance();
 
     @NonNull
-    private Long id;
+    Long id;
     @NonNull
-    private String plainPassword;
-
-    boolean pwHasDownCase;
-    boolean pwHasUpperCase;
-    boolean pwHasNumber;
-    boolean pwHasSpecialWord;
-    boolean pwBetween8And15;
+    String plainPassword;
 
     private UpdatePasswordRequest(Long id, String plainPassword) {
         this.id = id;
