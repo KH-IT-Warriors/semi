@@ -133,4 +133,13 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException();
         }
     }
+
+    @Override
+    public void deleteAccount(Long accountId) {
+        try {
+            accountRepository.deleteAccount(accountId);
+        } catch (SQLException sqlException) {
+            throw new RuntimeException();
+        }
+    }
 }
