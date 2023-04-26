@@ -1,7 +1,7 @@
 package kr.co.khacademy.semi.dto;
 
-
 import kr.co.khacademy.semi.exception.update.sub.InvalidBonusPointException;
+
 import lombok.Data;
 
 @Data
