@@ -1,11 +1,13 @@
 package kr.co.khacademy.semi.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class UserGrade {
-    private String grade1;
-    private String grade2;
-    private String grade3;
-    private String grade4;
+    Long id;
+    String gradeName;
+    Double accumulateRate;
+    Long AchievementCondition;
 }
