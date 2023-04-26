@@ -35,6 +35,7 @@ public class AccountRepository {
                     long roleId = resultSet.getLong("ROLE_ID");
                     return Account.builder()
                         .id(id)
+                        .username(username)
                         .statusId(statusId)
                         .roleId(roleId)
                         .username(username)

@@ -11,5 +11,7 @@ public class Account {
 
     private String username;
 
+    private Long statusId;
+
     private Long roleId;
 }
