@@ -1,17 +1,16 @@
 package kr.co.khacademy.semi.service;
 
-import kr.co.khacademy.semi.dto.JoinRequest;
-import kr.co.khacademy.semi.dto.LoginRequest;
-import kr.co.khacademy.semi.dto.UpdateInformationRequest;
-import kr.co.khacademy.semi.dto.UpdatePasswordRequest;
+import kr.co.khacademy.semi.dto.*;
 import kr.co.khacademy.semi.entity.Account;
 import kr.co.khacademy.semi.entity.Password;
+import kr.co.khacademy.semi.entity.UserGrade;
 import kr.co.khacademy.semi.entity.UserInformation;
 import kr.co.khacademy.semi.exception.login.sub.PasswordMissMatchException;
 import kr.co.khacademy.semi.repository.AccountRepository;
 import kr.co.khacademy.semi.repository.PasswordRepository;
 import kr.co.khacademy.semi.common.encryption.BasicPasswordEncryptor;
 import kr.co.khacademy.semi.common.encryption.PasswordEncryptionProvider;
+import kr.co.khacademy.semi.repository.UserGradeRepository;
 import kr.co.khacademy.semi.repository.UserInformationRepository;
 
 import java.sql.SQLException;
@@ -28,6 +27,7 @@ public class AccountServiceImpl implements AccountService {
 //    private static final GrantRepository grantRepository = GrantRepository.getInstance();
 //    private static final PermissionRepository permissionRepository = PermissionRepository.getInstance();
     private static final UserInformationRepository userInformationRepository = UserInformationRepository.getInstance();
+    private static final UserGradeRepository userGradeRepository = UserGradeRepository.getInstance();
 
     private AccountServiceImpl() {
     }
@@ -84,7 +84,7 @@ public class AccountServiceImpl implements AccountService {
     public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
         try {
             Long id = updatePasswordRequest.getId();
-            String encryptedPassword = basicPasswordEncryptor.encryptPassword(updatePasswordRequest.getPassword());
+            String encryptedPassword = basicPasswordEncryptor.encryptPassword(updatePasswordRequest.getPlainPassword());
             Password password = Password.of(id, encryptedPassword);
             passwordRepository.updatePassword(password);
         } catch (SQLException sqlException) {
@@ -101,14 +101,32 @@ public class AccountServiceImpl implements AccountService {
                 .phoneNumber(updateInformationRequest.getPhoneNumber())
                 .email(updateInformationRequest.getEmail())
                 .build();
-            accountRepository.updateInformation(userInformation);
+            userInformationRepository.updateInformation(userInformation);
         } catch (SQLException sqlException) {
             throw new RuntimeException("회원정보 수정에 실패하였습니다.");
         }
     }
 
+    public void updateInformation(ChangeUserInformationAdmin changeUserInformationAdmin) {
+        try {
+            Long accountId = changeUserInformationAdmin.getAccountId();
+            Long gradeId = userGradeRepository.findUserGradeIdByName(changeUserInformationAdmin.getGrade());
+            userInformationRepository.updateGrade(accountId, gradeId);
+            // TODO: 마일리지 수정 기능 추가 >> 사용자 테이블에 합쳐도 되지 않나요?
+            UserInformation userInformation = UserInformation.builder()
+                .accountId(changeUserInformationAdmin.getAccountId())
+                .name(changeUserInformationAdmin.getName())
+                .phoneNumber(changeUserInformationAdmin.getPhoneNumber())
+                .email(changeUserInformationAdmin.getEmail())
+                .build();
+            userInformationRepository.updateInformation(userInformation);
+        } catch (SQLException sqlException) {
+            throw new RuntimeException();
+        }
+    }
+
     @Override
-    public UserInformation printUserInformation(Long accountId) {
+    public UserInformation findUserInformation(Long accountId) {
         try {
             return userInformationRepository.findUserInformationById(accountId);
         } catch (SQLException sqlException) {

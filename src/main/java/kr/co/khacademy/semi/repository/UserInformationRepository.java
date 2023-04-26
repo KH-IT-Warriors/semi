@@ -51,4 +51,26 @@ public class UserInformationRepository {
                 .build();
         }
     }
+
+    public void updateInformation(UserInformation userInformation) throws SQLException {
+        String sql = "UPDATE USER_INFORMATIONS_TEST SET NAME = ?, PHONE_NUMBER = ?, EMAIL = ? WHERE ACCOUNT_ID = ?";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+            preparedStatement.setString(1, userInformation.getName());
+            preparedStatement.setString(2, userInformation.getPhoneNumber());
+            preparedStatement.setString(3, userInformation.getEmail());
+            preparedStatement.executeUpdate();
+            connection.commit();
+        }
+    }
+
+    public void updateGrade(Long accountId, Long gradeId) throws SQLException {
+        String sql = "UPDATE USER_INFORMATIONS_TEST SET USER_GRADE_ID = ? WHERE ACCOUNT_ID = ?";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+            preparedStatement.setLong(1, gradeId);
+            preparedStatement.setLong(2, accountId);
+            preparedStatement.executeUpdate();
+        }
+    }
 }

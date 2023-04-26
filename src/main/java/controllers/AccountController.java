@@ -1,10 +1,8 @@
 package controllers;
 
-import domains.account.commons.Password;
 import domains.account.management.AccountInformation;
 
 import java.sql.*;
-import java.util.List;
 
 public class AccountController {
 
@@ -50,7 +48,7 @@ public class AccountController {
 //            preparedStatement.executeUpdate();
 //        }
             System.out.println(sql);
-            System.out.printf("비밀번호가 %s로 변경되었습니다.\n", accountInformation.getUserPw());
+//            System.out.printf("비밀번호가 %s로 변경되었습니다.\n", accountInformation.getUserPw());
             System.out.println("변경된 사용자 아이디 : " + accountInformation.getUserName());
             System.out.println("계정 아이디 : " + accountInformation.getAccountId());
     }
@@ -67,32 +65,32 @@ public class AccountController {
             System.out.printf("계정명 %s가 삭제 대기 상태로 전환 되었습니다.", accountInformation.getUserName());
     }
 
-    // 테이블이 실존하지 않아 테스트 불가능
-//    public AccountInformation findAccountInformationById(AccountInformation accountInformation) throws Exception {
-//        String sql = "SELECT * FROM USER_ACCOUNTS WHERE ID = ?";
-//        try(Connection connection = getConnection();
-//            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
-//            preparedStatement.setLong(1, accountInformation.getAccountId());
-//            try(ResultSet resultSet = preparedStatement.executeQuery();){
-//                if (resultSet.next()) {
-//                    long accountId = resultSet.getLong("ID");
-//                    long accountStatusId = resultSet.getLong("ACCOUNT_STATUS_ID");
-//                    long accountRoleId = resultSet.getLong("ACCOUNT_ROLE_ID");
-//                    String userName = resultSet.getString("USER_NAME");
-//                    String userPw = resultSet.getString("USER_PW");
-//                    return AccountInformation.builder()
-//                        .accountId(accountId)
-//                        .accountStatusId(accountStatusId)
-//                        .accountRoleId(accountRoleId)
-//                        .userName(userName)
+//     테이블이 실존하지 않아 테스트 불가능
+    public AccountInformation findAccountInformationById(AccountInformation accountInformation) throws Exception {
+        String sql = "SELECT * FROM USER_ACCOUNTS WHERE ID = ?";
+        try(Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+            preparedStatement.setLong(1, accountInformation.getAccountId());
+            try(ResultSet resultSet = preparedStatement.executeQuery();){
+                if (resultSet.next()) {
+                    long accountId = resultSet.getLong("ID");
+                    long accountStatusId = resultSet.getLong("ACCOUNT_STATUS_ID");
+                    long accountRoleId = resultSet.getLong("ACCOUNT_ROLE_ID");
+                    String userName = resultSet.getString("USER_NAME");
+                    String userPw = resultSet.getString("USER_PW");
+                    return AccountInformation.builder()
+                        .accountId(accountId)
+                        .accountStatusId(accountStatusId)
+                        .accountRoleId(accountRoleId)
+                        .userName(userName)
 //                        .userPw(Password.of(accountId, userPw))
-//                        .build();
-//                } else {
-//                    throw new RuntimeException();
-////                    throw new UserNotFoundException("사용자 아이디가 일치하지 않습니다.");
-//                }
-//            }
-//        }
-//    }
+                        .build();
+                } else {
+                    throw new RuntimeException();
+//                    throw new UserNotFoundException("사용자 아이디가 일치하지 않습니다.");
+                }
+            }
+        }
+    }
 }
 

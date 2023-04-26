@@ -7,4 +7,5 @@ public class UserGrade {
     private String grade1;
     private String grade2;
     private String grade3;
+    private String grade4;
 }
