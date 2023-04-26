@@ -19,7 +19,9 @@ public interface AccountService {
 
     void deleteAccountByAccountId(Long accountId);
 
-    Account findUsernameByPhoneNumber(FindUsernameRequest findUsernameRequest);
+    String findUsernameByPhoneNumber(FindUsernameRequest findUsernameRequest);
 
     Password findPasswordByPhoneNumber(FindPasswordRequest findPasswordRequest);
+
+    String findUsernameById(Long accountId);
 }

@@ -6,10 +6,7 @@ import kr.co.khacademy.semi.dto.JoinRequest;
 import kr.co.khacademy.semi.entity.Account;
 import kr.co.khacademy.semi.exception.login.sub.UsernameNotFoundException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AccountRepository {
 
@@ -100,6 +97,26 @@ public class AccountRepository {
                 String username = resultSet.getString("USER_NAME");
                 return Account.builder()
                     .id(id)
+                    .statusId(statusId)
+                    .roleId(roleId)
+                    .username(username)
+                    .build();
+            }
+        }
+    }
+
+    public Account findById(Long accountId) throws SQLException {
+        String sql = "SELECT * FROM USER_ACCOUNTS_TEST WHERE ID = ?";
+        try(Connection connection = mySqlDataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+            preparedStatement.setLong(1, accountId);
+            try(ResultSet resultSet = preparedStatement.executeQuery();){
+                resultSet.next();
+                Long statusId = resultSet.getLong("STATUS_ID");
+                Long roleId = resultSet.getLong("ROLE_ID");
+                String username = resultSet.getString("USER_NAME");
+                return Account.builder()
+                    .id(accountId)
                     .statusId(statusId)
                     .roleId(roleId)
                     .username(username)

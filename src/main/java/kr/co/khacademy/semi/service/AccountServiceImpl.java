@@ -146,9 +146,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account findUsernameByPhoneNumber(FindUsernameRequest findUsernameRequest) {
+    public String findUsernameByPhoneNumber(FindUsernameRequest findUsernameRequest) {
         try {
-            return accountRepository.findByPhoneNumber(findUsernameRequest);
+            return accountRepository.findByPhoneNumber(findUsernameRequest).getUsername();
         } catch (SQLException sqlException) {
             throw new RuntimeException();
         }
@@ -158,6 +158,15 @@ public class AccountServiceImpl implements AccountService {
     public Password findPasswordByPhoneNumber(FindPasswordRequest findPasswordRequest) {
         try {
             return passwordRepository.findByPhoneNumber(findPasswordRequest);
+        } catch (SQLException sqlException) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public String findUsernameById(Long accountId) {
+        try {
+            return accountRepository.findById(accountId).getUsername();
         } catch (SQLException sqlException) {
             throw new RuntimeException();
         }

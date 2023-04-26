@@ -27,7 +27,7 @@ public class AccountController extends HttpServlet {
         Boolean authorityResult = Boolean.valueOf(request.getParameter("authorityResult"));
         if (authorityResult) {
             FindUsernameRequest findUsernameRequest = FindUsernameRequest.of(name, phoneNumber);
-            String username = accountService.findUsernameByPhoneNumber(findUsernameRequest).getUsername();
+            String username = accountService.findUsernameByPhoneNumber(findUsernameRequest);
             request.setAttribute("username", username);
             request.getRequestDispatcher("").forward(request, response);
         } else {

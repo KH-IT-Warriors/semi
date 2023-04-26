@@ -31,6 +31,7 @@ public class PasswordController extends HttpServlet {
             FindPasswordRequest findPasswordRequest = FindPasswordRequest.of(username, name, phoneNumber);
             Long accountId = accountService.findPasswordByPhoneNumber(findPasswordRequest).getAccountId();
             request.setAttribute("accountId", accountId);
+            // 찾아온 아이디 정보와 함께 비밀번호 재설정 페이지 이동
             request.getRequestDispatcher("").forward(request, response);
         } else {
             throw new RuntimeException();
