@@ -73,37 +73,20 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @SneakyThrows
-    public void modifyPasswordById(PasswordPutRequest passwordPutRequest) {
+    public void modifyPasswordById(Password password) {
         boolean isJoin = false;
-        Long id = passwordPutRequest.getId();
-        String encryptedPassword = basicPasswordEncryptor.encryptPassword(passwordPutRequest.getPlainPassword());
-        Password password = Password.of(id, encryptedPassword);
         passwordRepository.save(password, isJoin);
     }
 
     @Override
     @SneakyThrows
-    public void modifyProfileById(ProfilePutRequest profilePutRequest) {
-        Profile profile = Profile.builder()
-            .accountId(profilePutRequest.getAccountId())
-            .name(profilePutRequest.getName())
-            .phoneNumber(profilePutRequest.getPhoneNumber())
-            .email(profilePutRequest.getEmail())
-            .build();
+    public void modifyProfileById(Profile profile) {
         profileRepository.save(profile);
     }
 
     @SneakyThrows
-    public void modifyProfileById(ProfileByAdminPutRequest profileByAdminPutRequest) {
-        Profile profile = Profile.builder()
-            .accountId(profileByAdminPutRequest.getAccountId())
-            .name(profileByAdminPutRequest.getName())
-            .phoneNumber(profileByAdminPutRequest.getPhoneNumber())
-            .email(profileByAdminPutRequest.getEmail())
-            .bonusPoint(profileByAdminPutRequest.getBonusPoint())
-            .userGradeId(profileByAdminPutRequest.getGradeId())
-            .build();
-        profileRepository.save(profile);
+    public void modifyProfileById(Profile profile, boolean idAdmin) {
+        profileRepository.updateAdmin(profile);
     }
 
     @Override

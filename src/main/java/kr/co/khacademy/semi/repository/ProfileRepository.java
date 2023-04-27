@@ -47,6 +47,21 @@ public class ProfileRepository {
         }
     }
 
+    public Profile updateAdmin(Profile profile) throws SQLException {
+        String sql = "UPDATE PROFILES_TEST SET NAME = ?, PHONE_NUMBER = ?, EMAIL = ?, BONUS_POINT = ?, USER_GRADE_ID = ? WHERE ACCOUNT_ID = ?";
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);){
+            preparedStatement.setString(1, profile.getName());
+            preparedStatement.setString(2, profile.getPhoneNumber());
+            preparedStatement.setString(3, profile.getEmail());
+            preparedStatement.setLong(4, profile.getBonusPoint());
+            preparedStatement.setLong(5, profile.getUserGradeId());
+            preparedStatement.setLong(6, profile.getAccountId());
+            preparedStatement.executeUpdate();
+            return profile;
+        }
+    }
+
     private Profile update(Profile profile) throws SQLException {
         String sql = "UPDATE PROFILES_TEST SET NAME = ?, PHONE_NUMBER = ?, EMAIL = ?, BONUS_POINT = ?, USER_GRADE_ID = ? WHERE ACCOUNT_ID = ?";
         try(Connection connection = dataSource.getConnection();
@@ -58,14 +73,7 @@ public class ProfileRepository {
             preparedStatement.setLong(5, profile.getUserGradeId());
             preparedStatement.setLong(6, profile.getAccountId());
             preparedStatement.executeUpdate();
-            return Profile.builder()
-                .accountId(profile.getAccountId())
-                .name(profile.getName())
-                .phoneNumber(profile.getPhoneNumber())
-                .email(profile.getEmail())
-                .bonusPoint(profile.getBonusPoint())
-                .userGradeId(profile.getUserGradeId())
-                .build();
+            return profile;
         }
     }
 

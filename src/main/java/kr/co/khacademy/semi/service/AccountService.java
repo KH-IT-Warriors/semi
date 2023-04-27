@@ -11,9 +11,9 @@ public interface AccountService {
 
     Boolean join(Account account, Password password, Profile profile);
 
-    void modifyPasswordById(PasswordPutRequest passwordPutRequest);
+    void modifyPasswordById(Password password);
 
-    void modifyProfileById(ProfilePutRequest profilePutRequest);
+    void modifyProfileById(Profile profile);
 
     Profile findProfileById(Long accountId);
 

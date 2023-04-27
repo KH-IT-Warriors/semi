@@ -1,7 +1,7 @@
 package kr.co.khacademy.semi.controller;
 
-import kr.co.khacademy.semi.dto.PasswordPutRequest;
 import kr.co.khacademy.semi.model.Account;
+import kr.co.khacademy.semi.model.Password;
 import kr.co.khacademy.semi.model.Profile;
 import kr.co.khacademy.semi.service.AccountService;
 import kr.co.khacademy.semi.service.AccountServiceImpl;
@@ -48,7 +48,10 @@ public class PasswordController extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long accountId = (Long) request.getSession().getAttribute("accountId");
         String plainPassword = request.getParameter("password");
-        PasswordPutRequest passwordPutRequest = PasswordPutRequest.of(accountId, plainPassword);
-        accountService.modifyPasswordById(passwordPutRequest);
+        Password password = Password.builder()
+            .accountId(accountId)
+            .encryptedPassword(plainPassword)
+            .build();
+        accountService.modifyPasswordById(password);
     }
 }

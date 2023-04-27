@@ -63,7 +63,7 @@ public class PasswordRepository {
                 preparedStatement.setString(1, password.getEncryptedPassword());
                 preparedStatement.setLong(2, password.getAccountId());
                 preparedStatement.executeUpdate();
-                return Password.of(password.getAccountId(), password.getEncryptedPassword());
+                return password;
             }
         }
     }

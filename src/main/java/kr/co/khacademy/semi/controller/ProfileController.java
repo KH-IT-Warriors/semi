@@ -42,8 +42,13 @@ public class ProfileController extends HttpServlet {
         String name = request.getParameter("name");
         String phoneNumber = request.getParameter("phoneNumber");
         String email = request.getParameter("email");
-        ProfilePutRequest profilePutRequest = ProfilePutRequest.of(accountId, name, phoneNumber, email);
-        accountService.modifyProfileById(profilePutRequest);
+        Profile profile = Profile.builder()
+            .accountId(accountId)
+            .name(name)
+            .phoneNumber(phoneNumber)
+            .email(email)
+            .build();
+        accountService.modifyProfileById(profile);
         doGet(request, response);
     }
 }
