@@ -1,4 +1,4 @@
-package kr.co.khacademy.semi.common.auth;
+package kr.co.khacademy.semi.auth;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
