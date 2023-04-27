@@ -1,6 +1,6 @@
 package kr.co.khacademy.semi.repository;
 
-import kr.co.khacademy.semi.entity.Role;
+import kr.co.khacademy.semi.model.Role;
 import kr.co.khacademy.semi.exception.login.sub.RoleIdNotFoundException;
 
 public class RoleRepository {

@@ -1,6 +1,6 @@
 package kr.co.khacademy.semi.repository;
 
-import kr.co.khacademy.semi.entity.Permission;
+import kr.co.khacademy.semi.model.Permission;
 import kr.co.khacademy.semi.exception.login.sub.PermissionIdNotFoundException;
 
 public class PermissionRepository {
