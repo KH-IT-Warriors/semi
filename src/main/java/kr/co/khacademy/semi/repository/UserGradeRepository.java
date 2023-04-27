@@ -1,6 +1,8 @@
 package kr.co.khacademy.semi.repository;
 
 import kr.co.khacademy.semi.conf.MySqlDataSource;
+import kr.co.khacademy.semi.model.UserGrade;
+import kr.co.khacademy.semi.exception.usergrade.sub.UserGradeNameNotFoundException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,21 +11,32 @@ import java.sql.SQLException;
 
 public class UserGradeRepository {
     private static final UserGradeRepository instance = new UserGradeRepository();
-    private static final MySqlDataSource mySqlDataSource = MySqlDataSource.getInstance();
+    private static final MySqlDataSource dataSource = MySqlDataSource.getInstance();
     private UserGradeRepository(){
     }
     public static UserGradeRepository getInstance() {
         return instance;
     }
-    public Long findUserGradeIdByName(String grade) throws SQLException {
-        String sql = "SELECT ID FROM USER_GRADES_TEST WHERE GRADE_NAME = ?";
-        try(Connection connection = mySqlDataSource.getConnection();
+    public UserGrade findByName(String grade) throws SQLException {
+        String sql = "SELECT * FROM user_grade_test WHERE grade_name = ?";
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);){
             preparedStatement.setString(1, grade);
             try(ResultSet resultSet = preparedStatement.executeQuery();){
-                resultSet.next();
-                return resultSet.getLong(1);
+                if (resultSet.next()) {
+                    return mapRow(resultSet);
+                }
+                throw new UserGradeNameNotFoundException();
             }
         }
+    }
+
+    private UserGrade mapRow(ResultSet resultSet) throws SQLException {
+        return UserGrade.builder()
+            .id(resultSet.getLong("id"))
+            .gradeName(resultSet.getString("grade_name"))
+            .accumulateRate(resultSet.getDouble("accumulate_rate"))
+            .achievementCondition(resultSet.getLong("achievement_condition"))
+            .build();
     }
 }

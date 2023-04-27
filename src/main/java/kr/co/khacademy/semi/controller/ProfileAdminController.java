@@ -1,6 +1,6 @@
 package kr.co.khacademy.semi.controller;
 
-import kr.co.khacademy.semi.dto.UpdateProfileAdminRequest;
+import kr.co.khacademy.semi.dto.ProfileByAdminPutRequest;
 import kr.co.khacademy.semi.service.AccountServiceImpl;
 
 import javax.servlet.ServletException;
@@ -22,9 +22,9 @@ public class ProfileAdminController extends HttpServlet {
         Long gradeId = Long.parseLong(request.getParameter("gradeId"));
         Long bonusPoint = Long.parseLong(request.getParameter("bonusPoint"));
 
-        UpdateProfileAdminRequest updateProfileAdminRequest
-            = UpdateProfileAdminRequest.of(accountId, name, phoneNumber, email, gradeId, bonusPoint);
-        accountService.updateProfile(updateProfileAdminRequest);
+        ProfileByAdminPutRequest profileByAdminPutRequest
+            = ProfileByAdminPutRequest.of(accountId, name, phoneNumber, email, gradeId, bonusPoint);
+        accountService.modifyProfileById(profileByAdminPutRequest);
     }
 
     @Override

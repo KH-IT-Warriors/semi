@@ -1,7 +1,6 @@
 package kr.co.khacademy.semi.controller;
 
-import kr.co.khacademy.semi.dto.FindUsernameRequest;
-import kr.co.khacademy.semi.entity.Account;
+import kr.co.khacademy.semi.model.Profile;
 import kr.co.khacademy.semi.service.AccountService;
 import kr.co.khacademy.semi.service.AccountServiceImpl;
 
@@ -26,8 +25,11 @@ public class AccountController extends HttpServlet {
         String phoneNumber = request.getParameter("phoneNumber");
         Boolean authorityResult = Boolean.valueOf(request.getParameter("authorityResult"));
         if (authorityResult) {
-            FindUsernameRequest findUsernameRequest = FindUsernameRequest.of(name, phoneNumber);
-            String username = accountService.findUsernameByPhoneNumber(findUsernameRequest);
+            Profile profile = Profile.builder()
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .build();
+            String username = accountService.findUsernameByPhoneNumber(profile);
             request.setAttribute("username", username);
             request.getRequestDispatcher("").forward(request, response);
         } else {

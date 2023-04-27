@@ -1,8 +1,8 @@
 package kr.co.khacademy.semi.controller;
 
-import kr.co.khacademy.semi.dto.FindPasswordRequest;
-import kr.co.khacademy.semi.dto.FindUsernameRequest;
-import kr.co.khacademy.semi.dto.UpdatePasswordRequest;
+import kr.co.khacademy.semi.dto.PasswordPutRequest;
+import kr.co.khacademy.semi.model.Account;
+import kr.co.khacademy.semi.model.Profile;
 import kr.co.khacademy.semi.service.AccountService;
 import kr.co.khacademy.semi.service.AccountServiceImpl;
 
@@ -28,8 +28,14 @@ public class PasswordController extends HttpServlet {
         String phoneNumber = request.getParameter("phoneNumber");
         Boolean authorityResult = Boolean.valueOf(request.getParameter("authorityResult"));
         if (authorityResult) {
-            FindPasswordRequest findPasswordRequest = FindPasswordRequest.of(username, name, phoneNumber);
-            Long accountId = accountService.findPasswordByPhoneNumber(findPasswordRequest).getAccountId();
+            Account account = Account.builder()
+                .username(username)
+                .build();
+            Profile profile = Profile.builder()
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .build();
+            Long accountId = accountService.findPasswordByPhoneNumber(account, profile).getAccountId();
             request.setAttribute("accountId", accountId);
             // 찾아온 아이디 정보와 함께 비밀번호 재설정 페이지 이동
             request.getRequestDispatcher("").forward(request, response);
@@ -42,7 +48,7 @@ public class PasswordController extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long accountId = (Long) request.getSession().getAttribute("accountId");
         String plainPassword = request.getParameter("password");
-        UpdatePasswordRequest updatePasswordRequest = UpdatePasswordRequest.of(accountId, plainPassword);
-        accountService.updatePassword(updatePasswordRequest);
+        PasswordPutRequest passwordPutRequest = PasswordPutRequest.of(accountId, plainPassword);
+        accountService.modifyPasswordById(passwordPutRequest);
     }
 }

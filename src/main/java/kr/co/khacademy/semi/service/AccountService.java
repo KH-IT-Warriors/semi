@@ -1,27 +1,27 @@
 package kr.co.khacademy.semi.service;
 
 import kr.co.khacademy.semi.dto.*;
-import kr.co.khacademy.semi.entity.Account;
-import kr.co.khacademy.semi.entity.Password;
-import kr.co.khacademy.semi.entity.Profile;
+import kr.co.khacademy.semi.model.Account;
+import kr.co.khacademy.semi.model.Password;
+import kr.co.khacademy.semi.model.Profile;
 
 public interface AccountService {
 
     Long login(LoginRequest loginRequest);
 
-    boolean join(JoinRequest joinRequest);
+    Boolean join(Account account, Password password, Profile profile);
 
-    void updatePassword(UpdatePasswordRequest updatePasswordRequest);
+    void modifyPasswordById(PasswordPutRequest passwordPutRequest);
 
-    void updateProfile(UpdateProfileRequest updateProfileRequest);
+    void modifyProfileById(ProfilePutRequest profilePutRequest);
 
-    Profile findProfileByAccountId(Long accountId);
+    Profile findProfileById(Long accountId);
 
-    void deleteAccountByAccountId(Long accountId);
+    void deleteAccountById(Long accountId);
 
-    String findUsernameByPhoneNumber(FindUsernameRequest findUsernameRequest);
+    String findUsernameByPhoneNumber(Profile profile);
 
-    Password findPasswordByPhoneNumber(FindPasswordRequest findPasswordRequest);
+    Password findPasswordByPhoneNumber(Account account, Profile profile);
 
     String findUsernameById(Long accountId);
 }

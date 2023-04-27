@@ -1,9 +1,10 @@
 package kr.co.khacademy.semi.repository;
 
 import kr.co.khacademy.semi.conf.MySqlDataSource;
-import kr.co.khacademy.semi.dto.FindPasswordRequest;
-import kr.co.khacademy.semi.entity.Password;
+import kr.co.khacademy.semi.model.Account;
+import kr.co.khacademy.semi.model.Password;
 import kr.co.khacademy.semi.exception.login.sub.AccountIdNotFoundException;
+import kr.co.khacademy.semi.model.Profile;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +14,7 @@ import java.sql.SQLException;
 public class PasswordRepository {
 
     private static final PasswordRepository instance = new PasswordRepository();
-    private static final MySqlDataSource mySqlDataSource = MySqlDataSource.getInstance();
+    private static final MySqlDataSource dataSource = MySqlDataSource.getInstance();
 
     private PasswordRepository() {
     }
@@ -23,13 +24,13 @@ public class PasswordRepository {
     }
 
     public Password findByAccountId(Long accountId) throws SQLException {
-        String sql = "SELECT * FROM PASSWORDS_TEST WHERE ACCOUNT_ID = ?";
-        try (Connection connection = mySqlDataSource.getConnection();
+        String sql = "SELECT * FROM passwords_test WHERE account_id = ?";
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
             preparedStatement.setLong(1, accountId);
             try (ResultSet resultSet = preparedStatement.executeQuery();) {
                 if (resultSet.next()) {
-                    String password = resultSet.getString("PASSWORD");
+                    String password = resultSet.getString("password");
                     return Password.of(accountId, password);
                 } else {
                     throw new AccountIdNotFoundException();
@@ -47,8 +48,8 @@ public class PasswordRepository {
 
     public Password save(Password password, boolean flag) throws SQLException {
         if (flag) {
-            String sql = "INSERT INTO PASSWORDS_TEST VALUES(?, ?)";
-            try (Connection connection = mySqlDataSource.getConnection();
+            String sql = "INSERT INTO passwords_test VALUES(?, ?)";
+            try (Connection connection = dataSource.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
                 preparedStatement.setLong(1, password.getAccountId());
                 preparedStatement.setString(2, password.getEncryptedPassword());
@@ -56,8 +57,8 @@ public class PasswordRepository {
                 return Password.of(password.getAccountId(), password.getEncryptedPassword());
             }
         } else {
-            String sql = "UPDATE PASSWORDS_TEST SET PASSWORD = ? WHERE ACCOUNT_ID = ?";
-            try (Connection connection = mySqlDataSource.getConnection();
+            String sql = "UPDATE passwords_test SET password = ? WHERE account_id = ?";
+            try (Connection connection = dataSource.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
                 preparedStatement.setString(1, password.getEncryptedPassword());
                 preparedStatement.setLong(2, password.getAccountId());
@@ -67,16 +68,28 @@ public class PasswordRepository {
         }
     }
 
-    public Password findByPhoneNumber(FindPasswordRequest findPasswordRequest) throws SQLException {
-        String sql = "SELECT PW.* FROM PASSWORDS_TEST PW JOIN USER_ACCOUNTS_TEST A ON PW.ACCOUNT_ID = A.ID JOIN USER_PROFILES_TEST P ON A.ID = P.ACCOUNT_ID WHERE USER_NAME = ? AND PHONE_NUMBER = ?";
-        try(Connection connection = mySqlDataSource.getConnection();
+    private Password insert(Password password) throws SQLException {
+        String sql = "INSERT INTO passwords_test VALUES(?, ?)";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+            preparedStatement.setLong(1, password.getAccountId());
+            preparedStatement.setString(2, password.getEncryptedPassword());
+            preparedStatement.executeUpdate();
+            return Password.of(password.getAccountId(), password.getEncryptedPassword());
+        }
+    } // TODO: insert, update
+
+    public Password findByPhoneNumber(Account account, Profile profile) throws SQLException {
+        String sql = "SELECT PW.* FROM passwords_test PW JOIN user_accounts_test A ON PW.account_id = A.id JOIN user_profiles_test P ON A.id = P.account_id WHERE user_name = ? AND name = ? AND phone_number = ?";
+        try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);){
-            preparedStatement.setString(1, findPasswordRequest.getUsername());
-            preparedStatement.setString(2, findPasswordRequest.getPhoneNumber());
+            preparedStatement.setString(1, account.getUsername());
+            preparedStatement.setString(2, profile.getName());
+            preparedStatement.setString(3, profile.getPhoneNumber());
             try(ResultSet resultSet = preparedStatement.executeQuery();) {
                 resultSet.next();
-                Long accountId = resultSet.getLong("ACCOUNT_ID");
-                String encryptedPassword = resultSet.getString("PASSWORD");
+                Long accountId = resultSet.getLong("account_id");
+                String encryptedPassword = resultSet.getString("password");
                 return Password.of(accountId, encryptedPassword);
             }
         }
