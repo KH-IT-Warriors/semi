@@ -6,7 +6,7 @@ import kr.co.khacademy.semi.exception.join.sub.InvalidPhoneNumberException;
 import lombok.Data;
 
 @Data
-public class UpdateProfileRequest {
+public class ProfilePutRequest {
     AccountDataValidator accountDataValidator = AccountDataValidator.getInstance();
 
     Long accountId;
@@ -15,7 +15,7 @@ public class UpdateProfileRequest {
     String email;
 
 
-    private UpdateProfileRequest(Long accountId, String name, String phoneNumber, String email) {
+    private ProfilePutRequest(Long accountId, String name, String phoneNumber, String email) {
         this.accountId = accountId;
         this.name = name;
 
@@ -30,7 +30,7 @@ public class UpdateProfileRequest {
         this.email = email;
     }
 
-    public static UpdateProfileRequest of(Long accountId, String name, String phoneNumber, String email) {
-        return new UpdateProfileRequest(accountId, name, phoneNumber, email);
+    public static ProfilePutRequest of(Long accountId, String name, String phoneNumber, String email) {
+        return new ProfilePutRequest(accountId, name, phoneNumber, email);
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class UpdatePasswordRequest {
+public class PasswordPutRequest {
     AccountDataValidator accountDataValidator = AccountDataValidator.getInstance();
 
     @NonNull
@@ -14,7 +14,7 @@ public class UpdatePasswordRequest {
     @NonNull
     String plainPassword;
 
-    private UpdatePasswordRequest(Long id, String plainPassword) {
+    private PasswordPutRequest(Long id, String plainPassword) {
         this.id = id;
 
         if (!accountDataValidator.validatesPassword(plainPassword)) {
@@ -25,7 +25,7 @@ public class UpdatePasswordRequest {
         this.plainPassword = plainPassword;
     }
 
-    public static UpdatePasswordRequest of(Long id, String password) {
-        return new UpdatePasswordRequest(id, password);
+    public static PasswordPutRequest of(Long id, String password) {
+        return new PasswordPutRequest(id, password);
     }
 }

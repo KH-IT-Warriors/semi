@@ -1,11 +1,11 @@
 package kr.co.khacademy.semi.dto;
 
-import kr.co.khacademy.semi.exception.update.sub.InvalidBonusPointException;
+import kr.co.khacademy.semi.exception.profile.sub.InvalidBonusPointException;
 
 import lombok.Data;
 
 @Data
-public class UpdateProfileAdminRequest {
+public class ProfileByAdminPutRequest {
     private Long accountId;
     private String name;
     private String phoneNumber;
@@ -13,7 +13,7 @@ public class UpdateProfileAdminRequest {
     private Long gradeId;
     private Long bonusPoint;
 
-    private UpdateProfileAdminRequest(Long accountId, String name, String phoneNumber, String email, Long gradeId, Long bonusPoint) {
+    private ProfileByAdminPutRequest(Long accountId, String name, String phoneNumber, String email, Long gradeId, Long bonusPoint) {
         this.accountId = accountId;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -27,7 +27,7 @@ public class UpdateProfileAdminRequest {
         }
     }
 
-    public static UpdateProfileAdminRequest of(Long accountId, String name, String phoneNumber, String email, Long gradeId, Long bonusPoint) {
-        return new UpdateProfileAdminRequest(accountId, name, phoneNumber, email, gradeId, bonusPoint);
+    public static ProfileByAdminPutRequest of(Long accountId, String name, String phoneNumber, String email, Long gradeId, Long bonusPoint) {
+        return new ProfileByAdminPutRequest(accountId, name, phoneNumber, email, gradeId, bonusPoint);
     }
 }
