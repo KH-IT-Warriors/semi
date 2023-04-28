@@ -31,7 +31,7 @@ public class FaqContorller extends HttpServlet {
                 req.setAttribute("faqList", faqList);
                 req.getRequestDispatcher("/WEB-INF/views/faq/list.jsp").forward(req, resp);
             }else if ("/item".equals(pathInfo)) {
-                Long id = Long.parseLong(req.getParameter("id"));
+                Long id = Long.valueOf(req.getParameter("id"));
                 Faq faq = faqDao.read(id);
                 req.setAttribute("faq", faq);
                 req.getRequestDispatcher("/WEB-INF/views/faq/item.jsp").forward(req, resp);
@@ -56,7 +56,7 @@ public class FaqContorller extends HttpServlet {
                 String location = String.format("/faq/item?id=%d", faq.getId());
                 resp.sendRedirect(location);
             }else if ("/delete".equals(pathInfo)) {
-                Long id = Long.parseLong(req.getParameter("id"));
+                Long id = Long.valueOf(req.getParameter("id"));
                 faqDao.delete(id);
                 resp.sendRedirect("/faq/list");
             }
