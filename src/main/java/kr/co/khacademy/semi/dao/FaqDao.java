@@ -26,7 +26,7 @@ public class FaqDao {
         return instance;
     }
 
-    public Boolean create(Faq faq) {
+    public void create(Faq faq) {
         try(Connection connection = DataSource.getConnection();){
             try(PreparedStatement preparedStatement = connection.prepareStatement(INSERT_FAQ_SQL);){
                 preparedStatement.setString(1, faq.getTitle());
@@ -40,9 +40,8 @@ public class FaqDao {
                 }
             }
         }catch (SQLException e) {
-            return Boolean.FALSE;
+            throw new RuntimeException(e);
         }
-        return Boolean.TRUE;
     }
 
         public List<Faq> read(){
@@ -62,7 +61,7 @@ public class FaqDao {
 
         }
 
-        public Boolean update(Faq faq) {
+        public void update(Faq faq) {
             try(Connection connection = DataSource.getConnection();){
                 try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_FAQ_SQL)){
                     preparedStatement.setString(1, faq.getTitle());
@@ -76,12 +75,11 @@ public class FaqDao {
                     }
                 }
             }catch (SQLException e) {
-                return Boolean.FALSE;
+                throw new RuntimeException(e);
             }
-            return Boolean.TRUE;
         }
         
-        public Boolean delete(Faq faq) {
+        public void delete(Faq faq) {
             try(Connection connection = DataSource.getConnection();){
                 try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_FAQ_SQL)){
                     preparedStatement.setLong(1, faq.getId());
@@ -93,9 +91,7 @@ public class FaqDao {
                     }
                 }
             }catch (SQLException e) {
-                return Boolean.FALSE;
             }
-            return Boolean.TRUE;
         }
 
         public Optional<Faq> read(Long id){

@@ -34,13 +34,9 @@ public class Faq {
                 .build();
     }
 
-
-
     private static Boolean validateTitle(String title) {
         return (6 <= title.length()) && (title.length() <= 100);
     }
-
-
 
     public static Faq of(ResultSet resultSet) {
         try {
