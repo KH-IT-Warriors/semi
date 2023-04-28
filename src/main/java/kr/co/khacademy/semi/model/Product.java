@@ -1,28 +1,35 @@
 package kr.co.khacademy.semi.model;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpServletRequest;
 
-@Value(staticConstructor = "of")
+@Value
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class Product {
 
-    private Long id;
-    private String name;
-    private String title;
-    private String summary;
-    private String detail;
-    private Long price;
-    private Long quantity;
-    private Long categoryId;
+    Long id;
+    String name;
+    String title;
+    String summary;
+    String detail;
+    Long price;
+    Long quantity;
+    Long categoryId;
     
     
 
     public static Product of(HttpServletRequest req) {
         return Product.builder()
-            .id(Long.parseLong(req.getParameter("id")))
             .build();
     }
+    
+    
 }
