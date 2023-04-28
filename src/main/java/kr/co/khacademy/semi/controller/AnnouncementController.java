@@ -24,17 +24,17 @@ public class AnnouncementController extends HttpServlet {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {
                 resp.sendRedirect("/WEB-INF/views/announcement/register.jsp");
-            }else if ("/list".equals(pathInfo)) {
+            } else if ("/list".equals(pathInfo)) {
                 List<Announcement> announcementList = announcementDao.read();
                 req.setAttribute("announcementList", announcementList);
                 req.getRequestDispatcher("/WEB-INF/views/announcement/list.jsp").forward(req, resp);
-            }else if ("/item".equals(pathInfo)) {
+            } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
                 Announcement announcement = announcementDao.read(id);
                 req.setAttribute("announcement", announcement);
                 req.getRequestDispatcher("/WEB-INF/views/announcement/item.jsp").forward(req, resp);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             resp.sendRedirect("/error");
         }
     }
@@ -47,17 +47,17 @@ public class AnnouncementController extends HttpServlet {
                 Announcement announcement = Announcement.of(req);
                 announcementDao.create(announcement);
                 resp.sendRedirect("/announcement/list.jsp");
-            }else if ("/modify".equals(pathInfo)) {
+            } else if ("/modify".equals(pathInfo)) {
                 Announcement announcement = Announcement.of(req);
                 announcementDao.update(announcement);
                 String location = String.format("/announcement/item?id=%d", announcement.getId());
                 resp.sendRedirect(location);
-            }else if ("/delete".equals(pathInfo)) {
+            } else if ("/delete".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
                 announcementDao.delete(id);
                 resp.sendRedirect("/announcement/list");
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             resp.sendRedirect("/error");
         }
     }
