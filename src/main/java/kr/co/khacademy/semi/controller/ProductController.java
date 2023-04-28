@@ -37,25 +37,22 @@ public class ProductController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
         if ("/register".equals(pathInfo)) {
+            
             Product product = Product.of(req);
-            if (productDao.create(product)) {
-                resp.sendRedirect("/product/list");
-            } else {
-                req.setAttribute("product", product);
-                req.getRequestDispatcher("/WEB-INF/views/product/register.jsp");
-            }
-        } else if ("/modify".equals(pathInfo)) {
+            productDao.create(product);    
+            resp.sendRedirect("/product/list") ;
+            
+        }   else if ("/modify".equals(pathInfo)) {
             Product product = Product.of(req);
-            if (productDao.update(product)) {
-                String location = String.format("/product/item?id=%d", product.getId());
-                resp.sendRedirect(location);
-            } else {
-                req.setAttribute("product", product);
-                req.setAttribute("shouldModify", true);
-                String path = String.format("/WEB-INF/views/product/item?id=%d", product.getId());
-                req.getRequestDispatcher(path).forward(req, resp);
-            }
-        } else if ("/delete".equals(pathInfo)) {
+           
+            productDao.update(product) ;
+            String location = String.format("/product/item?id=%d", product.getId());
+            resp.sendRedirect(location);
+        
+           
+            
+        } 
+        else if ("/delete".equals(pathInfo)) {
             Long id = Long.parseLong(req.getParameter("id"));
             productDao.delete(id);
             resp.sendRedirect("/product/list");
