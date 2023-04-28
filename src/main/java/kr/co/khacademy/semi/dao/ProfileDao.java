@@ -19,9 +19,11 @@ public class ProfileDao {
     public Profile read(Long id) {
         String sql = "SELECT * FROM profiles WHERE account_id = ?";
         try(Connection connection = DataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery()) {
-            return Profile.of(resultSet);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+            preparedStatement.setLong(1, id);
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                return Profile.of(resultSet);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
