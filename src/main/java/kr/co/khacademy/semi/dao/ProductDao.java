@@ -36,7 +36,7 @@ public class ProductDao {
         return instance;
     }
 
-    public Boolean create(Product product) {
+    public void create(Product product) {
         try (Connection connection = DataSource.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PRODUT_SQL)) {
                 preparedStatement.setString(1, product.getName());
@@ -54,10 +54,10 @@ public class ProductDao {
                     throw new SQLException();
                 }
             }
-        } catch (SQLException ignored) {
-            return Boolean.FALSE;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return Boolean.TRUE;
+     
     }
 
     public Optional<Product> read(Long id) {
@@ -71,7 +71,8 @@ public class ProductDao {
                     }
                 }
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
             }
         return Optional.empty();
     }
@@ -89,13 +90,13 @@ public class ProductDao {
 
             }
 
-        } catch (SQLException ignored) {
-        
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
             }
         return Collections.unmodifiableList(products);
     }
 
-    public boolean update(Product product) {
+    public void update(Product product) {
         try (Connection connection = DataSource.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PRODUT_SQL);) {
                 preparedStatement.setString(1, product.getName());
@@ -114,10 +115,11 @@ public class ProductDao {
                     throw new SQLException();
                 }
             }
-        } catch (SQLException ignored) {
-            return Boolean.FALSE;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+            
         }
-        return Boolean.TRUE;
+       
     }
     
     
