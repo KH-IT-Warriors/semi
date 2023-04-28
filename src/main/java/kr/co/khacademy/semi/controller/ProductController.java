@@ -2,7 +2,6 @@ package kr.co.khacademy.semi.controller;
 
 import kr.co.khacademy.semi.dao.ProductDao;
 import kr.co.khacademy.semi.model.Product;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

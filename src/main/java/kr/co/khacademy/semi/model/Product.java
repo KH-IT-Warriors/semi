@@ -9,7 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 @Builder
 public class Product {
 
-    Long id;
+    private Long id;
+    private String name;
+    private String title;
+    private String summary;
+    private String detail;
+    private Long price;
+    private Long quantity;
+    private Long categoryId;
+    
+    
 
     public static Product of(HttpServletRequest req) {
         return Product.builder()
