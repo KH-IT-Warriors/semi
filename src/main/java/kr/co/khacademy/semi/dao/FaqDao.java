@@ -2,7 +2,9 @@ package kr.co.khacademy.semi.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 import kr.co.khacademy.semi.common.DataSource;
 import kr.co.khacademy.semi.model.Faq;
@@ -41,5 +43,38 @@ public class FaqDao {
         return Boolean.TRUE;
     }
 
+    public Optional<ResultSet> read(Long id){
+        try(
+                Connection connection = DataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_FAQ_SQL);
+                ){
+            preparedStatement.setLong(1, id);
+            try(
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    ){
+                resultSet.next();
+
+                return Optional.ofNullable(resultSet);
+            }
+
+        }catch (SQLException e) {
+            throw new IllegalArgumentException();
+        }
+    }
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
