@@ -45,47 +45,37 @@ public class FaqDao {
         }
         return Boolean.TRUE;
     }
-    
-    public List<Faq> read(){
-        try(
-                Connection connection = DataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FAQ_SQL);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                ){
-            List<Faq> faqlist = new ArrayList<>();
-            while(resultSet.next()) {
-                Faq faq = Faq.builder()
-                        .id(resultSet.getLong("id"))
-                        .accountId(resultSet.getLong("account_id"))
-                        .title(resultSet.getString("title"))
-                        .contents(resultSet.getString("contents"))
-                        .build();
-                faqlist.add(faq);
-            }
-            return Collections.unmodifiableList(faqlist);
-            
-        }catch (SQLException e) {
-            throw new IllegalArgumentException();
-        }
-    }
 
-    public Optional<ResultSet> read(Long id){
-        try(
-                Connection connection = DataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_FAQ_SQL);
-                ){
-            preparedStatement.setLong(1, id);
-            try(
-                    ResultSet resultSet = preparedStatement.executeQuery();
-                    ){
-                if(resultSet.next()) {
-                return Optional.ofNullable(resultSet);
+    public List<Faq> read(){
+        List<Faq> faqList = new ArrayList<>();
+        try(Connection connection = DataSource.getConnection();){
+            try(PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FAQ_SQL);){
+                try(ResultSet resultSet = preparedStatement.executeQuery();){
+                    while(resultSet.next()) {
+                        Faq faq = Faq.of(resultSet);
+                        faqList.add(faq);
+                    }
                 }
             }
-        }catch (SQLException e) {
-            throw new IllegalArgumentException();
+        }catch (SQLException ignored) {
         }
-        throw new IllegalArgumentException();
+        return Collections.unmodifiableList(faqList);
+        
+    }
+
+    public Optional<Faq> read(Long id){
+        try(Connection connection = DataSource.getConnection();){
+            try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_FAQ_SQL);){
+                preparedStatement.setLong(1, id);
+                try(ResultSet resultSet = preparedStatement.executeQuery();){
+                    if(resultSet.next()) {
+                        return Optional.of(Faq.of(resultSet));
+                    }
+                }
+            }
+        }catch (SQLException ignored) {
+        }
+        return Optional.empty();
     }
 
 
