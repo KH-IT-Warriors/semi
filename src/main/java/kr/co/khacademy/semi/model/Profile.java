@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 public class Profile {
 
     Long accountId;
-    String username;
+    String name;
     String phoneNumber;
     String email;
     Long mileage;
@@ -24,7 +24,7 @@ public class Profile {
 
     public static Profile of(ResultSet resultSet) throws SQLException {
         Long accountId = resultSet.getLong("account_id");
-        String username = resultSet.getString("username");
+        String name = resultSet.getString("name");
         String phoneNumber = resultSet.getString("phone_number");
         String email = resultSet.getString("email");
         Long mileage = resultSet.getLong("mileage");
@@ -33,7 +33,7 @@ public class Profile {
         Timestamp lastLogin = resultSet.getTimestamp("last_login");
         return Profile.builder()
             .accountId(accountId)
-            .username(username)
+            .name(name)
             .phoneNumber(phoneNumber)
             .email(email)
             .mileage(mileage)
