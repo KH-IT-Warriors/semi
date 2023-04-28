@@ -27,8 +27,8 @@ public class Profile {
     Timestamp lastLogin;
 
 
-    public static Profile of(HttpServletRequest req) {
-        String name = req.getParameter("name");
+    public static Profile of(HttpServletRequest req) { // TODO : 세션에 아이디 있을 시 가져오세요
+        Long id = (Long) req.getSession().getAttribute("accountId");
         String phoneNumber = req.getParameter("phone-number");
         String email = req.getParameter("email");
         Optional.ofNullable(phoneNumber)
@@ -38,7 +38,7 @@ public class Profile {
             .filter(Profile::validateEmail)
             .orElseThrow(RuntimeException::new);
         return Profile.builder()
-            .name(name)
+            .accountId(id)
             .phoneNumber(phoneNumber)
             .email(email)
             .build();
