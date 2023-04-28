@@ -79,10 +79,10 @@ public class FaqDao {
             }
         }
         
-        public void delete(Faq faq) {
+        public void delete(Long id) {
             try(Connection connection = DataSource.getConnection();){
                 try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_FAQ_SQL)){
-                    preparedStatement.setLong(1, faq.getId());
+                    preparedStatement.setLong(1, id);
                     
                     int result = preparedStatement.executeUpdate();
                     if(result == 0) {

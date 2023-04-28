@@ -12,13 +12,13 @@ import kr.co.khacademy.semi.model.Faq;
 
 @WebServlet("/FaqContorller")
 public class FaqContorller extends HttpServlet {
-    
+
     private static final FaqDao faqDao = FaqDao.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        
+
     }
 
     @Override
@@ -26,14 +26,22 @@ public class FaqContorller extends HttpServlet {
         String pathInfo = req.getPathInfo();
         if("/register".equals(pathInfo)) {
             Faq faq = Faq.of(req);
-            if(faqDao.create(faq)) {
-                resp.sendRedirect("");
-            }else {
-                req.setAttribute("faq", faq);
-                req.getRequestDispatcher("").forward(req, resp);
-            }
+            
+            faqDao.create(faq);
+            resp.sendRedirect("");
+
+        }else if("/modify".equals(pathInfo)) {
+            Faq faq = Faq.of(req);
+            faqDao.update(faq);
+            String location = String.format("", faq.getId());
+            resp.sendRedirect(location);
+            
+        }else if("/delete".equals(pathInfo)) {
+            Long id = Long.parseLong(req.getParameter("id"));
+            faqDao.delete(id);
+            resp.sendRedirect("");
         }
     }
-	
+
 
 }
