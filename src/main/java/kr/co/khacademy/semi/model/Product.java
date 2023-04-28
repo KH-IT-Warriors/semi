@@ -32,4 +32,23 @@ public class Product {
     }
     
     
+   public static Product of(ResultSet resultSet) {
+     
+       try {
+       return Product.builder()
+               .id(resultSet.getLong("id"))
+               .name(resultSet.getString("name"))
+               .title(resultSet.getString("title"))
+               .summary(resultSet.getString("summary"))
+               .detail(resultSet.getString("detail"))
+               .price(resultSet.getLong("price"))
+               .quantity(resultSet.getLong("quantity"))
+               .categoryId(resultSet.getLong("categoryId"))
+               .build();
+       
+       } catch (SQLException e) {
+          throw new IllegalArgumentException();
+       }
+       
+   }
 }

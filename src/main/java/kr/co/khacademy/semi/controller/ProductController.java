@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @WebServlet("/product/*")
 public class ProductController extends HttpServlet {
@@ -26,7 +27,7 @@ public class ProductController extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/views/product/list.jsp").forward(req, resp);
         } else if ("/item".equals(pathInfo)) {
             Long id = Long.parseLong(req.getParameter("id"));
-            Product product = productDao.read(id);
+            Optional<Product> product = productDao.read(id);
             req.setAttribute("product", product);
             req.getRequestDispatcher("/WEB-INF/views/product/item.jsp").forward(req, resp);
         }
