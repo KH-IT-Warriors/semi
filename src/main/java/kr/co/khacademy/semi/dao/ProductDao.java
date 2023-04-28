@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import kr.co.khacademy.semi.common.DataSource;
 import kr.co.khacademy.semi.model.Product;
@@ -16,29 +15,31 @@ public class ProductDao {
 
     private static final ProductDao instance = new ProductDao();
 
-    private static final String INSERT_PRODUT_SQL = "INSERT INTO product (name, title, summary, detail, price, quantity, categoryId) "
-            + "VALUE (?, ?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_SQL =
+            "INSERT INTO product VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String SELECT_BY_ID_SQL = "SELECT * FROM product WHERE = ?";
+    private static final String SELECT_BY_ID_SQL = "SELECT * FROM product WHERE id = ?";
 
-    private static final String SELECT_PRODUCT_SQL = "SELECT * FROM product";
+    private static final String SELECT_SQL = "SELECT * FROM product";
 
-    private static final String UPDATE_PRODUT_SQL = "UPDATE product SET name = ?, title = ?, summary = ?, detail = ?, "
-            + "price = ?, quantity = ?, categoryId = ? WHERE = ? ";
+    private static final String UPDATE_SQL =
+            "UPDATE product SET name = ?, title = ?, summary = ?, detail = ?, price = ?, quantity = ?, category_id = ?" +
+                    "WHERE id = ?";
 
-    private static final String DELETE_PRODUCT_SQL = "DELETE product WHERE = ?";
+    private static final String DELETE_SQL = "DELETE product WHERE id = ?";
 
     
-    private ProductDao() {}
+    private ProductDao() {
+    }
 
     
     public static ProductDao getInstance() {
         return instance;
     }
 
-    public void create(Product product) {
+    public void create(Product product) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PRODUT_SQL)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL)) {
                 preparedStatement.setString(1, product.getName());
                 preparedStatement.setString(2, product.getTitle());
                 preparedStatement.setString(3, product.getSummary());
@@ -47,58 +48,49 @@ public class ProductDao {
                 preparedStatement.setLong(6, product.getQuantity());
                 preparedStatement.setLong(7, product.getCategoryId());
 
-                int result = preparedStatement.executeUpdate();
-
-                if (result == 0) {
-                    connection.rollback();
+                if (preparedStatement.executeUpdate() == 0) {
                     throw new SQLException();
                 }
+                connection.commit();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
      
     }
 
-    public Optional<Product> read(Long id) {
+    public Product read(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_SQL)) {
                 preparedStatement.setLong(1, id);
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
-                        return Optional.of(Product.of(resultSet));
+                        return Product.of(resultSet);
                     }
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-            }
-        return Optional.empty();
+        }
+        throw new SQLException();
     }
     
 
-    public List<Product> read() {
+    public List<Product> read() throws SQLException {
         List<Product> products = new ArrayList<>();
-        try (Connection connection = DataSource.getConnection();) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_PRODUCT_SQL)) {
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    while (resultSet.next()) {
-                        products.add(Product.of(resultSet));
-                    }
+        try (Connection connection = DataSource.getConnection()) {
+            try (
+                    PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SQL);
+                    ResultSet resultSet = preparedStatement.executeQuery()
+            ) {
+                while (resultSet.next()) {
+                    products.add(Product.of(resultSet));
                 }
-
+                return Collections.unmodifiableList(products);
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-            }
-        return Collections.unmodifiableList(products);
+        }
     }
 
-    public void update(Product product) {
+    public void update(Product product) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PRODUT_SQL);) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL);) {
                 preparedStatement.setString(1, product.getName());
                 preparedStatement.setString(2, product.getTitle());
                 preparedStatement.setString(3, product.getSummary());
@@ -108,37 +100,24 @@ public class ProductDao {
                 preparedStatement.setLong(7, product.getCategoryId());
                 preparedStatement.setLong(8, product.getId());
 
-                int result = preparedStatement.executeUpdate();
-
-                if (result == 0) {
-                    connection.rollback();
+                if (preparedStatement.executeUpdate() == 0) {
                     throw new SQLException();
                 }
+                connection.commit();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-            
         }
-       
     }
-    
-    
-    
 
-    public void delete(Long id) {
+    public void delete(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCT_SQL)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
                 preparedStatement.setLong(1, id);
-                int result = preparedStatement.executeUpdate();
 
-                if (result == 0) {
-                    connection.rollback();
+                if (preparedStatement.executeUpdate() == 0) {
                     throw new SQLException();
                 }
-
+                connection.commit();
             }
-
-        } catch (SQLException idnored) {
 
         }
     }
