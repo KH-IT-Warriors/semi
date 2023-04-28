@@ -68,6 +68,29 @@ public class AnnouncementDao {
         throw new SQLException();
     }
     
+    public void update(Announcement announcement) throws SQLException {
+        try (Connection connection = DataSource.getConnection()){
+            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)){
+                preparedStatement.setString(1, announcement.getTitle());
+                preparedStatement.setString(2, announcement.getContents());
+                preparedStatement.setLong(3, announcement.getId());
+                
+                if (preparedStatement.executeUpdate() == 0){
+                    throw new SQLException();
+                }
+                connection.commit();
+            }
+        }
+    }
     
-
+    public void delete(Long id) throws SQLException {
+        try (Connection connection = DataSource.getConnection()){
+            try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)){
+               if (preparedStatement.executeUpdate() == 0) {
+                   throw new SQLException();
+               }
+               connection.commit();
+            }
+        }
+    }
 }
