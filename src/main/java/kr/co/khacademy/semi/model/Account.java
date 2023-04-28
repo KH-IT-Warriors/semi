@@ -24,6 +24,7 @@ public class Account {
 
     public static Account of(HttpServletRequest req) {
         Long id = (Long) req.getSession().getAttribute("accountId");
+        Long roleId = Long.valueOf(req.getParameter("roleId"));
         String username = req.getParameter("username");
         String password = req.getParameter(req.getParameter("password"));
         Optional.ofNullable(username)
@@ -35,6 +36,7 @@ public class Account {
             .orElseThrow(RuntimeException::new);
         return Account.builder()
             .id(id)
+            .roleId(roleId)
             .username(username)
             .password(password)
             .build();
