@@ -30,6 +30,10 @@ public class UserDao {
         "UPDATE accounts SET password = ? WHERE id = ?";
     private static final String UPDATE_PROFILE_SQL =
         "UPDATE profiles SET name = ?, phoneNumber = ?, email = ?, mileage = ?, grade_id = ? WHERE account_id = ?";
+    private static final String DELETE_ACCOUNT_SQL =
+        "DELETE FROM accounts WHERE id = ?";
+    private static final String DELETE_PROFILE_SQL =
+        "DELETE FROM profiles WHERE account_id = ?";
 
 
     public List<User> read() throws SQLException {
@@ -77,4 +81,11 @@ public class UserDao {
             connection.commit();
         }
     }
+
+    public void delete(Long targetId) throws SQLException {
+        try(Connection connection = DataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PROFILE_SQL)){
+
+        }
+    } // TODO: 강제 삭제는 나중에 테이블이 다 만들어진 후에 만들기
 }
