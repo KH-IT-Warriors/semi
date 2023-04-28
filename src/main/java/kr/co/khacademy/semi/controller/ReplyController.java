@@ -28,12 +28,6 @@ public class ReplyController extends HttpServlet {
             replyDao.create(reply);
             String location = String.format("/product/item?id=%d", reply.getProductId());
             resp.sendRedirect(location);
-
-        } else if ("/modify".equals(pathInfo)) {
-            Reply reply = Reply.of(req);
-            if (replyDao.update(reqly)) {
-
-            }
         }
     }
 }
