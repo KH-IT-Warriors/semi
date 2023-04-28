@@ -1,6 +1,7 @@
 package kr.co.khacademy.semi.model;
 
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +18,7 @@ public class Announcement {
     Long accountId;
     String title;
     String contents;
+    Timestamp date;
     
     public static Announcement of(HttpServletRequest req) {
         String title = req.getParameter("title");
@@ -44,6 +46,7 @@ public class Announcement {
                 .accountId(resultSet.getLong("account_id"))
                 .title(resultSet.getString("title"))
                 .contents(resultSet.getString("contents"))
+                .date(resultSet.getTimestamp("date"))
                 .build();
         }catch (Exception e) {
             throw new IllegalArgumentException();

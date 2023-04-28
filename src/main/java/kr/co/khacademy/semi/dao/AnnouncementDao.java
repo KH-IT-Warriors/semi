@@ -14,7 +14,7 @@ import kr.co.khacademy.semi.model.Announcement;
 public class AnnouncementDao {
     private static final AnnouncementDao instance = new AnnouncementDao();
 
-    private static final String INSERT_SQL = "INSERT INTO announcement VALUES (default,default,?, ?)";
+    private static final String INSERT_SQL = "INSERT INTO announcement VALUES (default,default,?, ?,default)";
     private static final String SELECT_SQL = "SELECT * FROM announcement";
     private static final String UPDATE_SQL = "UPDATE announcement SET title = ?, contents = ? WHERE id = ?";
     private static final String DELETE_SQL = "DELETE announcement WHERE id =?";
