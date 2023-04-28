@@ -2,8 +2,10 @@ package kr.co.khacademy.semi.controller;
 
 import kr.co.khacademy.semi.dao.AccountDao;
 import kr.co.khacademy.semi.dao.ProfileDao;
+import kr.co.khacademy.semi.dao.UserDao;
 import kr.co.khacademy.semi.model.Account;
 import kr.co.khacademy.semi.model.Profile;
+import kr.co.khacademy.semi.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,13 +21,16 @@ public class MyPageController extends HttpServlet {
 
     private static AccountDao accountDao = AccountDao.getInstance();
     private static ProfileDao profileDao = ProfileDao.getInstance();
+    private static UserDao userDao = UserDao.getInstance();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long id = (Long) req.getSession().getAttribute("accountId");
-        Optional<Account> myAccount = accountDao.read(id);
-        Optional<Profile> myProfile = profileDao.read(id);
-        req.setAttribute("myAccount", myAccount);
-        req.setAttribute("myProfile", myProfile);
+//        Optional<Account> myAccount = accountDao.read(id);
+//        Optional<Profile> myProfile = profileDao.read(id);
+        Optional<User> userInformation = userDao.read(id);
+        req.setAttribute("user-information", userInformation);
+//        req.setAttribute("myAccount", myAccount);
+//        req.setAttribute("myProfile", myProfile);
         req.getRequestDispatcher("/WEB-INF/views/my-page").forward(req, resp);
     }
 
