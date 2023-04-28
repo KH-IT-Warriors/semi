@@ -2,6 +2,7 @@ package kr.co.khacademy.semi.repository;
 
 import kr.co.khacademy.semi.conf.DataSource;
 import kr.co.khacademy.semi.conf.MySqlDataSource;
+import kr.co.khacademy.semi.dto.AdminList;
 import kr.co.khacademy.semi.exception.join.JoinFailedException;
 import kr.co.khacademy.semi.model.Profile;
 import kr.co.khacademy.semi.exception.profile.sub.ProfileIdNotFoundException;
@@ -113,6 +114,26 @@ public class ProfileRepository {
                 }
                 throw new ProfileIdNotFoundException();
             }
+        }
+    }
+
+    public List<AdminList> findAllAdminUsername() throws SQLException {
+        String sql = "SELECT P.name, A.user_name, R.role_name " +
+            "FROM profiles_test P " +
+            "JOIN accounts_test A ON P.account_id = A.id " +
+            "JOIN roles_test R ON A.role_id = R.id " +
+            "WHERE role_id != 1";
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();){
+            List<AdminList> adminList = new ArrayList<>();
+            while(resultSet.next()){
+                String username = resultSet.getString("user_name");
+                String name = resultSet.getString("name");
+                String roleName = resultSet.getString("role_name");
+                adminList.add(AdminList.of(username, name, roleName));
+            }
+            return adminList;
         }
     }
 

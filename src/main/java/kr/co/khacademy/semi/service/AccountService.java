@@ -5,6 +5,8 @@ import kr.co.khacademy.semi.model.Account;
 import kr.co.khacademy.semi.model.Password;
 import kr.co.khacademy.semi.model.Profile;
 
+import java.util.List;
+
 public interface AccountService {
 
     Long login(LoginRequest loginRequest);
@@ -24,4 +26,6 @@ public interface AccountService {
     Password findPasswordByPhoneNumber(Account account, Profile profile);
 
     String findUsernameById(Long accountId);
+
+    List<AdminList> findAllAdminUsername();
 }

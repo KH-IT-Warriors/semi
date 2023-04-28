@@ -13,6 +13,9 @@ import kr.co.khacademy.semi.repository.UserGradeRepository;
 import kr.co.khacademy.semi.repository.ProfileRepository;
 import lombok.SneakyThrows;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public class AccountServiceImpl implements AccountService {
 
     private static final AccountServiceImpl instance = new AccountServiceImpl();
@@ -117,5 +120,11 @@ public class AccountServiceImpl implements AccountService {
     @SneakyThrows
     public String findUsernameById(Long accountId) {
         return accountRepository.findById(accountId).getUsername();
+    }
+
+    @Override
+    @SneakyThrows
+    public List<AdminList> findAllAdminUsername() {
+        return profileRepository.findAllAdminUsername();
     }
 }

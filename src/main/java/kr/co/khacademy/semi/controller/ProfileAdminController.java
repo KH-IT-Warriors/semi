@@ -1,5 +1,6 @@
 package kr.co.khacademy.semi.controller;
 
+import kr.co.khacademy.semi.dto.AdminList;
 import kr.co.khacademy.semi.model.Profile;
 import kr.co.khacademy.semi.service.AccountServiceImpl;
 
@@ -9,13 +10,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/admin/profile")
 public class ProfileAdminController extends HttpServlet {
     AccountServiceImpl accountService = AccountServiceImpl.getInstance();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        List<AdminList> adminList = accountService.findAllAdminUsername();
+        request.setAttribute("adminList", adminList);
+        request.getRequestDispatcher("").forward(request, response);
     }
 
     @Override

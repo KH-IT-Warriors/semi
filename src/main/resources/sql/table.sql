@@ -24,7 +24,7 @@ CREATE TABLE passwords_test(
 
 CREATE TABLE user_grades_test(
     'id' BIGINT AUTO_INCREMENT,
-    'grade_name' VATCHAR(255) NOT NULL UNIQUE,
+    'grade_name' VARCHAR(255) NOT NULL UNIQUE,
     'accumulate_rate' DECIMAL(4,3) NOT NULL,
     'achievement_condition' BIGINT NOT NULL,
     PRIMARY KEY ('id')
