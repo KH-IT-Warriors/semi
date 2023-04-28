@@ -68,10 +68,10 @@ public class ProductDao {
               
        ) {
           preparedStatement.setLong(1, id);
-          ResultSet resultSet = preparedStatement.executeQuery();
+          try (ResultSet resultSet = preparedStatement.executeQuery()) {
           resultSet.next();
           return Optional.ofNullable(Product.of(resultSet));
-          
+         }  
       } catch (SQLException e) {
          throw new IllegalArgumentException();
       }
