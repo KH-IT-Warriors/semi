@@ -23,7 +23,7 @@ public class Faq {
     public static Faq of(HttpServletRequest req) {
 
         String title = req.getParameter("title");
-        String content = req.getParameter("contents");
+        String contents = req.getParameter("contents");
 
         if(!validateTitle(title)) {
             throw new IllegalArgumentException();
