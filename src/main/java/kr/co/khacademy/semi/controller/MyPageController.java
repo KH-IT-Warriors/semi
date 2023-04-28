@@ -13,10 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Optional;
 
-@WebServlet("/my-page")
+@WebServlet("/my-page/*")
 public class MyPageController extends HttpServlet {
 
     private static AccountDao accountDao = AccountDao.getInstance();
@@ -24,10 +25,17 @@ public class MyPageController extends HttpServlet {
     private static UserDao userDao = UserDao.getInstance();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long id = (Long) req.getSession().getAttribute("accountId");
-//        User userInformation = userDao.read(id);
-//        req.setAttribute("user-information", userInformation);
-        req.getRequestDispatcher("/WEB-INF/views/my-page").forward(req, resp);
+        try {
+            String pathInfo = req.getPathInfo();
+            if ("/item".equals(pathInfo)) {
+                Long id = (Long) req.getSession().getAttribute("accountId");
+                User user = userDao.read(id);
+                req.setAttribute("user", user);
+                req.getRequestDispatcher("/WEB-INF/views/myPage.jsp").forward(req, resp);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
