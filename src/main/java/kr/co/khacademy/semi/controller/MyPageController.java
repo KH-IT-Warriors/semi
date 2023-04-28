@@ -25,12 +25,8 @@ public class MyPageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long id = (Long) req.getSession().getAttribute("accountId");
-//        Optional<Account> myAccount = accountDao.read(id);
-//        Optional<Profile> myProfile = profileDao.read(id);
-        Optional<User> userInformation = userDao.read(id);
-        req.setAttribute("user-information", userInformation);
-//        req.setAttribute("myAccount", myAccount);
-//        req.setAttribute("myProfile", myProfile);
+//        User userInformation = userDao.read(id);
+//        req.setAttribute("user-information", userInformation);
         req.getRequestDispatcher("/WEB-INF/views/my-page").forward(req, resp);
     }
 

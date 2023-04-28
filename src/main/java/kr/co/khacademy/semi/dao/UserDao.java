@@ -1,6 +1,5 @@
 package kr.co.khacademy.semi.dao;
 
-import com.mysql.cj.protocol.Resultset;
 import kr.co.khacademy.semi.common.DataSource;
 import kr.co.khacademy.semi.model.User;
 
@@ -8,7 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
 
@@ -21,24 +21,60 @@ public class UserDao {
         return instance;
     }
 
-    private static final String SELECT_USER_SQL =
-        "SELECT " +
-            "A.id, A.username, P.name, P.phone_number, P.email, R.role_name, G.grade_name, P.mileage, P.created " +
-            "FROM profiles P " +
-            "JOIN accounts A ON P.account_id = A.id " +
-            "JOIN roles R ON A.role_id = R.id " +
-            "JOIN grades G ON P.grade_id = G.id " +
-            "WHERE account_id = ?";
 
-    public Optional<User> read(Long id){
+    private static final String SELECT_ALL_USER_SQL =
+        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id";
+    private static final String SELECT_USER_SQL =
+        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id WHERE id = ?";
+    private static final String UPDATE_ACCOUNT_SQL =
+        "UPDATE accounts SET password = ? WHERE id = ?";
+    private static final String UPDATE_PROFILE_SQL =
+        "UPDATE profiles SET name = ?, phoneNumber = ?, email = ?, mileage = ?, grade_id = ? WHERE account_id = ?";
+
+
+    public List<User> read() throws SQLException {
+        try (Connection connection = DataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USER_SQL);
+            ResultSet resultSet = preparedStatement.executeQuery();) {
+            List<User> users = new ArrayList<>();
+            while (resultSet.next()) {
+                users.add(User.of(resultSet));
+            }
+            return users;
+        }
+    }
+
+    public User read(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_SQL)) {
             preparedStatement.setLong(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return Optional.of(User.of(resultSet));
+                return User.of(resultSet);
             }
-        } catch (SQLException e) {
-            return Optional.empty();
+        }
+    }
+
+    public void update(User user) throws SQLException {
+        try (Connection connection = DataSource.getConnection()) {
+            try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_SQL)){
+                preparedStatement.setString(1, user.getAccount().getPassword());
+                if (preparedStatement.executeUpdate() == 0) {
+                    connection.rollback();
+                    throw new RuntimeException();
+                }
+            }
+            try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PROFILE_SQL)){
+                preparedStatement.setString(1, user.getProfile().getName());
+                preparedStatement.setString(2, user.getProfile().getPhoneNumber());
+                preparedStatement.setString(3, user.getProfile().getEmail());
+                preparedStatement.setLong(4, user.getProfile().getMileage());
+                preparedStatement.setLong(5, user.getProfile().getGradeId());
+                if (preparedStatement.executeUpdate() == 0) {
+                    connection.rollback();
+                    throw new SQLException();
+                }
+            }
+            connection.commit();
         }
     }
 }

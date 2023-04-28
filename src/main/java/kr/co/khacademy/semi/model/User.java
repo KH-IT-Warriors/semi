@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -14,27 +15,22 @@ import java.sql.Timestamp;
 @Builder
 public class User {
 
-    Long id;
-    String username;
-    String name;
-    String phoneNumber;
-    String email;
-    String role;
-    String grade;
-    Long mileage;
-    Timestamp created;
+    Account account;
+    Profile profile;
+
+    public static User of(HttpServletRequest req) {
+        return User.builder()
+            .account(Account.of(req))
+            .profile(Profile.of(req))
+            .build();
+    }
 
     public static User of(ResultSet resultSet) throws SQLException {
+        Account account = Account.of(resultSet);
+        Profile profile = Profile.of(resultSet);
         return User.builder()
-            .id(resultSet.getLong("id"))
-            .username(resultSet.getString("username"))
-            .name(resultSet.getString("name"))
-            .phoneNumber(resultSet.getString("phone_number"))
-            .email(resultSet.getString("email"))
-            .role(resultSet.getString("role_name"))
-            .grade(resultSet.getString("grade_name"))
-            .mileage(resultSet.getLong("mileage"))
-            .created(resultSet.getTimestamp("created"))
+            .account(account)
+            .profile(profile)
             .build();
     }
 }
