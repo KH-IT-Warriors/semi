@@ -31,7 +31,6 @@ public class Product {
             .build();
     }
     
-    
    public static Product of(ResultSet resultSet) {
      
        try {
