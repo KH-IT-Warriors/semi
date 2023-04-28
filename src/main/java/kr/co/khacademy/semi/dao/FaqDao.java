@@ -18,7 +18,7 @@ public class FaqDao {
 
     private static final String INSERT_FAQ_SQL = "INSERT INTO faq VALUES(?, ?)";
     private static final String SELECT_FAQ_SQL = "SELECT * FROM faq";
-    private static final String UPDATE_FAQ_SQL = "UPDATE faq SET title = ? AND contents = ? WHERE id = ?";
+    private static final String UPDATE_FAQ_SQL = "UPDATE faq SET title = ?, contents = ? WHERE id = ?";
     private static final String DELETE_FAQ_SQL = "DELETE faq WHERE id =?";
     private static final String FIND_BY_ID_FAQ_SQL = "SELECT * FROM faq WHERE id = ?";
 
@@ -27,18 +27,17 @@ public class FaqDao {
     }
 
     public Boolean create(Faq faq) {
-        try(
-                Connection connection = DataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_FAQ_SQL);
-                ){
-            preparedStatement.setString(1, faq.getTitle());
-            preparedStatement.setString(2, faq.getContents());
+        try(Connection connection = DataSource.getConnection();){
+            try(PreparedStatement preparedStatement = connection.prepareStatement(INSERT_FAQ_SQL);){
+                preparedStatement.setString(1, faq.getTitle());
+                preparedStatement.setString(2, faq.getContents());
 
-            int result = preparedStatement.executeUpdate();
+                int result = preparedStatement.executeUpdate();
 
-            if(result == 0) {
-                connection.rollback();
-                throw new SQLException();
+                if(result == 0) {
+                    connection.rollback();
+                    throw new SQLException();
+                }
             }
         }catch (SQLException e) {
             return Boolean.FALSE;
@@ -46,40 +45,59 @@ public class FaqDao {
         return Boolean.TRUE;
     }
 
-    public List<Faq> read(){
-        List<Faq> faqList = new ArrayList<>();
-        try(Connection connection = DataSource.getConnection();){
-            try(PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FAQ_SQL);){
-                try(ResultSet resultSet = preparedStatement.executeQuery();){
-                    while(resultSet.next()) {
-                        Faq faq = Faq.of(resultSet);
-                        faqList.add(faq);
+        public List<Faq> read(){
+            List<Faq> faqList = new ArrayList<>();
+            try(Connection connection = DataSource.getConnection();){
+                try(PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FAQ_SQL);){
+                    try(ResultSet resultSet = preparedStatement.executeQuery();){
+                        while(resultSet.next()) {
+                            Faq faq = Faq.of(resultSet);
+                            faqList.add(faq);
+                        }
                     }
                 }
+            }catch (SQLException ignored) {
             }
-        }catch (SQLException ignored) {
-        }
-        return Collections.unmodifiableList(faqList);
-        
-    }
+            return Collections.unmodifiableList(faqList);
 
-    public Optional<Faq> read(Long id){
-        try(Connection connection = DataSource.getConnection();){
-            try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_FAQ_SQL);){
-                preparedStatement.setLong(1, id);
-                try(ResultSet resultSet = preparedStatement.executeQuery();){
-                    if(resultSet.next()) {
-                        return Optional.of(Faq.of(resultSet));
+        }
+
+        public Boolean update(Faq faq) {
+            try(Connection connection = DataSource.getConnection();){
+                try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_FAQ_SQL)){
+                    preparedStatement.setString(1, faq.getTitle());
+                    preparedStatement.setString(2, faq.getContents());
+                    preparedStatement.setLong(3, faq.getId());
+                    
+                    int result = preparedStatement.executeUpdate();
+                    if(result == 0) {
+                        connection.rollback();
+                        throw new SQLException();
                     }
                 }
+            }catch (SQLException e) {
+                return Boolean.FALSE;
             }
-        }catch (SQLException ignored) {
+            return Boolean.TRUE;
         }
-        return Optional.empty();
+
+        public Optional<Faq> read(Long id){
+            try(Connection connection = DataSource.getConnection();){
+                try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_FAQ_SQL);){
+                    preparedStatement.setLong(1, id);
+                    try(ResultSet resultSet = preparedStatement.executeQuery();){
+                        if(resultSet.next()) {
+                            return Optional.of(Faq.of(resultSet));
+                        }
+                    }
+                }
+            }catch (SQLException ignored) {
+            }
+            return Optional.empty();
+        }
+
+
     }
-
-
-}
 
 
 
