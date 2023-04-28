@@ -8,6 +8,7 @@ import lombok.Value;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Optional;
 
@@ -24,10 +25,10 @@ public class Reply {
     Timestamp created;
 
     public static Reply of(HttpServletRequest req) {
-        //세션아디 받아오기
+        //TODO: 세션아디 받아오기
         String contents = Optional.of(req.getParameter("contents"))
             .filter(Reply::validateContents)
-            .orElseThrow(IllegalAccessError::new);
+            .orElseThrow(RuntimeException::new);
 
         Long parentReplyId = Optional.ofNullable(req.getParameter("parent-reply-id"))
             .map(Long::valueOf)
@@ -37,10 +38,23 @@ public class Reply {
             .contents(contents)
             .parentReplyId(parentReplyId)
             .build();
-
     }
-    public static Reply of(ResultSet resultSet) {
+    public static Reply of(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getLong(1);
+        Long parentReplyId = resultSet.getLong(2);
+        Long accountId = resultSet.getLong(3);
+        Long productId = resultSet.getLong(4);
+        String contents = resultSet.getString(5);
+        Timestamp created = resultSet.getTimestamp(6);
 
+        return Reply.builder()
+            .id(id)
+            .parentReplyId(parentReplyId)
+            .accountId(accountId)
+            .productId(productId)
+            .contents(contents)
+            .created(created)
+            .build();
     }
 
     public static Boolean validateContents(String contents){
