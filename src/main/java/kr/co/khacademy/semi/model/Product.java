@@ -31,9 +31,8 @@ public class Product {
             .build();
     }
     
-   public static Product of(ResultSet resultSet) {
-     
-       try {
+   public static Product of (ResultSet resultSet) throws SQLException {
+         
        return Product.builder()
                .id(resultSet.getLong("id"))
                .name(resultSet.getString("name"))
@@ -42,12 +41,8 @@ public class Product {
                .detail(resultSet.getString("detail"))
                .price(resultSet.getLong("price"))
                .quantity(resultSet.getLong("quantity"))
-               .categoryId(resultSet.getLong("categoryId"))
-               .build();
-       
-       } catch (SQLException e) {
-          throw new IllegalArgumentException();
-       }
+               .categoryId(resultSet.getLong("category_id"))
+               .build();    
        
    }
 }
