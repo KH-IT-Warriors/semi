@@ -80,6 +80,23 @@ public class FaqDao {
             }
             return Boolean.TRUE;
         }
+        
+        public Boolean delete(Faq faq) {
+            try(Connection connection = DataSource.getConnection();){
+                try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_FAQ_SQL)){
+                    preparedStatement.setLong(1, faq.getId());
+                    
+                    int result = preparedStatement.executeUpdate();
+                    if(result == 0) {
+                        connection.rollback();
+                        throw new SQLException();
+                    }
+                }
+            }catch (SQLException e) {
+                return Boolean.FALSE;
+            }
+            return Boolean.TRUE;
+        }
 
         public Optional<Faq> read(Long id){
             try(Connection connection = DataSource.getConnection();){
