@@ -17,11 +17,6 @@ public class ReplyController extends HttpServlet {
     private static final ReplyDao replyDao = ReplyDao.getInstance();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-    }
-
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String pathInfo = req.getPathInfo();
@@ -30,20 +25,19 @@ public class ReplyController extends HttpServlet {
                 replyDao.create(reply);
                 String location = String.format("/product/item?id=%d", reply.getProductId());
                 resp.sendRedirect(location);
-
             } else if ("/modify".equals(pathInfo)) {
                 Reply reply = Reply.of(req);
                 replyDao.update(reply);
-                String location = String.format("/product/item?id=d%", reply.getProductId());
+                String location = String.format("/product/item?id=%d", reply.getProductId());
                 resp.sendRedirect(location);
             } else if ("/delete".equals(pathInfo)) {
-                Reply reply = Reply.of(req);
-                replyDao.delete(reply.getId());
-                String location = String.format("/product/item?id=d%", reply.getProductId());
+                Long id = Long.valueOf(req.getParameter("id"));
+                replyDao.delete(id);
+                String location = String.format("/product/item?id=%d", id);
                 resp.sendRedirect(location);
             }
         } catch (SQLException e) {
-            resp.sendRedirect("/error.jsp");
+            resp.sendRedirect("/error");
         }
     }
 }
