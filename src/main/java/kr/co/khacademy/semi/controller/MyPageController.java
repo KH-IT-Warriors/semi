@@ -36,6 +36,9 @@ public class MyPageController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        Profile modifyProfile = Profile.of(req);
+        if (profileDao.update(modifyProfile)) {
+            resp.sendRedirect("/my-page");
+        }
     }
 }

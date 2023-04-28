@@ -17,10 +17,14 @@ public class ProfileDao {
         return instance;
     }
 
+    private static final String SELECT_PROFILE_SQL =
+        "SELECT * FROM accounts WHERE id = ?";
+    private static final String UPDATE_PROFILE_SQL =
+        "UPDATE profiles SET phone_number = ?, email = ? WHERE account_id = ?";
+
     public Optional<Profile> read(Long id) {
-        String sql = "SELECT * FROM profiles WHERE account_id = ?";
-        try(Connection connection = DataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_PROFILE_SQL)) {
             preparedStatement.setLong(1, id);
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 return Optional.of(Profile.of(resultSet));
@@ -28,5 +32,18 @@ public class ProfileDao {
         } catch (SQLException e) {
             return Optional.empty();
         }
+    }
+
+    public boolean update(Profile profile) {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PROFILE_SQL)) {
+            preparedStatement.setString(1, profile.getPhoneNumber());
+            preparedStatement.setString(2, profile.getEmail());
+            preparedStatement.setLong(3, profile.getAccountId());
+            return preparedStatement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+
     }
 }
