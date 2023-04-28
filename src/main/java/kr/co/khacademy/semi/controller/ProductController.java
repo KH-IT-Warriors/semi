@@ -29,7 +29,7 @@ public class ProductController extends HttpServlet {
                 req.setAttribute("products", products);
                 req.getRequestDispatcher("/WEB-INF/views/product/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
-                Long id = Long.parseLong(req.getParameter("id"));
+                Long id = Long.valueOf(req.getParameter("id"));
                 Product product = productDao.read(id);
                 req.setAttribute("product", product);
                 req.getRequestDispatcher("/WEB-INF/views/product/item.jsp").forward(req, resp);
@@ -53,7 +53,7 @@ public class ProductController extends HttpServlet {
                 String location = String.format("/product/item?id=%d", product.getId());
                 resp.sendRedirect(location);
             } else if ("/delete".equals(pathInfo)) {
-                Long id = Long.parseLong(req.getParameter("id"));
+                Long id = Long.valueOf(req.getParameter("id"));
                 productDao.delete(id);
                 resp.sendRedirect("/product/list");
             }
