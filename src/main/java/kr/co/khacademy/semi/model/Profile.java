@@ -27,7 +27,7 @@ public class Profile {
     Timestamp lastLogin;
 
 
-    public static Profile of(HttpServletRequest req) { // TODO : 세션에 아이디 있을 시 가져오세요
+    public static Profile of(HttpServletRequest req) {
         Long id = (Long) req.getSession().getAttribute("accountId");
         String phoneNumber = req.getParameter("phone-number");
         String email = req.getParameter("email");
