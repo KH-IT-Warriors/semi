@@ -21,8 +21,6 @@ public class UserDao {
         return instance;
     }
 
-    private static final String SELECT_ACCOUNT_SQL =
-        "SELECT * FROM accounts WHERE id = ?";
     private static final String SELECT_USER_SQL =
         "SELECT " +
             "A.id, A.username, P.name, P.phone_number, P.email, R.role_name, G.grade_name, P.mileage, P.created " +
