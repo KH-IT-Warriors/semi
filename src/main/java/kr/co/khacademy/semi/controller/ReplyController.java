@@ -26,9 +26,14 @@ public class ReplyController extends HttpServlet {
         if ("/register".equals(pathInfo)) {
             Reply reply = Reply.of(req);
             replyDao.create(reply);
-            resp.sendRedirect("댓글창");
+            String location = String.format("/product/item?id=%d", reply.getProductId());
+            resp.sendRedirect(location);
 
+        } else if ("/modify".equals(pathInfo)) {
+            Reply reply = Reply.of(req);
+            if (replyDao.update(reqly)) {
+
+            }
         }
     }
 }
-
