@@ -13,12 +13,13 @@ public class AccountDao {
 
     private static final AccountDao instance = new AccountDao();
 
-    private static final String SELECT_ACCOUNT_SQL = "SELECT * FROM accounts WHERE id = ?";
     private AccountDao() {
     }
     public static AccountDao getInstance() {
         return instance;
     }
+
+    private static final String SELECT_ACCOUNT_SQL = "SELECT * FROM accounts WHERE id = ?";
 
     public Optional<Account> read(Long id) {
 
