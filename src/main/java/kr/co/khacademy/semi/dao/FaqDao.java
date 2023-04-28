@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import kr.co.khacademy.semi.common.DataSource;
@@ -42,6 +45,29 @@ public class FaqDao {
         }
         return Boolean.TRUE;
     }
+    
+    public List<Faq> read(){
+        try(
+                Connection connection = DataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(SELECT_FAQ_SQL);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                ){
+            List<Faq> faqlist = new ArrayList<>();
+            while(resultSet.next()) {
+                Faq faq = Faq.builder()
+                        .id(resultSet.getLong("id"))
+                        .accountId(resultSet.getLong("account_id"))
+                        .title(resultSet.getString("title"))
+                        .contents(resultSet.getString("contents"))
+                        .build();
+                faqlist.add(faq);
+            }
+            return Collections.unmodifiableList(faqlist);
+            
+        }catch (SQLException e) {
+            throw new IllegalArgumentException();
+        }
+    }
 
     public Optional<ResultSet> read(Long id){
         try(
@@ -52,14 +78,14 @@ public class FaqDao {
             try(
                     ResultSet resultSet = preparedStatement.executeQuery();
                     ){
-                resultSet.next();
-
+                if(resultSet.next()) {
                 return Optional.ofNullable(resultSet);
+                }
             }
-
         }catch (SQLException e) {
             throw new IllegalArgumentException();
         }
+        throw new IllegalArgumentException();
     }
 
 
