@@ -24,9 +24,9 @@ public class FaqContorller extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String pathInfo = req.getPathInfo();
-            if("/register".equals(pathInfo)) {
+            if ("/register".equals(pathInfo)) {
                 resp.sendRedirect("/WEB-INF/views/faq/register.jsp");
-            }else if("/list".equals(pathInfo)) {
+            }else if ("/list".equals(pathInfo)) {
                 List<Faq> faqList = faqDao.read();
                 req.setAttribute("faqList", faqList);
                 req.getRequestDispatcher("/WEB-INF/views/faq/list.jsp").forward(req, resp);
@@ -46,16 +46,16 @@ public class FaqContorller extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String pathInfo = req.getPathInfo();
-            if("/register".equals(pathInfo)) {
+            if ("/register".equals(pathInfo)) {
                 Faq faq = Faq.of(req);
                 faqDao.create(faq);
                 resp.sendRedirect("/faq/list");
-            }else if("/modify".equals(pathInfo)) {
+            }else if ("/modify".equals(pathInfo)) {
                 Faq faq = Faq.of(req);
                 faqDao.update(faq);
                 String location = String.format("/faq/item?id=%d", faq.getId());
                 resp.sendRedirect(location);
-            }else if("/delete".equals(pathInfo)) {
+            }else if ("/delete".equals(pathInfo)) {
                 Long id = Long.parseLong(req.getParameter("id"));
                 faqDao.delete(id);
                 resp.sendRedirect("/faq/list");

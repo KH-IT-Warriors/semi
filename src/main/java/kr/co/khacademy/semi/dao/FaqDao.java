@@ -16,7 +16,7 @@ public class FaqDao {
 
     private static final FaqDao instance = new FaqDao();
 
-    private static final String INSERT_SQL = "INSERT INTO faq VALUES (?, ?)";
+    private static final String INSERT_SQL = "INSERT INTO faq VALUES (default,default,?, ?)";
     private static final String SELECT_SQL = "SELECT * FROM faq";
     private static final String UPDATE_SQL = "UPDATE faq SET title = ?, contents = ? WHERE id = ?";
     private static final String DELETE_SQL = "DELETE faq WHERE id =?";
