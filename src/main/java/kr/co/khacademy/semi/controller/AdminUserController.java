@@ -45,6 +45,19 @@ public class AdminUserController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String pathInfo = req.getPathInfo();
+            if ("/register".equals(pathInfo)) {
+                User user = User.of(req);
+                userDao.create(user);
+                resp.sendRedirect("/admin/account/admin-user/list");
+            } else if ("/modify".equals(pathInfo)) {
 
+            } else if ("/delte".equals(pathInfo)) {
+
+            }
+        } catch (SQLException e) {
+            resp.sendRedirect("/error.jsp");
+        }
     }
 }
