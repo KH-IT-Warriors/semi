@@ -52,9 +52,12 @@ public class AdminUserController extends HttpServlet {
                 userDao.create(user);
                 resp.sendRedirect("/admin/account/admin-user/list");
             } else if ("/modify".equals(pathInfo)) {
-
-            } else if ("/delte".equals(pathInfo)) {
-
+                User user = User.of(req);
+                Long targetId = Long.valueOf(req.getParameter("target-id"));
+                userDao.update(user, targetId);
+            } else if ("/delete".equals(pathInfo)) {
+                Long targetId = Long.valueOf(req.getParameter("target-id"));
+                userDao.delete(targetId);
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error.jsp");
