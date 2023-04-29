@@ -18,7 +18,7 @@ public class InquiryDao {
     private static final String SELECT_SQL = "SELECT * FROM inquiry";
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM inquiry WHERE id = ?";
     private static final String UPDATE_BY_ID_SQL = "UPDATE inquiry SET title = ?, contents = ? WHERE id = ?";
-    
+    private static final String DELETE_BY_ID_SQL = "DELETE FROM inquiry WHERE id = ?";
     
     public InquiryDao getInstance() {
         return instance;
@@ -76,6 +76,19 @@ public class InquiryDao {
                 preparedStatement.setLong(3, inquiry.getId());
                 
                 if(preparedStatement.executeUpdate()==0){
+                    throw new SQLException();
+                }
+                connection.commit();
+            }
+        }
+    }
+    
+    public void delete(Long id) throws SQLException {
+        try (Connection connection = DataSource.getConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID_SQL)) {
+                preparedStatement.setLong(1, id);
+
+                if (preparedStatement.executeUpdate() == 0) {
                     throw new SQLException();
                 }
                 connection.commit();
