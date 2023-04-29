@@ -28,8 +28,8 @@ public class Announcement {
             throw new IllegalArgumentException();
         }
         return Announcement.builder()
-                .title(req.getParameter("title"))
-                .contents(req.getParameter("contents"))
+                .title(title)
+                .contents(contents)
                 .build();
     }
     
@@ -52,7 +52,4 @@ public class Announcement {
             throw new IllegalArgumentException();
         }
     }
-    
-    
-
 }

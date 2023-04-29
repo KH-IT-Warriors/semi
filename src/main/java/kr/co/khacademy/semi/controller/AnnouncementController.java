@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import kr.co.khacademy.semi.dao.AnnouncementDao;
 import kr.co.khacademy.semi.model.Announcement;
 
-@WebServlet("/AnnouncementController")
+@WebServlet("/Announcement/*")
 public class AnnouncementController extends HttpServlet {
     
     private static final AnnouncementDao announcementDao = AnnouncementDao.getInstance();
@@ -25,8 +25,8 @@ public class AnnouncementController extends HttpServlet {
             if ("/register".equals(pathInfo)) {
                 resp.sendRedirect("/WEB-INF/views/announcement/register.jsp");
             } else if ("/list".equals(pathInfo)) {
-                List<Announcement> announcementList = announcementDao.read();
-                req.setAttribute("announcementList", announcementList);
+                List<Announcement> announcements = announcementDao.read();
+                req.setAttribute("announcements", announcements);
                 req.getRequestDispatcher("/WEB-INF/views/announcement/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));

@@ -16,9 +16,9 @@ public class AnnouncementDao {
 
     private static final String INSERT_SQL = "INSERT INTO announcement VALUES (default,default,?, ?,default)";
     private static final String SELECT_SQL = "SELECT * FROM announcement";
-    private static final String UPDATE_SQL = "UPDATE announcement SET title = ?, contents = ? WHERE id = ?";
-    private static final String DELETE_SQL = "DELETE announcement WHERE id =?";
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM announcement WHERE id = ?";
+    private static final String UPDATE_BY_ID_SQL = "UPDATE announcement SET title = ?, contents = ? WHERE id = ?";
+    private static final String DELETE_BY_ID_SQL = "DELETE announcement WHERE id =?";
 
     public static AnnouncementDao getInstance() {
         return instance;
@@ -49,9 +49,9 @@ public class AnnouncementDao {
                     Announcement announcement = Announcement.of(resultSet);
                     AnnouncementList.add(announcement);
                 }
+                return Collections.unmodifiableList(AnnouncementList);
             }
         }
-        return Collections.unmodifiableList(AnnouncementList);
     }
     
     public Announcement read(Long id) throws SQLException {
@@ -62,15 +62,15 @@ public class AnnouncementDao {
                     if(resultSet.next()) {
                         return Announcement.of(resultSet);
                     }
+                    throw new SQLException();
                 }
             }
         }
-        throw new SQLException();
     }
     
     public void update(Announcement announcement) throws SQLException {
         try (Connection connection = DataSource.getConnection()){
-            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)){
+            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BY_ID_SQL)){
                 preparedStatement.setString(1, announcement.getTitle());
                 preparedStatement.setString(2, announcement.getContents());
                 preparedStatement.setLong(3, announcement.getId());
@@ -85,7 +85,7 @@ public class AnnouncementDao {
     
     public void delete(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection()){
-            try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)){
+            try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID_SQL)){
                if (preparedStatement.executeUpdate() == 0) {
                    throw new SQLException();
                }
