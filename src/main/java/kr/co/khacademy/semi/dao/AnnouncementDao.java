@@ -28,8 +28,7 @@ public class AnnouncementDao {
         try (Connection connection = DataSource.getConnection()){
             try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL)){
                 preparedStatement.setString(1, announcement.getTitle());
-                preparedStatement.setString(1, announcement.getTitle());
-                preparedStatement.setLong(3, announcement.getId());
+                preparedStatement.setString(2, announcement.getContents());
 
                 if (preparedStatement.executeUpdate() == 0) {
                     throw new SQLException();
