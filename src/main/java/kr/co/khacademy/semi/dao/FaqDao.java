@@ -18,9 +18,9 @@ public class FaqDao {
 
     private static final String INSERT_SQL = "INSERT INTO faq VALUES (default,default,?, ?)";
     private static final String SELECT_SQL = "SELECT * FROM faq";
-    private static final String UPDATE_SQL = "UPDATE faq SET title = ?, contents = ? WHERE id = ?";
-    private static final String DELETE_SQL = "DELETE faq WHERE id =?";
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM faq WHERE id = ?";
+    private static final String UPDATE_BY_ID_SQL = "UPDATE faq SET title = ?, contents = ? WHERE id = ?";
+    private static final String DELETE_BY_ID_SQL = "DELETE faq WHERE id =?";
 
     public static FaqDao getInstance() {
         return instance;
@@ -51,9 +51,9 @@ public class FaqDao {
                     Faq faq = Faq.of(resultSet);
                     faqList.add(faq);
                 }
+                return Collections.unmodifiableList(faqList);
             }
         }
-        return Collections.unmodifiableList(faqList);
     }
 
     public Faq read(Long id) throws SQLException {
@@ -64,15 +64,15 @@ public class FaqDao {
                     if (resultSet.next()) {
                         return Faq.of(resultSet);
                     }
+                    throw new SQLException();
                 }
             }
         }
-        throw new SQLException();
     }
 
     public void update(Faq faq) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BY_ID_SQL)) {
                 preparedStatement.setString(1, faq.getTitle());
                 preparedStatement.setString(2, faq.getContents());
                 preparedStatement.setLong(3, faq.getId());
@@ -87,7 +87,7 @@ public class FaqDao {
 
     public void delete(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID_SQL)) {
                 preparedStatement.setLong(1, id);
 
                 if (preparedStatement.executeUpdate() == 0) {

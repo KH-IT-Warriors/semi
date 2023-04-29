@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import kr.co.khacademy.semi.dao.AnnouncementDao;
 import kr.co.khacademy.semi.model.Announcement;
 
-@WebServlet("/Announcement/*")
+@WebServlet("/announcement/*")
 public class AnnouncementController extends HttpServlet {
     
     private static final AnnouncementDao announcementDao = AnnouncementDao.getInstance();

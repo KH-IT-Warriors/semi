@@ -29,8 +29,8 @@ public class Faq {
             throw new IllegalArgumentException();
         }
         return Faq.builder()
-                .title(req.getParameter("title"))
-                .contents(req.getParameter("contents"))
+                .title(title)
+                .contents(contents)
                 .build();
     }
 
@@ -51,6 +51,4 @@ public class Faq {
         }
 
     }
-
-
 }
