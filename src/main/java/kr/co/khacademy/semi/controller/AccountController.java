@@ -19,11 +19,13 @@ public class AccountController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String pathInfo = req.getPathInfo();
-            if ("/item".equals(pathInfo)) {
+            if ("/register".equals(pathInfo)) {
+                resp.sendRedirect("/WEB-INF/views/account/register.jsp");
+            } else if ("/item".equals(pathInfo)) {
                 Long id = (Long) req.getSession().getAttribute("accountId");
                 User user = userDao.read(id);
                 req.setAttribute("user", user);
-                req.getRequestDispatcher("/WEB-INF/views/account/myPage.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/account/item.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
