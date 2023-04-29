@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Value;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Optional;
 
@@ -38,6 +39,10 @@ public class Reply {
             .build();
 
     }
+    public static Reply of(ResultSet resultSet) {
+
+    }
+
     public static Boolean validateContents(String contents){
         return contents.length() <= 500;
     }

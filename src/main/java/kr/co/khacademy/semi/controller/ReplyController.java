@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/reply/*")
 public class ReplyController extends HttpServlet {
@@ -22,24 +23,27 @@ public class ReplyController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo();
-        if ("/register".equals(pathInfo)) {
-            Reply reply = Reply.of(req);
-            replyDao.create(reply);
-            String location = String.format("/product/item?id=%d", reply.getProductId());
-            resp.sendRedirect(location);
+        try {
+            String pathInfo = req.getPathInfo();
+            if ("/register".equals(pathInfo)) {
+                Reply reply = Reply.of(req);
+                replyDao.create(reply);
+                String location = String.format("/product/item?id=%d", reply.getProductId());
+                resp.sendRedirect(location);
 
-        } else if ("/modify".equals(pathInfo)) {
-            Reply reply = Reply.of(req);
-            replyDao.update(reply);
-            String location = String.format("/product/item?id=d%", reply.getProductId());
-            resp.sendRedirect(location);
-        } else if ("/delete".equals(pathInfo)) {
-            Reply reply = Reply.of(req);
-            replyDao.delete(reply.getId());
-            String location = String.format("/product/item?id=d%", reply.getProductId());
-            resp.sendRedirect(location);
+            } else if ("/modify".equals(pathInfo)) {
+                Reply reply = Reply.of(req);
+                replyDao.update(reply);
+                String location = String.format("/product/item?id=d%", reply.getProductId());
+                resp.sendRedirect(location);
+            } else if ("/delete".equals(pathInfo)) {
+                Reply reply = Reply.of(req);
+                replyDao.delete(reply.getId());
+                String location = String.format("/product/item?id=d%", reply.getProductId());
+                resp.sendRedirect(location);
+            }
+        } catch (SQLException e) {
+            resp.sendRedirect("/error.jsp");
         }
-
     }
 }
