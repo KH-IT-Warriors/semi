@@ -41,7 +41,25 @@ public class inquiryController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        try {
+            String pathInfo = req.getPathInfo();
+            if ("/register".equals(pathInfo)) {
+                Inquiry inquiry = Inquiry.of(req);
+                inquiryDao.create(inquiry);
+                resp.sendRedirect("/inquiry/list");
+            } else if ("/modify".equals(pathInfo)) {
+                Inquiry inquiry = Inquiry.of(req);
+                inquiryDao.update(inquiry);
+                String location = String.format("/inquiry/item?id=%d", inquiry.getId());
+                resp.sendRedirect(location);
+            } else if ("/delete".equals(pathInfo)) {
+                Long id = Long.valueOf(req.getParameter("id"));
+                inquiryDao.delete(id);
+                resp.sendRedirect("/inquiry/list");
+            }
+        }catch (SQLException e) {
+            resp.sendRedirect("/error");
+        }
     }
 
 

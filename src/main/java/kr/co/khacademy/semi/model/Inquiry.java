@@ -3,6 +3,8 @@ package kr.co.khacademy.semi.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +19,23 @@ public class Inquiry {
     String title;
     String contents;
     
+    public static Inquiry of(HttpServletRequest req) {
+        String title = req.getParameter("title");
+        String contents = req.getParameter("contents");
+        
+        if (!validateTitle(title)) {
+            throw new IllegalArgumentException();
+        }
+        return Inquiry.builder()
+                .title(title)
+                .contents(contents)
+                .build();
+    }
+    
+    private static boolean validateTitle(String title) {
+        return (6 <= title.length()) && (title.length() <= 100);
+    }
+
     public static Inquiry of(ResultSet resultSet) {
         try {
         return Inquiry.builder()
@@ -30,5 +49,6 @@ public class Inquiry {
         }
         
     }
+
     
 }
