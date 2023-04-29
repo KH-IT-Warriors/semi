@@ -40,7 +40,8 @@ public class UserDao {
         "DELETE FROM accounts WHERE id = ?";
     private static final String DELETE_ADMIN_PROFILE_SQL =
         "DELETE FROM profiles WHERE account_id = ?";
-
+    private static final String UPDATE_ACCOUNT_DEL_STATUS_SQL =
+        "UPDATE accounts SET status_id = ? WHERE id = ?";
 
 
     public void create(User user) throws SQLException {
@@ -176,7 +177,20 @@ public class UserDao {
         }
     }
 
-    public void delete(Long targetId) throws SQLException {
+    public void delete(Long id) throws SQLException {
+        try (Connection connection = DataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_DEL_STATUS_SQL)) {
+            preparedStatement.setLong(1, 0);
+            preparedStatement.setLong(2, id);
+            if (preparedStatement.executeUpdate() == 0) {
+                connection.rollback();
+                throw new RuntimeException();
+            }
+            connection.commit();
+        }
+    }
+
+    public void forceDelete(Long targetId) throws SQLException {
         try(Connection connection = DataSource.getConnection();){
             try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ADMIN_PROFILE_SQL)){
                 preparedStatement.setLong(1, targetId);

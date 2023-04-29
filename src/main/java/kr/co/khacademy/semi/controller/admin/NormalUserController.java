@@ -55,7 +55,7 @@ public class NormalUserController extends HttpServlet {
                 userDao.update(user, targetId);
             } else if ("/delete".equals(pathInfo)) {
                 Long targetId = Long.valueOf(req.getParameter("target-id"));
-                userDao.delete(targetId);
+                userDao.forceDelete(targetId);
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error.jsp");
