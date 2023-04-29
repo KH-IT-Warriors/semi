@@ -20,7 +20,7 @@ public class InquiryDao {
     private static final String UPDATE_BY_ID_SQL = "UPDATE inquiry SET title = ?, contents = ? WHERE id = ?";
     private static final String DELETE_BY_ID_SQL = "DELETE FROM inquiry WHERE id = ?";
     
-    public InquiryDao getInstance() {
+    public static InquiryDao getInstance() {
         return instance;
     }
     
@@ -95,5 +95,4 @@ public class InquiryDao {
             }
         }
     }
-
 }
