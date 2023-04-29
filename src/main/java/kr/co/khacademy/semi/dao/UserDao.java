@@ -31,6 +31,8 @@ public class UserDao {
     private static final String SELECT_USER_SQL =
         "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id WHERE id = ?";
     private static final String UPDATE_ACCOUNT_SQL =
+        "UPDATE accounts SET status_id = ?, role_id = ? WHERE id = ?";
+    private static final String UPDATE_ACCOUNT_WITH_PW_SQL =
         "UPDATE accounts SET status_id = ?, role_id = ?, password = ? WHERE id = ?";
     private static final String UPDATE_PROFILE_SQL =
         "UPDATE profiles SET name = ?, phoneNumber = ?, email = ?, mileage = ?, grade_id = ? WHERE account_id = ?";
@@ -93,18 +95,71 @@ public class UserDao {
         }
     }
 
-    public void update(User user, Long targetId) throws SQLException {
-        try (Connection connection = DataSource.getConnection()) {
-            try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_SQL)){
-                preparedStatement.setLong(1, user.getAccount().getStatusId());
-                preparedStatement.setLong(2, user.getAccount().getRoleId());
-                preparedStatement.setString(3, user.getAccount().getPassword());
-                preparedStatement.setLong(4, targetId);
-                if (preparedStatement.executeUpdate() == 0) {
-                    connection.rollback();
-                    throw new RuntimeException();
+    public void update(User user) throws SQLException {
+        try (Connection connection = DataSource.getConnection()){
+            if (user.getAccount().getPassword().isEmpty()) {
+                try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PROFILE_SQL)) {
+                    preparedStatement.setLong(1, user.getAccount().getStatusId());
+                    preparedStatement.setLong(2, user.getAccount().getRoleId());
+                    preparedStatement.setLong(3, user.getAccount().getId());
+                    if (preparedStatement.executeUpdate() == 0) {
+                        connection.rollback();
+                        throw new RuntimeException();
+                    }
+                }
+            } else {
+                try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_WITH_PW_SQL)) {
+                    preparedStatement.setLong(1, user.getAccount().getStatusId());
+                    preparedStatement.setLong(2, user.getAccount().getRoleId());
+                    preparedStatement.setString(3, user.getAccount().getPassword());
+                    preparedStatement.setLong(4, user.getAccount().getId());
+                    if (preparedStatement.executeUpdate() == 0) {
+                        connection.rollback();
+                        throw new RuntimeException();
+                    }
                 }
             }
+            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PROFILE_SQL)) {
+                preparedStatement.setString(1, user.getProfile().getName());
+                preparedStatement.setString(2, user.getProfile().getPhoneNumber());
+                preparedStatement.setString(3, user.getProfile().getEmail());
+                preparedStatement.setLong(4, user.getProfile().getMileage());
+                preparedStatement.setLong(5, user.getProfile().getGradeId());
+                preparedStatement.setLong(6, user.getAccount().getId());
+                if (preparedStatement.executeUpdate() == 0) {
+                    connection.rollback();
+                    throw new SQLException();
+                }
+            }
+            connection.commit();
+        }
+    }
+
+    public void update(User user, Long targetId) throws SQLException {
+        try (Connection connection = DataSource.getConnection()) {
+            if (user.getAccount().getPassword().isEmpty()) {
+                try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_SQL)){
+                    preparedStatement.setLong(1, user.getAccount().getStatusId());
+                    preparedStatement.setLong(2, user.getAccount().getRoleId());
+                    preparedStatement.setLong(3, targetId);
+                    if (preparedStatement.executeUpdate() == 0) {
+                        connection.rollback();
+                        throw new RuntimeException();
+                    }
+                }
+            } else {
+                try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_WITH_PW_SQL)){
+                    preparedStatement.setLong(1, user.getAccount().getStatusId());
+                    preparedStatement.setLong(2, user.getAccount().getRoleId());
+                    preparedStatement.setString(3, user.getAccount().getPassword());
+                    preparedStatement.setLong(4, targetId);
+                    if (preparedStatement.executeUpdate() == 0) {
+                        connection.rollback();
+                        throw new RuntimeException();
+                    }
+                }
+            }
+
             try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PROFILE_SQL)){
                 preparedStatement.setString(1, user.getProfile().getName());
                 preparedStatement.setString(2, user.getProfile().getPhoneNumber());

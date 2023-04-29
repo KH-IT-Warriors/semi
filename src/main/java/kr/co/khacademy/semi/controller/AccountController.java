@@ -29,6 +29,10 @@ public class AccountController extends HttpServlet {
                 userDao.create(user);
                 req.setAttribute("registerSuccess", true);
                 req.getRequestDispatcher("index.jsp").forward(req, resp);
+            } else if ("/modify".equals(pathInfo)) {
+                User user = User.of(req);
+                userDao.update(user);
+
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error.jsp");
