@@ -26,7 +26,7 @@ public class ProductDao {
             "UPDATE product SET name = ?, title = ?, summary = ?, detail = ?, price = ?, quantity = ?, category_id = ?" +
                     "WHERE id = ?";
 
-    private static final String DELETE_BY_ID_SQL = "DELETE product WHERE id = ?";
+    private static final String DELETE_BY_ID_SQL = "DELETE FROM product WHERE id = ?";
 
     
     private ProductDao() {
