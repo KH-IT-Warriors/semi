@@ -34,5 +34,3 @@ public class User {
             .build();
     }
 }
-
-// TODO: id, username, name, phone, email, role, mileage ...

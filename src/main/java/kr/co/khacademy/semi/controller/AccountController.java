@@ -17,7 +17,17 @@ public class AccountController extends HttpServlet {
     private static final UserDao userDao = UserDao.getInstance();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        try {
+            String pathInfo = req.getPathInfo();
+            if ("/item".equals(pathInfo)) {
+                Long id = (Long) req.getSession().getAttribute("accountId");
+                User user = userDao.read(id);
+                req.setAttribute("user", user);
+                req.getRequestDispatcher("/WEB-INF/views/account/myPage.jsp").forward(req, resp);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -32,7 +42,7 @@ public class AccountController extends HttpServlet {
             } else if ("/modify".equals(pathInfo)) {
                 User user = User.of(req);
                 userDao.update(user);
-
+                resp.sendRedirect("/account/item");
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error.jsp");
