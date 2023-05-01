@@ -40,7 +40,6 @@ public class Product {
     }
     
     
-   
      
    public static Product of (ResultSet resultSet) throws SQLException{
       
