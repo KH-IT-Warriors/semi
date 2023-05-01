@@ -57,8 +57,8 @@ public class AnnouncementDao {
         try (Connection connection = DataSource.getConnection()){
             try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_SQL)){
                 preparedStatement.setLong(1, id);
-                try(ResultSet resultSet = preparedStatement.executeQuery()){
-                    if(resultSet.next()) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()){
+                    if (resultSet.next()) {
                         return Announcement.of(resultSet);
                     }
                     throw new SQLException();
