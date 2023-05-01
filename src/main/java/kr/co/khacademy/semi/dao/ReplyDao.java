@@ -49,12 +49,12 @@ public class ReplyDao {
         }
     }
 
-    public List<Reply> read(Reply reply) throws SQLException {
+    public List<Reply> read(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
             try (
                 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_PRODUCT_ID_SQL)) {
 
-                preparedStatement.setLong(1, reply.getProductId());
+                preparedStatement.setLong(1, id);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
                     List<Reply> replies = new ArrayList<>();
