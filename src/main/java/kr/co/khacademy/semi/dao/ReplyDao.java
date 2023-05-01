@@ -16,13 +16,13 @@ public class ReplyDao {
     private static final ReplyDao instance = new ReplyDao();
 
     private static final String INSERT_SQL =
-        "INSERT INTO reply VALUES (DEFAULT, ?, ?, ?, ?, DEFAULT)";
+        "INSERT INTO reply VALUES (DEFAULT, ?, ?, ?, DEFAULT, DEFAULT)";
 
-    private static final String SELECT_SQL =
-        "SELECT * FROM reply";
+    private static final String SELECT_BY_PRODUCT_ID_SQL =
+        "SELECT * FROM reply WHERE productId = ?";
 
     private static final String UPDATE_BY_ID_SQL =
-        "UPDATE reply SET contents = ?, created = DEFAULT WHERE id = ?";
+        "UPDATE reply SET contents = ?, modified = DEFAULT WHERE id = ?";
 
     private static final String DELETE_BY_ID_SQL =
         "DELETE FROM reply WHERE id = ?";
@@ -37,10 +37,9 @@ public class ReplyDao {
     public void create(Reply reply) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL)) {
-                preparedStatement.setLong(1, reply.getParentReplyId());
-                preparedStatement.setLong(2, reply.getAccountId());
-                preparedStatement.setLong(3, reply.getProductId());
-                preparedStatement.setString(4, reply.getContents());
+                preparedStatement.setLong(1, reply.getAccountId());
+                preparedStatement.setLong(2, reply.getProductId());
+                preparedStatement.setString(3, reply.getContents());
 
                 if (preparedStatement.executeUpdate() == 0) {
                     throw new SQLException();
@@ -50,18 +49,21 @@ public class ReplyDao {
         }
     }
 
-    public List<Reply> read() throws SQLException {
+    public List<Reply> read(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
             try (
-                PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SQL);
-                ResultSet resultSet = preparedStatement.executeQuery()
-            ) {
-                List<Reply> replies = new ArrayList<>();
-                while (resultSet.next()) {
-                    Reply reply = Reply.of(resultSet);
-                    replies.add(reply);
+                PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_PRODUCT_ID_SQL)) {
+
+                preparedStatement.setLong(1, id);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                    List<Reply> replies = new ArrayList<>();
+                    while (resultSet.next()) {
+                        Reply result = Reply.of(resultSet);
+                        replies.add(result);
+                    }
+                    return Collections.unmodifiableList(replies);
                 }
-                return Collections.unmodifiableList(replies);
             }
         }
     }
