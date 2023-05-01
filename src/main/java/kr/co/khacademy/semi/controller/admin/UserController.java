@@ -11,10 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@WebServlet("/admin/normal-user/*")
-public class NormalUserController extends HttpServlet {
+@WebServlet("/admin/user/*")
+public class UserController extends HttpServlet {
 
     private static final UserDao userDao = UserDao.getInstance();
 
@@ -25,12 +24,16 @@ public class NormalUserController extends HttpServlet {
             if ("/list".equals(pathInfo)) {
                 List<User> normalUsers = userDao.readNormalUser();
                 req.setAttribute("normalUsers", normalUsers);
-                req.getRequestDispatcher("/WEB-INF/views/admin/account/normal_user/list.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
                 User normalUser = userDao.read(id);
                 req.setAttribute("normalUser", normalUser);
-                req.getRequestDispatcher("/WEB-INF/views/admin/account/normal_user/item.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/user/item.jsp").forward(req, resp);
+            } else if ("/admin-list".equals(pathInfo)) {
+                List<User> adminUsers = userDao.readAdminUser();
+                req.setAttribute("adminUsers", adminUsers);
+                req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error.jsp");
@@ -43,8 +46,7 @@ public class NormalUserController extends HttpServlet {
             String pathInfo = req.getPathInfo();
             if ("/modify".equals(pathInfo)) {
                 User user = User.of(req);
-                Long targetId = Long.valueOf(req.getParameter("target-id"));
-                userDao.update(user, targetId);
+                userDao.update(user);
             } else if ("/delete".equals(pathInfo)) {
                 Long targetId = Long.valueOf(req.getParameter("target-id"));
                 userDao.forceDelete(targetId);
