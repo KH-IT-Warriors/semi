@@ -27,13 +27,29 @@ public class Product {
     
 
     public static Product of(HttpServletRequest req) {
+        
+        if(!validateProductTitle(req.getParameter("title"))) {
+            throw new IllegalArgumentException();
+        }
+        
         return Product.builder()
+            .name(req.getParameter("name"))
+            .title(req.getParameter("title"))
+            .summary(req.getParameter("summary"))
+            .detail(req.getParameter("detail"))
+            .price(Long.valueOf(req.getParameter("price")))
+            .quantity(Long.valueOf(req.getParameter("quantity")))
+            .categoryId(Long.valueOf(req.getParameter("category_id")))
             .build();
     }
     
-   public static Product of(ResultSet resultSet) {
+    
+    private static Boolean validateProductTitle(String title) {   
+        return (3 <= title.length() ) && (title.length() <= 200);
+    }
      
-       try {
+   public static Product of (ResultSet resultSet) throws SQLException{
+      
        return Product.builder()
                .id(resultSet.getLong("id"))
                .name(resultSet.getString("name"))
@@ -42,12 +58,8 @@ public class Product {
                .detail(resultSet.getString("detail"))
                .price(resultSet.getLong("price"))
                .quantity(resultSet.getLong("quantity"))
-               .categoryId(resultSet.getLong("categoryId"))
-               .build();
-       
-       } catch (SQLException e) {
-          throw new IllegalArgumentException();
-       }
-       
+               .categoryId(resultSet.getLong("category_id"))
+               .build();    
+   
    }
 }

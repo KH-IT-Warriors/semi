@@ -22,11 +22,11 @@ public class ProductDao {
 
     private static final String SELECT_SQL = "SELECT * FROM product";
 
-    private static final String UPDATE_SQL =
+    private static final String UPDATE_BY_ID_SQL =
             "UPDATE product SET name = ?, title = ?, summary = ?, detail = ?, price = ?, quantity = ?, category_id = ?" +
                     "WHERE id = ?";
 
-    private static final String DELETE_SQL = "DELETE product WHERE id = ?";
+    private static final String DELETE_BY_ID_SQL = "DELETE FROM product WHERE id = ?";
 
     
     private ProductDao() {
@@ -90,7 +90,7 @@ public class ProductDao {
 
     public void update(Product product) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL);) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BY_ID_SQL);) {
                 preparedStatement.setString(1, product.getName());
                 preparedStatement.setString(2, product.getTitle());
                 preparedStatement.setString(3, product.getSummary());
@@ -110,7 +110,7 @@ public class ProductDao {
 
     public void delete(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID_SQL)) {
                 preparedStatement.setLong(1, id);
 
                 if (preparedStatement.executeUpdate() == 0) {
