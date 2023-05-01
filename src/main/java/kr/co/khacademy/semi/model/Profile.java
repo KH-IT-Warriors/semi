@@ -28,7 +28,8 @@ public class Profile {
 
 
     public static Profile of(HttpServletRequest req) {
-        Long id = (Long) req.getSession().getAttribute("accountId");
+        Long id = (Long) req.getSession().getAttribute("account-id");
+        String name = req.getParameter("name");
         String phoneNumber = req.getParameter("phone-number");
         String email = req.getParameter("email");
         Optional.ofNullable(phoneNumber)
@@ -39,6 +40,7 @@ public class Profile {
             .orElseThrow(RuntimeException::new);
         return Profile.builder()
             .accountId(id)
+            .name(name)
             .phoneNumber(phoneNumber)
             .email(email)
             .build();

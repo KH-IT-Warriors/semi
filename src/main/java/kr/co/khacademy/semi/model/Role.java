@@ -18,8 +18,8 @@ public class Role {
     String name;
 
     public static Role of(HttpServletRequest req) {
-        Long id = Long.valueOf(req.getParameter("role_id"));
-        String name = req.getParameter("role_name");
+        Long id = Long.valueOf(req.getParameter("role-id"));
+        String name = req.getParameter("role-name");
         return Role.builder()
             .id(id)
             .name(name)

@@ -22,7 +22,8 @@ public class UserController extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {
-                resp.sendRedirect("/WEB-INF/views/admin/user/signUp.jsp");
+                req.getRequestDispatcher("/WEB-INF/views/admin/user/signUp.jsp").forward(req, resp);
+//                resp.sendRedirect("/WEB-INF/views/admin/user/signUp.jsp");
             } else if ("/list".equals(pathInfo)) {
                 List<User> normalUsers = userDao.readNormalUser();
                 req.setAttribute("normalUsers", normalUsers);

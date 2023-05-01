@@ -23,10 +23,10 @@ public class Account {
     String password;
 
     public static Account of(HttpServletRequest req) {
-        Long id = Long.valueOf(req.getParameter("accountId"));
-        Long roleId = Long.valueOf(req.getParameter("roleId"));
+        Long id = Long.valueOf(req.getParameter("account-id"));
+        Long roleId = Long.valueOf(req.getParameter("role-id"));
         String username = req.getParameter("username");
-        String password = req.getParameter(req.getParameter("password"));
+        String password = req.getParameter("password");
         Optional.ofNullable(username)
             .filter(Account::validateUsername)
             .orElseThrow(RuntimeException::new);
@@ -65,7 +65,7 @@ public class Account {
         if (!username.matches(hasNumber)) {
             return false;
         }
-        if (6 < username.length() && username.length() < 10) {
+        if (username.length() < 6 || username.length() > 10) {
             return false;
         }
         return true;
