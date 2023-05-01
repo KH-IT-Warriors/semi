@@ -50,8 +50,6 @@ public class ReplyDao {
         }
     }
 
-
-
     public List<Reply> read() throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
             try (
