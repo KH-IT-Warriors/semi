@@ -21,6 +21,8 @@ public class UserDao {
         return instance;
     }
 
+    private static final String SELECT_AL_NORMAL_USER_SQL =
+        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id AND A.role_id = 1";
     private static final String SELECT_ALL_USER_SQL =
         "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id";
     private static final String SELECT_USER_SQL =
@@ -36,9 +38,9 @@ public class UserDao {
     private static final String DELETE_ADMIN_PROFILE_SQL =
         "DELETE FROM profiles WHERE account_id = ?";
 
-    public List<User> read() throws SQLException {
+    public List<User> readNormalUser() throws SQLException {
         try (Connection connection = DataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USER_SQL);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_AL_NORMAL_USER_SQL);
              ResultSet resultSet = preparedStatement.executeQuery();) {
             List<User> users = new ArrayList<>();
             while (resultSet.next()) {
