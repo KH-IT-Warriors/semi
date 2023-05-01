@@ -23,6 +23,8 @@ public class UserDao {
 
     private static final String SELECT_ALL_USER_SQL =
         "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id";
+    private static final String SELECT_USER_SQL =
+        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id WHERE id = ?";
 
 
     public List<User> read() throws SQLException {
@@ -34,6 +36,16 @@ public class UserDao {
                 users.add(User.of(resultSet));
             }
             return users;
+        }
+    }
+
+    public User read(Long id) throws SQLException {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_SQL)) {
+            preparedStatement.setLong(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return User.of(resultSet);
+            }
         }
     }
 }

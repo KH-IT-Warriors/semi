@@ -33,6 +33,11 @@ public class NormalUserController extends HttpServlet {
                     );
                 req.setAttribute("normalUsers", normalUsers);
                 req.getRequestDispatcher("/WEB-INF/views/admin/account/normal_user/list.jsp").forward(req, resp);
+            } else if ("/item".equals(pathInfo)) {
+                Long id = Long.valueOf(req.getParameter("id"));
+                User normalUser = userDao.read(id);
+                req.setAttribute("normalUser", normalUser);
+                req.getRequestDispatcher("/WEB-INF/views/admin/account/normal_user/item.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error.jsp");
