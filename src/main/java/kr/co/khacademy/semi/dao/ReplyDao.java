@@ -18,7 +18,7 @@ public class ReplyDao {
     private static final String INSERT_SQL =
         "INSERT INTO reply VALUES (DEFAULT, ?, ?, ?, DEFAULT, DEFAULT)";
 
-    private static final String SELECT_SQL =
+    private static final String SELECT_BY_PRODUCT_ID_SQL =
         "SELECT * FROM reply WHERE productId = ?";
 
     private static final String UPDATE_BY_ID_SQL =
@@ -52,7 +52,7 @@ public class ReplyDao {
     public List<Reply> read(Reply reply) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
             try (
-                PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SQL)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_PRODUCT_ID_SQL)) {
 
                 preparedStatement.setLong(1, reply.getProductId());
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
