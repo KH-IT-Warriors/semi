@@ -41,6 +41,11 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+    <groupId>jstl</groupId>
+    <artifactId>jstl</artifactId>
+    <version>1.2</version>
+    </dependency>
+    <dependency>
       <groupId>org.jasypt</groupId>
       <artifactId>jasypt</artifactId>
       <version>1.9.3</version>
