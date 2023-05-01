@@ -11,10 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-@WebServlet("/admin/account/normal-user/*")
+@WebServlet("/admin/normal-user/*")
 public class NormalUserController extends HttpServlet {
 
     private static final UserDao userDao = UserDao.getInstance();
@@ -24,13 +23,7 @@ public class NormalUserController extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             if ("/list".equals(pathInfo)) {
-                List<User> normalUsers = userDao.read();
-                normalUsers.stream()
-                    .filter((user) -> {
-                        return user.getAccount().getRoleId() == 1;
-                    })
-                    .collect(Collectors.toList()
-                    );
+                List<User> normalUsers = userDao.readNormalUser();
                 req.setAttribute("normalUsers", normalUsers);
                 req.getRequestDispatcher("/WEB-INF/views/admin/account/normal_user/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
