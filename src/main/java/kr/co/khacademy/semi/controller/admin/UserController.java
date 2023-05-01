@@ -24,19 +24,22 @@ public class UserController extends HttpServlet {
             if ("/register".equals(pathInfo)) {
                 resp.sendRedirect("/WEB-INF/views/admin/user/signUp.jsp");
             } else if ("/list".equals(pathInfo)) {
-                List<User> normalUsers = userDao.readNormalUser();
-                req.setAttribute("normalUsers", normalUsers);
-                req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
+                String type = req.getParameter("type");
+                if ("normalUser".equals(type)) {
+                    List<User> normalUsers = userDao.readNormalUser();
+                    req.setAttribute("users", normalUsers);
+                    req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
+                } else if ("adminUser".equals(type)) {
+                    List<User> adminUsers = userDao.readAdminUser();
+                    req.setAttribute("users", adminUsers);
+                    req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
+                }
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
-                User normalUser = userDao.read(id);
-                req.setAttribute("normalUser", normalUser);
+                User user = userDao.read(id);
+                req.setAttribute("user", user);
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/item.jsp").forward(req, resp);
-            } else if ("/admin-list".equals(pathInfo)) {
-                List<User> adminUsers = userDao.readAdminUser();
-                req.setAttribute("adminUsers", adminUsers);
-                req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
-            } else if ("/modify".equals(pathInfo)) {
+            }  else if ("/modify".equals(pathInfo)) {
                 resp.sendRedirect("WEB-INF/views/admin/user/modify.jsp");
             }
         } catch (SQLException e) {
