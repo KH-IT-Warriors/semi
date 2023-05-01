@@ -21,10 +21,10 @@ public class UserDao {
         return instance;
     }
 
-    private static final String SELECT_AL_NORMAL_USER_SQL =
-        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id AND A.role_id = 1";
-    private static final String SELECT_ALL_USER_SQL =
-        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id";
+    private static final String SELECT_ALL_NORMAL_USER_SQL =
+        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE A.role_id = 1";
+    private static final String SELECT_ALL_ADMIN_USER_SQL =
+        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE A.role_id != 1";
     private static final String SELECT_USER_SQL =
         "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id WHERE id = ?";
     private static final String UPDATE_ACCOUNT_SQL =
@@ -40,7 +40,7 @@ public class UserDao {
 
     public List<User> readNormalUser() throws SQLException {
         try (Connection connection = DataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_AL_NORMAL_USER_SQL);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_NORMAL_USER_SQL);
              ResultSet resultSet = preparedStatement.executeQuery();) {
             List<User> users = new ArrayList<>();
             while (resultSet.next()) {
@@ -50,26 +50,41 @@ public class UserDao {
         }
     }
 
+    public List<User> readAdminUser() throws SQLException {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ADMIN_USER_SQL);
+             ResultSet resultSet = preparedStatement.executeQuery();) {
+            List<User> users = new ArrayList<>();
+            while (resultSet.next()) {
+                users.add(User.of(resultSet));
+            }
+            return users;
+        }
+    }
     public User read(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_SQL)) {
             preparedStatement.setLong(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return User.of(resultSet);
+                if (resultSet.next()) {
+                    return User.of(resultSet);
+                } else {
+                    throw new SQLException();
+                }
             }
         }
     }
 
-    public void update(User user, Long targetId) throws SQLException {
+    public void update(User user) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
             if (user.getAccount().getPassword().isEmpty()) {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_SQL)) {
                     preparedStatement.setLong(1, user.getAccount().getStatusId());
                     preparedStatement.setLong(2, user.getAccount().getRoleId());
-                    preparedStatement.setLong(3, targetId);
+                    preparedStatement.setLong(3, user.getAccount().getId());
                     if (preparedStatement.executeUpdate() == 0) {
                         connection.rollback();
-                        throw new RuntimeException();
+                        throw new SQLException();
                     }
                 }
             } else {
@@ -77,10 +92,10 @@ public class UserDao {
                     preparedStatement.setLong(1, user.getAccount().getStatusId());
                     preparedStatement.setLong(2, user.getAccount().getRoleId());
                     preparedStatement.setString(3, user.getAccount().getPassword());
-                    preparedStatement.setLong(4, targetId);
+                    preparedStatement.setLong(4, user.getAccount().getId());
                     if (preparedStatement.executeUpdate() == 0) {
                         connection.rollback();
-                        throw new RuntimeException();
+                        throw new SQLException();
                     }
                 }
             }
@@ -91,7 +106,7 @@ public class UserDao {
                 preparedStatement.setString(3, user.getProfile().getEmail());
                 preparedStatement.setLong(4, user.getProfile().getMileage());
                 preparedStatement.setLong(5, user.getProfile().getGradeId());
-                preparedStatement.setLong(6, targetId);
+                preparedStatement.setLong(6, user.getAccount().getId());
                 if (preparedStatement.executeUpdate() == 0) {
                     connection.rollback();
                     throw new SQLException();
@@ -107,14 +122,14 @@ public class UserDao {
                 preparedStatement.setLong(1, targetId);
                 if (preparedStatement.executeUpdate() == 0) {
                     connection.rollback();
-                    throw new RuntimeException();
+                    throw new SQLException();
                 }
             }
             try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ADMIN_ACCOUNT_SQL)) {
                 preparedStatement.setLong(1, targetId);
                 if (preparedStatement.executeUpdate() == 0) {
                     connection.rollback();
-                    throw new RuntimeException();
+                    throw new SQLException();
                 }
             }
             connection.commit();
