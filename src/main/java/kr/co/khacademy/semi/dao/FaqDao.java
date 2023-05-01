@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import kr.co.khacademy.semi.common.DataSource;
 import kr.co.khacademy.semi.model.Faq;
@@ -32,7 +31,7 @@ public class FaqDao {
                 preparedStatement.setString(1, faq.getTitle());
                 preparedStatement.setString(2, faq.getContents());
 
-                if(preparedStatement.executeUpdate() == 0) {
+                if (preparedStatement.executeUpdate() == 0) {
                     throw new SQLException();
                 }
                 connection.commit();
