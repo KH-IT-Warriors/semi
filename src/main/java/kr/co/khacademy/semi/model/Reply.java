@@ -25,6 +25,7 @@ public class Reply {
     Timestamp created;
 
     public static Reply of(HttpServletRequest req) {
+
         //TODO: 세션아디 받아오기
         String contents = Optional.of(req.getParameter("contents"))
             .filter(Reply::validateContents)
@@ -34,9 +35,14 @@ public class Reply {
             .map(Long::valueOf)
             .orElse(0L);
 
+        Long productId = Optional.of(req.getParameter("product-id"))
+            .map(Long::valueOf)
+            .orElseThrow(RuntimeException::new);
+
         return Reply.builder()
-            .contents(contents)
             .parentReplyId(parentReplyId)
+            .productId(productId)
+            .contents(contents)
             .build();
     }
     public static Reply of(ResultSet resultSet) throws SQLException {

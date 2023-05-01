@@ -32,8 +32,9 @@ public class ReplyController extends HttpServlet {
                 resp.sendRedirect(location);
             } else if ("/delete".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
+                Long productId = Long.valueOf(req.getParameter("product-id"));
                 replyDao.delete(id);
-                String location = String.format("/product/item?id=%d", id);
+                String location = String.format("/product/item?id=%d", productId);
                 resp.sendRedirect(location);
             }
         } catch (SQLException e) {
