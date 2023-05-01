@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/reply/*")
+@WebServlet("/admin/reply/*")
 public class ReplyController extends HttpServlet {
 
     private static final ReplyDao replyDao = ReplyDao.getInstance();
