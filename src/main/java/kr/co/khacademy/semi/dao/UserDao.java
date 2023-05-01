@@ -34,6 +34,8 @@ public class UserDao {
         "UPDATE accounts SET status_id = ?, role_id = ?, password = ? WHERE id = ?";
     private static final String UPDATE_PROFILE_SQL =
         "UPDATE profiles SET name = ?, phoneNumber = ?, email = ?, mileage = ?, grade_id = ? WHERE account_id = ?";
+    private static final String UPDATE_ACCOUNT_DEL_STATUS_SQL =
+        "UPDATE accounts SET status_id = ? WHERE id = ?";
 
 
     public void create(User user) throws SQLException {
@@ -111,6 +113,19 @@ public class UserDao {
                     connection.rollback();
                     throw new SQLException();
                 }
+            }
+            connection.commit();
+        }
+    }
+
+    public void delete(Long id) throws SQLException {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_DEL_STATUS_SQL)) {
+            preparedStatement.setLong(1, 0);
+            preparedStatement.setLong(2, id);
+            if (preparedStatement.executeUpdate() == 0) {
+                connection.rollback();
+                throw new RuntimeException();
             }
             connection.commit();
         }

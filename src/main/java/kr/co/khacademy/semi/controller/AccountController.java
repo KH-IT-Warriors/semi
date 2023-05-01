@@ -27,6 +27,8 @@ public class AccountController extends HttpServlet {
                 User user = userDao.read(id);
                 req.setAttribute("user", user);
                 req.getRequestDispatcher("/WEB-INF/views/account/item.jsp").forward(req, resp);
+            } else if ("/delete".equals(pathInfo)) {
+                resp.sendRedirect("WEB-INF/views/account/delete.jsp");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -46,6 +48,11 @@ public class AccountController extends HttpServlet {
                 User user = User.of(req);
                 userDao.update(user);
                 resp.sendRedirect("/account/item");
+            } else if ("/delete".equals(pathInfo)) {
+                Long id = (Long) req.getSession().getAttribute("accountId");
+                Boolean accept = Boolean.valueOf(req.getParameter("acceptDelete"));
+                userDao.delete(id);
+                resp.sendRedirect("index.jsp");
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error.jsp");
