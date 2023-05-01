@@ -39,7 +39,6 @@ public class FaqContorller extends HttpServlet {
         } catch (SQLException e) {
             resp.sendRedirect("/error");
         }
-
     }
 
     @Override
