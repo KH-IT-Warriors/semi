@@ -46,6 +46,15 @@ public class NormalUserController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        try {
+            String pathInfo = req.getPathInfo();
+            if ("/modify".equals(pathInfo)) {
+                User user = User.of(req);
+                Long targetId = Long.valueOf(req.getParameter("target-id"));
+                userDao.update(user, targetId);
+            }
+        } catch (SQLException e) {
+            resp.sendRedirect("/error.jsp");
+        }
     }
 }
