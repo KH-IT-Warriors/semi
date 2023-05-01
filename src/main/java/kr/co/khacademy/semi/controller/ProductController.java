@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import kr.co.khacademy.semi.dao.ProductDao;
 import kr.co.khacademy.semi.model.Product;
 
-@WebServlet("/product/*")
+@WebServlet("/admin/product/*")
 public class ProductController extends HttpServlet {
 
     private static final ProductDao productDao = ProductDao.getInstance();
@@ -23,16 +23,16 @@ public class ProductController extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {
-                resp.sendRedirect("/WEB-INF/views/product/register.jsp");
+                resp.sendRedirect("/WEB-INF/views/admin/product/register.jsp");
             } else if ("/list".equals(pathInfo)) {
                 List<Product> products = productDao.read();
                 req.setAttribute("products", products);
-                req.getRequestDispatcher("/WEB-INF/views/product/list.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/product/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
                 Product product = productDao.read(id);
                 req.setAttribute("product", product);
-                req.getRequestDispatcher("/WEB-INF/views/product/item.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/product/item.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error");
