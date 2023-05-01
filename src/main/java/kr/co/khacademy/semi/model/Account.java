@@ -23,7 +23,7 @@ public class Account {
     String password;
 
     public static Account of(HttpServletRequest req) {
-        Long id = (Long) req.getSession().getAttribute("accountId");
+        Long id = Long.valueOf(req.getParameter("accountId"));
         Long roleId = Long.valueOf(req.getParameter("roleId"));
         String username = req.getParameter("username");
         String password = req.getParameter(req.getParameter("password"));
@@ -32,8 +32,7 @@ public class Account {
             .orElseThrow(RuntimeException::new);
         Optional.ofNullable(password)
             .filter(Account::validatePassword)
-            .map(Account::encryptPassword)
-            .orElseThrow(RuntimeException::new);
+            .map(Account::encryptPassword);
         return Account.builder()
             .id(id)
             .roleId(roleId)
