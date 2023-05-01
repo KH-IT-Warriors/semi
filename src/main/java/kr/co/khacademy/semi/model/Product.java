@@ -32,14 +32,6 @@ public class Product {
             throw new IllegalArgumentException();
         }
         
-        if(!validateProductSummary(req.getParameter("summary"))) {
-            throw new IllegalArgumentException();
-        }
-        
-        if (!validateProductDetail(req.getParameter("detail"))) {
-            throw new IllegalArgumentException();
-        }
-        
         return Product.builder()
             .name(req.getParameter("name"))
             .title(req.getParameter("title"))
@@ -51,21 +43,11 @@ public class Product {
             .build();
     }
     
-
     
     private static Boolean validateProductTitle(String title) {   
         return (3 <= title.length() ) && (title.length() <= 200);
     }
-    
-    private static Boolean validateProductSummary(String summary) {
-        return (summary.length() >= 30);     
-    }
-    
-    private static Boolean validateProductDetail (String detail) {
-        return (detail.length() >= 150);
-    }
-    
-  
+     
    public static Product of (ResultSet resultSet) throws SQLException{
       
        return Product.builder()
