@@ -23,7 +23,7 @@ public class ProductDao {
     private static final String SELECT_SQL = "SELECT * FROM product";
 
     private static final String UPDATE_BY_ID_SQL =
-            "UPDATE product SET name = ?, title = ?, summary = ?, detail = ?, price = ?, quantity = ?, category_id = ?" +
+            "UPDATE product SET name = ?, price = ?, quantity = ?, category = ?, summary = ?, thumbnail_imageurl = ?, detail_imageurl = ?" +
                     "WHERE id = ?";
 
     private static final String DELETE_BY_ID_SQL = "DELETE FROM product WHERE id = ?";
@@ -41,12 +41,12 @@ public class ProductDao {
         try (Connection connection = DataSource.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL)) {
                 preparedStatement.setString(1, product.getName());
-                preparedStatement.setString(2, product.getTitle());
-                preparedStatement.setString(3, product.getSummary());
-                preparedStatement.setString(4, product.getDetail());
-                preparedStatement.setLong(5, product.getPrice());
-                preparedStatement.setLong(6, product.getQuantity());
-                preparedStatement.setLong(7, product.getCategoryId());
+                preparedStatement.setLong(2, product.getPrice());
+                preparedStatement.setLong(3, product.getQuantity());
+                preparedStatement.setString(4, product.getCategory());
+                preparedStatement.setString(5, product.getSummary());
+                preparedStatement.setString(6, product.getThumbnailImageUrl());
+                preparedStatement.setString(7, product.getDetailImageUrl());
 
                 if (preparedStatement.executeUpdate() == 0) {
                     throw new SQLException();
@@ -92,12 +92,12 @@ public class ProductDao {
         try (Connection connection = DataSource.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BY_ID_SQL);) {
                 preparedStatement.setString(1, product.getName());
-                preparedStatement.setString(2, product.getTitle());
-                preparedStatement.setString(3, product.getSummary());
-                preparedStatement.setString(4, product.getDetail());
-                preparedStatement.setLong(5, product.getPrice());
-                preparedStatement.setLong(6, product.getQuantity());
-                preparedStatement.setLong(7, product.getCategoryId());
+                preparedStatement.setLong(2, product.getPrice());
+                preparedStatement.setLong(3, product.getQuantity());
+                preparedStatement.setString(4, product.getCategory());
+                preparedStatement.setString(5, product.getSummary());
+                preparedStatement.setString(6, product.getThumbnailImageUrl());
+                preparedStatement.setString(7, product.getDetailImageUrl());
                 preparedStatement.setLong(8, product.getId());
 
                 if (preparedStatement.executeUpdate() == 0) {
