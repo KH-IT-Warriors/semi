@@ -19,6 +19,7 @@ public class User {
         return User.builder()
             .account(Account.of(req))
             .profile(Profile.of(req))
+            .role(Role.of(req))
             .build();
     }
 
