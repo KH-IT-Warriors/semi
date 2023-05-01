@@ -33,6 +33,8 @@ public class ProductController extends HttpServlet {
                 Product product = productDao.read(id);
                 req.setAttribute("product", product);
                 req.getRequestDispatcher("/WEB-INF/views/admin/product/item.jsp").forward(req, resp);
+            } else if ("/modify".equals(pathInfo)) {
+                resp.sendRedirect("/WEB-INF/views/admin/product/modify.jsp");
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error");
