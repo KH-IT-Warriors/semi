@@ -28,15 +28,15 @@ public class Product {
 
     public static Product of(HttpServletRequest req) {
         
-        if(validateProductTitle(req.getParameter("title"))) {
+        if(!validateProductTitle(req.getParameter("title"))) {
             throw new IllegalArgumentException();
         }
         
-        if(validateProductSummary(req.getParameter("summary"))) {
+        if(!validateProductSummary(req.getParameter("summary"))) {
             throw new IllegalArgumentException();
         }
         
-        if (validateProductDetail(req.getParameter("detail"))) {
+        if (!validateProductDetail(req.getParameter("detail"))) {
             throw new IllegalArgumentException();
         }
         
@@ -53,21 +53,21 @@ public class Product {
     
 
     
-    private static boolean validateProductTitle(String title) {   
-        return (title.length() >= 3) && (title.length() <= 200);
+    private static Boolean validateProductTitle(String title) {   
+        return (3 <= title.length() ) && (title.length() <= 200);
     }
     
-    private static boolean validateProductSummary(String summary) {
+    private static Boolean validateProductSummary(String summary) {
         return (summary.length() >= 30);     
     }
     
-    private static boolean validateProductDetail (String detail) {
+    private static Boolean validateProductDetail (String detail) {
         return (detail.length() >= 150);
     }
     
   
-   public static Product of (ResultSet resultSet){
-       try {  
+   public static Product of (ResultSet resultSet) throws SQLException{
+      
        return Product.builder()
                .id(resultSet.getLong("id"))
                .name(resultSet.getString("name"))
@@ -78,8 +78,6 @@ public class Product {
                .quantity(resultSet.getLong("quantity"))
                .categoryId(resultSet.getLong("category_id"))
                .build();    
-       } catch (SQLException e) {
-           throw new IllegalArgumentException();
-       } 
+   
    }
 }
