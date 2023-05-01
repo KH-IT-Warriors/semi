@@ -21,7 +21,9 @@ public class UserController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String pathInfo = req.getPathInfo();
-            if ("/list".equals(pathInfo)) {
+            if ("/register".equals(pathInfo)) {
+                resp.sendRedirect("/WEB-INF/views/admin/user/signUp.jsp");
+            } else if ("/list".equals(pathInfo)) {
                 List<User> normalUsers = userDao.readNormalUser();
                 req.setAttribute("normalUsers", normalUsers);
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
@@ -44,7 +46,11 @@ public class UserController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String pathInfo = req.getPathInfo();
-            if ("/modify".equals(pathInfo)) {
+            if ("/register".equals(pathInfo)) {
+                User user = User.of(req);
+                userDao.create(user);
+                resp.sendRedirect("/admin/user/list");
+            } else if ("/modify".equals(pathInfo)) {
                 User user = User.of(req);
                 userDao.update(user);
             } else if ("/delete".equals(pathInfo)) {

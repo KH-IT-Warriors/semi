@@ -21,6 +21,10 @@ public class UserDao {
         return instance;
     }
 
+    private static final String INSERT_ACCOUNT_SQL =
+        "INSERT INTO accounts VALUES (0, DEFAULT, ?, ?, ?)";
+    private static final String INSERT_PROFILE_SQL =
+        "INSERT INTO profiles VALUES (?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, DEFAULT)";
     private static final String SELECT_ALL_NORMAL_USER_SQL =
         "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE A.role_id = 1";
     private static final String SELECT_ALL_ADMIN_USER_SQL =
@@ -37,6 +41,37 @@ public class UserDao {
         "DELETE FROM accounts WHERE id = ?";
     private static final String DELETE_ADMIN_PROFILE_SQL =
         "DELETE FROM profiles WHERE account_id = ?";
+
+
+    public void create(User user) throws SQLException {
+        try(Connection connection = DataSource.getConnection();){
+            Long generatedId;
+            try(PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ACCOUNT_SQL, PreparedStatement.RETURN_GENERATED_KEYS)){
+                preparedStatement.setLong(1, user.getAccount().getRoleId());
+                preparedStatement.setString(2, user.getAccount().getUsername());
+                preparedStatement.setString(3, user.getAccount().getPassword());
+                if (preparedStatement.executeUpdate() == 0) {
+                    connection.rollback();
+                    throw new SQLException();
+                }
+                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()){
+                    resultSet.next();
+                    generatedId = resultSet.getLong(1);
+                }
+            }
+            try(PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PROFILE_SQL)){
+                preparedStatement.setLong(1, generatedId);
+                preparedStatement.setString(2, user.getProfile().getName());
+                preparedStatement.setString(3, user.getProfile().getPhoneNumber());
+                preparedStatement.setString(4, user.getProfile().getEmail());
+                if (preparedStatement.executeUpdate() == 0) {
+                    connection.rollback();
+                    throw new SQLException();
+                }
+            }
+            connection.commit();
+        }
+    }
 
     public List<User> readNormalUser() throws SQLException {
         try (Connection connection = DataSource.getConnection();
