@@ -15,15 +15,21 @@ import java.sql.SQLException;
 public class AccountController extends HttpServlet {
 
     private static final UserDao userDao = UserDao.getInstance();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {
                 resp.sendRedirect("/WEB-INF/views/account/register.jsp");
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            } else if ("/item".equals(pathInfo)) {
+                Long id = (Long) req.getSession().getAttribute("accountId");
+                User user = userDao.read(id);
+                req.setAttribute("user", user);
+                req.getRequestDispatcher("/WEB-INF/views/account/item.jsp").forward(req, resp);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -37,7 +43,7 @@ public class AccountController extends HttpServlet {
                 req.setAttribute("registerSuccess", true);
                 req.getRequestDispatcher("index.jsp").forward(req, resp);
             }
-        } catch(SQLException e){
+        } catch (SQLException e) {
             resp.sendRedirect("/error.jsp");
         }
     }

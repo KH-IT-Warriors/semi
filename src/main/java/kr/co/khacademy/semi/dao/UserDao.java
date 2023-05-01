@@ -26,6 +26,8 @@ public class UserDao {
         "INSERT INTO accounts VALUES (0, DEFAULT, ?, ?, ?)";
     private static final String INSERT_PROFILE_SQL =
         "INSERT INTO profiles VALUES (?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, DEFAULT)";
+    private static final String SELECT_USER_SQL =
+        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id WHERE id = ?";
 
 
     public void create(User user) throws SQLException {
@@ -55,6 +57,16 @@ public class UserDao {
                 }
             }
             connection.commit();
+        }
+    }
+
+    public User read(Long id) throws SQLException {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_SQL)) {
+            preparedStatement.setLong(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return User.of(resultSet);
+            }
         }
     }
 }
