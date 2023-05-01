@@ -25,8 +25,8 @@ public class inquiryController extends HttpServlet {
             if ("/register".equals(pathInfo)) {
                 resp.sendRedirect("/WEB-INF/views/inquiry/register.jsp");
             } else if ("/list".equals(pathInfo)) {
-                List<Inquiry> inquirys = inquiryDao.read();
-                req.setAttribute("inquirys", inquirys);
+                List<Inquiry> inquiries = inquiryDao.read();
+                req.setAttribute("inquiries", inquiries);
                 req.getRequestDispatcher("/WEB-INF/views/inquiry/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
