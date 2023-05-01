@@ -36,6 +36,8 @@ public class UserController extends HttpServlet {
                 List<User> adminUsers = userDao.readAdminUser();
                 req.setAttribute("adminUsers", adminUsers);
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
+            } else if ("/modify".equals(pathInfo)) {
+                resp.sendRedirect("WEB-INF/views/admin/user/modify.jsp");
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error.jsp");
