@@ -23,7 +23,7 @@ public class ProductController extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {
-                resp.sendRedirect("/WEB-INF/views/admin/product/register.jsp");
+                req.getRequestDispatcher("/WEB-INF/views/admin/product/register.jsp").forward(req, resp);;
             } else if ("/list".equals(pathInfo)) {
                 List<Product> products = productDao.read();
                 req.setAttribute("products", products);
