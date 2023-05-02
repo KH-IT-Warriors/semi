@@ -22,6 +22,7 @@ public class AnnouncementController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String pathInfo = req.getPathInfo();
+            System.out.println(pathInfo);
             if ("/register".equals(pathInfo)) {
                 req.getRequestDispatcher("/WEB-INF/views/admin/announcement/register.jsp").forward(req, resp);
             } else if ("/list".equals(pathInfo)) {
@@ -37,6 +38,7 @@ public class AnnouncementController extends HttpServlet {
                 req.getRequestDispatcher("/WEB-INF/views/admin/announcement/item.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             resp.sendRedirect("/error");
         }
     }
@@ -45,10 +47,13 @@ public class AnnouncementController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String pathInfo = req.getPathInfo();
+            System.out.println(req.getMethod());
+            System.out.println(pathInfo);
             if ("/register".equals(pathInfo)) {
+                System.out.println(1);
                 Announcement announcement = Announcement.of(req);
                 announcementDao.create(announcement);
-                resp.sendRedirect("/admin/announcement/list.jsp");
+                resp.sendRedirect("/admin/announcement/list");
             } else if ("/modify".equals(pathInfo)) {
                 Announcement announcement = Announcement.of(req);
                 announcementDao.update(announcement);
@@ -60,6 +65,7 @@ public class AnnouncementController extends HttpServlet {
                 resp.sendRedirect("/admin/announcement/list");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             resp.sendRedirect("/error");
         }
     }

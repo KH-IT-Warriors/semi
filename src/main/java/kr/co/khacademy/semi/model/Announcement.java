@@ -1,6 +1,7 @@
 package kr.co.khacademy.semi.model;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,24 +33,18 @@ public class Announcement {
                 .contents(contents)
                 .build();
     }
-    
-    
+        
     private static boolean validateTitle(String title) {
         return (6 <= title.length()) && (title.length() <= 100);
     }
 
-
-    public static Announcement of(ResultSet resultSet) {
-        try {
+    public static Announcement of(ResultSet resultSet) throws SQLException {
         return Announcement.builder()
                 .id(resultSet.getLong("id"))
                 .accountId(resultSet.getLong("account_id"))
                 .title(resultSet.getString("title"))
                 .contents(resultSet.getString("contents"))
-                .date(resultSet.getTimestamp("date"))
+                .date(resultSet.getTimestamp("announcement_date"))
                 .build();
-        }catch (Exception e) {
-            throw new IllegalArgumentException();
-        }
     }
 }

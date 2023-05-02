@@ -13,40 +13,21 @@
             <title>Insert title here</title>
     </head>
     <style>
+        div {
+            border: 1px solid black;
+        }
+
         #title {
             width: 100%;
         }
     </style>
 
     <body>
-        <form action="/register" method="get">
+        <form action="/admin/announcement/register" method="post">
             <div class="container">
                 <div class="row header"></div>
                 <div class="row body">
-                    <div class="col-3 left-menu">
-                        <strong align="center">상품 관리</strong>
-                        <ul class="list-group">
-                            <li class="list-group-item">상품 정보 관리</li>
-                        </ul>
-                        <strong align="center">회원 관리</strong>
-                        <ul class="list-group">
-                            <li class="list-group-item">회원 계정 관리</li>
-                        </ul>
-                        <strong align="center">관리자 관리</strong>
-                        <ul class="list-group">
-                            <li class="list-group-item">관리자 계정 관리</li>
-                        </ul>
-                        <strong align="center">주문 관리</strong>
-                        <ul class="list-group">
-                            <li class="list-group-item">주문 내역 관리</li>
-                        </ul>
-                        <strong align="center">고객 센터 관리</strong>
-                        <ul class="list-group">
-                            <li class="list-group-item">공지사항</li>
-                            <li class="list-group-item">자주 묻는 질문</li>
-                            <li class="list-group-item">1:1 문의 내역</li>
-                        </ul>
-                    </div>
+                    <div class="col-3 left-menu"></div>
                     <div class="col-7">
                         <div class="row">
                             <div class="col-12" align="center">공지사항 제목</div>
@@ -54,7 +35,7 @@
                                 <input type="text" name="title" id="title" placeholder="제목을 입력해주세요.">
                             </div>
                             <br>
-                            <textarea name="editordata" id="summernote"></textarea>
+                            <textarea name="contents" id="summernote"></textarea>
                             <div class="col-12">
                                 <div class="row">
                                     <div class="col-12" align="right">
