@@ -19,6 +19,7 @@
   src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
   integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
   crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css"
 	rel="stylesheet">
@@ -83,7 +84,8 @@ div {
                     lang: "ko-KR",                    // 한글 설정
                     placeholder: '최대 2048자까지 쓸 수 있습니다'    //placeholder 설정
 
-                });
+                }
+                );
             });
         </script>
 </body>
