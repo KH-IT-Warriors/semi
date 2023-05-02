@@ -2,6 +2,7 @@ package kr.co.khacademy.semi.controller.admin;
 
 import kr.co.khacademy.semi.dao.GradeDao;
 import kr.co.khacademy.semi.dao.UserDao;
+import kr.co.khacademy.semi.model.Criteria;
 import kr.co.khacademy.semi.model.Grade;
 import kr.co.khacademy.semi.model.User;
 import lombok.extern.java.Log;
@@ -31,14 +32,16 @@ public class UserController extends HttpServlet {
             if ("/register".equals(pathInfo)) {
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/register.jsp").forward(req, resp);
             } else if ("/list".equals(pathInfo)) {
-                String type = req.getParameter("type");
-                if ("normal".equals(type)) {
-                    List<User> normalUsers = userDao.readNormalUser();
-                    req.setAttribute("type", "normal");
+                Criteria criteria = Criteria.of(req);
+                Long start = (criteria.getPageNumber() * criteria.getAmount()) - (criteria.getAmount() - 1);
+                Long end = criteria.getPageNumber() * criteria.getAmount();
+                if ("normal".equals(criteria.getType())) {
+                    List<User> normalUsers = userDao.readNormalUser(start, end);
+                    req.setAttribute("criteria", criteria);
                     req.setAttribute("users", normalUsers);
                 } else {
-                    List<User> adminUsers = userDao.readAdminUser();
-                    req.setAttribute("type", "admin");
+                    List<User> adminUsers = userDao.readAdminUser(start, end);
+                    req.setAttribute("criteria", criteria);
                     req.setAttribute("users", adminUsers);
                 }
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);

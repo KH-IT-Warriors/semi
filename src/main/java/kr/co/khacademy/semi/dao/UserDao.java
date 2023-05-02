@@ -26,9 +26,9 @@ public class UserDao {
     private static final String INSERT_PROFILE_SQL =
         "INSERT INTO profiles VALUES (?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, DEFAULT)";
     private static final String SELECT_ALL_NORMAL_USER_SQL =
-        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE A.role_id = 1";
+        "SELECT A.*, P.*, R.* FROM (SELECT TMP.*, ROW_NUMBER() OVER(ORDER BY TMP.id ASC) N FROM accounts TMP WHERE TMP.role_id = 1) A JOIN profiles P ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE N BETWEEN ? AND ?";
     private static final String SELECT_ALL_ADMIN_USER_SQL =
-        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE A.role_id != 1";
+        "SELECT A.*, P.*, R.* FROM (SELECT TMP.*, ROW_NUMBER() OVER(ORDER BY TMP.id ASC) N FROM accounts TMP WHERE TMP.role_id != 1) A JOIN profiles P ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE N BETWEEN ? AND ?";
     private static final String SELECT_USER_SQL =
         "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE A.id = ?";
     private static final String UPDATE_ACCOUNT_SQL =
@@ -44,9 +44,9 @@ public class UserDao {
 
 
     public void create(User user) throws SQLException {
-        try(Connection connection = DataSource.getConnection();){
+        try (Connection connection = DataSource.getConnection();) {
             Long generatedId;
-            try(PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ACCOUNT_SQL, PreparedStatement.RETURN_GENERATED_KEYS)){
+            try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ACCOUNT_SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setLong(1, user.getAccount().getRoleId());
                 preparedStatement.setString(2, user.getAccount().getUsername());
                 preparedStatement.setString(3, user.getAccount().getPassword());
@@ -54,12 +54,12 @@ public class UserDao {
                     connection.rollback();
                     throw new SQLException();
                 }
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()){
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                     resultSet.next();
                     generatedId = resultSet.getLong(1);
                 }
             }
-            try(PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PROFILE_SQL)){
+            try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PROFILE_SQL)) {
                 preparedStatement.setLong(1, generatedId);
                 preparedStatement.setString(2, user.getProfile().getName());
                 preparedStatement.setString(3, user.getProfile().getPhoneNumber());
@@ -73,29 +73,36 @@ public class UserDao {
         }
     }
 
-    public List<User> readNormalUser() throws SQLException {
+    public List<User> readNormalUser(Long start, Long end) throws SQLException {
         try (Connection connection = DataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_NORMAL_USER_SQL);
-             ResultSet resultSet = preparedStatement.executeQuery();) {
-            List<User> users = new ArrayList<>();
-            while (resultSet.next()) {
-                users.add(User.of(resultSet));
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_NORMAL_USER_SQL);) {
+            preparedStatement.setLong(1, start);
+            preparedStatement.setLong(2, end);
+            try (ResultSet resultSet = preparedStatement.executeQuery();) {
+                List<User> users = new ArrayList<>();
+                while (resultSet.next()) {
+                    users.add(User.of(resultSet));
+                }
+                return users;
             }
-            return users;
         }
     }
 
-    public List<User> readAdminUser() throws SQLException {
+    public List<User> readAdminUser(Long start, Long end) throws SQLException {
         try (Connection connection = DataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ADMIN_USER_SQL);
-             ResultSet resultSet = preparedStatement.executeQuery();) {
-            List<User> users = new ArrayList<>();
-            while (resultSet.next()) {
-                users.add(User.of(resultSet));
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ADMIN_USER_SQL);) {
+            preparedStatement.setLong(1, start);
+            preparedStatement.setLong(2, end);
+            try (ResultSet resultSet = preparedStatement.executeQuery();) {
+                List<User> users = new ArrayList<>();
+                while (resultSet.next()) {
+                    users.add(User.of(resultSet));
+                }
+                return users;
             }
-            return users;
         }
     }
+
     public User read(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_SQL)) {
