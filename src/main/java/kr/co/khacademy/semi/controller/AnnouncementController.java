@@ -23,18 +23,18 @@ public class AnnouncementController extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {
-                resp.sendRedirect("/WEB-INF/views/announcement/register.jsp");
+                req.getRequestDispatcher("/WEB-INF/views/admin/announcement/register.jsp").forward(req, resp);
             } else if ("/list".equals(pathInfo)) {
                 List<Announcement> announcements = announcementDao.read();
                 req.setAttribute("announcements", announcements);
-                req.getRequestDispatcher("/WEB-INF/views/announcement/list.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/announcement/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
                 Announcement announcement = announcementDao.read(id);
                 req.setAttribute("announcement", announcement);
                 req.getRequestDispatcher("/WEB-INF/views/announcement/item.jsp").forward(req, resp);
             }else if("/modify".equals(pathInfo)) {
-                resp.sendRedirect("/WEB-INF/views/announcement/modify.jsp");
+                req.getRequestDispatcher("/WEB-INF/views/admin/announcement/item.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error");
