@@ -30,7 +30,7 @@ public class UserDao {
     private static final String SELECT_ALL_ADMIN_USER_SQL =
         "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE A.role_id != 1";
     private static final String SELECT_USER_SQL =
-        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id WHERE id = ?";
+        "SELECT * FROM profiles P JOIN accounts A ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE A.id = ?";
     private static final String UPDATE_ACCOUNT_SQL =
         "UPDATE accounts SET status_id = ?, role_id = ? WHERE id = ?";
     private static final String UPDATE_ACCOUNT_WITH_PW_SQL =
