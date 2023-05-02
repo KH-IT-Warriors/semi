@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import kr.co.khacademy.semi.dao.AddressDao;
 import kr.co.khacademy.semi.model.Address;
 
-@WebServlet("/address/*")
+@WebServlet("/admin/address/*")
 public class AddressController extends HttpServlet {
 
     private static final AddressDao addressDao = AddressDao.getInstance();
@@ -21,7 +21,7 @@ public class AddressController extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {
-                resp.sendRedirect("/WEB-INF/views/address/register.jsp");
+                req.getRequestDispatcher("/WEB-INF/views/address/register.jsp").forward(req, resp);
             } else if ("/list".equals(pathInfo)) {
                 List<Address> addresses = addressDao.read();
                 req.setAttribute("address", addresses);
@@ -30,7 +30,7 @@ public class AddressController extends HttpServlet {
                 Long id = Long.parseLong(req.getParameter("id"));
                 Long accountId = Long.valueOf(req.getParameter("accountId"));
                 Address address = addressDao.read(accountId);
-                req.setAttribute("product", address);
+                req.setAttribute("address", address);
                 req.getRequestDispatcher("/WEB-INF/views/product/item.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
