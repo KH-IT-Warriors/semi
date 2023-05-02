@@ -27,18 +27,20 @@ public class UserController extends HttpServlet {
             if ("/register".equals(pathInfo)) {
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/signUp.jsp").forward(req, resp);
             } else if ("/list".equals(pathInfo)) {
-                List<User> normalUsers = userDao.readNormalUser();
-                req.setAttribute("normalUsers", normalUsers);
+                String type = req.getParameter("type");
+                if ("normal".equals(type)) {
+                    List<User> normalUsers = userDao.readNormalUser();
+                    req.setAttribute("users", normalUsers);
+                } else {
+                    List<User> adminUsers = userDao.readAdminUser();
+                    req.setAttribute("users", adminUsers);
+                }
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
                 User normalUser = userDao.read(id);
                 req.setAttribute("normalUser", normalUser);
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/item.jsp").forward(req, resp);
-            } else if ("/admin-list".equals(pathInfo)) {
-                List<User> adminUsers = userDao.readAdminUser();
-                req.setAttribute("adminUsers", adminUsers);
-                req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
             } else if ("/modify".equals(pathInfo)) {
                 resp.sendRedirect("WEB-INF/views/admin/user/modify.jsp");
             }
