@@ -36,7 +36,7 @@ public class UserDao {
     private static final String UPDATE_ACCOUNT_WITH_PW_SQL =
         "UPDATE accounts SET status_id = ?, role_id = ?, password = ? WHERE id = ?";
     private static final String UPDATE_PROFILE_SQL =
-        "UPDATE profiles SET name = ?, phoneNumber = ?, email = ?, mileage = ?, grade_id = ? WHERE account_id = ?";
+        "UPDATE profiles SET name = ?, phone_number = ?, email = ?, mileage = ?, grade_id = ? WHERE account_id = ?";
     private static final String DELETE_ADMIN_ACCOUNT_SQL =
         "DELETE FROM accounts WHERE id = ?";
     private static final String DELETE_ADMIN_PROFILE_SQL =
