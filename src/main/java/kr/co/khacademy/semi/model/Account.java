@@ -22,23 +22,32 @@ public class Account {
     String username;
     String password;
 
-    public static Account of(HttpServletRequest req) {
-        Long id = Long.valueOf(req.getParameter("account-id"));
-        Long roleId = Long.valueOf(req.getParameter("role-id"));
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
+    public static Account of(Long id, Long statusId, Long roleId, String username, String password) {
         Optional.ofNullable(username)
             .filter(Account::validateUsername)
             .orElseThrow(RuntimeException::new);
-        Optional.ofNullable(password)
-            .filter(Account::validatePassword)
-            .map(Account::encryptPassword);
+        Optional<String> optionalPassword = Optional.ofNullable(password);
+        if (optionalPassword.isPresent()) {
+            password = optionalPassword.filter(Account::validatePassword)
+                .map(Account::encryptPassword)
+                .orElseThrow(RuntimeException::new);
+        }
         return Account.builder()
             .id(id)
+            .statusId(statusId)
             .roleId(roleId)
             .username(username)
             .password(password)
             .build();
+    }
+
+    public static Account of(HttpServletRequest req) {
+        Long id = Long.valueOf(req.getParameter("account-id"));
+        Long statusId = Long.valueOf(req.getParameter("status-id"));
+        Long roleId = Long.valueOf(req.getParameter("role-id"));
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        return of(id, statusId, roleId, username, password);
     }
 
     public static Account of(ResultSet resultSet) throws SQLException {

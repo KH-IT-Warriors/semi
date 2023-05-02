@@ -15,6 +15,14 @@ public class User {
     Profile profile;
     Role role;
 
+    public static User of(Account account, Profile profile, Role role) {
+        return User.builder()
+            .account(account)
+            .profile(profile)
+            .role(role)
+            .build();
+    }
+
     public static User of(HttpServletRequest req) {
         return User.builder()
             .account(Account.of(req))

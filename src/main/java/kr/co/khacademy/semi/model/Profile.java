@@ -26,12 +26,7 @@ public class Profile {
     Timestamp created;
     Timestamp lastLogin;
 
-
-    public static Profile of(HttpServletRequest req) {
-        Long id = (Long) req.getSession().getAttribute("account-id");
-        String name = req.getParameter("name");
-        String phoneNumber = req.getParameter("phone-number");
-        String email = req.getParameter("email");
+    public static Profile of(Long id, String name, String phoneNumber, String email, Long mileage, Long gradeId, Timestamp created, Timestamp lastLogin) {
         Optional.ofNullable(phoneNumber)
             .filter(Profile::validatePhoneNumber)
             .orElseThrow(RuntimeException::new);
@@ -43,7 +38,23 @@ public class Profile {
             .name(name)
             .phoneNumber(phoneNumber)
             .email(email)
+            .mileage(mileage)
+            .gradeId(gradeId)
+            .created(created)
+            .lastLogin(lastLogin)
             .build();
+    }
+
+    public static Profile of(HttpServletRequest req) {
+        Long id = (Long) req.getSession().getAttribute("account-id");
+        String name = req.getParameter("name");
+        String phoneNumber = req.getParameter("phone-number");
+        String email = req.getParameter("email");
+        Long mileage = Long.valueOf(req.getParameter("mileage"));
+        Long gradeId = Long.valueOf(req.getParameter("grade-id"));
+        Timestamp created = Timestamp.valueOf(req.getParameter("created"));
+        Timestamp lastLogin = Timestamp.valueOf(req.getParameter("last-login"));
+        return Profile.of(id, name, phoneNumber, email, mileage, gradeId, created, lastLogin);
     }
 
     public static Profile of(ResultSet resultSet) throws SQLException {

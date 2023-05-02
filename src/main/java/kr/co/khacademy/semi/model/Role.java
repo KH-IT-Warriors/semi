@@ -17,13 +17,17 @@ public class Role {
     Long id;
     String name;
 
-    public static Role of(HttpServletRequest req) {
-        Long id = Long.valueOf(req.getParameter("role-id"));
-        String name = req.getParameter("role-name");
+    public static Role of(Long id, String name) {
         return Role.builder()
             .id(id)
             .name(name)
             .build();
+    }
+
+    public static Role of(HttpServletRequest req) {
+        Long id = Long.valueOf(req.getParameter("role-id"));
+        String name = req.getParameter("role-name");
+        return Role.of(id, name);
     }
 
     public static Role of(ResultSet resultSet) throws SQLException {

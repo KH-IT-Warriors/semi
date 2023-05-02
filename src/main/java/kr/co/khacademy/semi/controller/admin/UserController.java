@@ -2,6 +2,7 @@ package kr.co.khacademy.semi.controller.admin;
 
 import kr.co.khacademy.semi.dao.UserDao;
 import kr.co.khacademy.semi.model.User;
+import lombok.extern.java.Log;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
 
 @WebServlet("/admin/user/*")
+@Log
 public class UserController extends HttpServlet {
 
     private static final UserDao userDao = UserDao.getInstance();
@@ -23,7 +26,6 @@ public class UserController extends HttpServlet {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/signUp.jsp").forward(req, resp);
-//                resp.sendRedirect("/WEB-INF/views/admin/user/signUp.jsp");
             } else if ("/list".equals(pathInfo)) {
                 List<User> normalUsers = userDao.readNormalUser();
                 req.setAttribute("normalUsers", normalUsers);
@@ -47,6 +49,7 @@ public class UserController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
         try {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {
