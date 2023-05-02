@@ -25,22 +25,25 @@ public class Address {
     String detailAddress;
 
     public static Address of(HttpServletRequest req) {
-        Long id = (Long) req.getSession().getAttribute("accountId");
+        
         String name = req.getParameter("name");
-        String postAddress = Optional.of(req.getParameter("post-address")).filter(Address::validatePostAddress)
+        String postAddress = Optional.of(req.getParameter("post-address"))
+                .filter(Address::validatePostAddress)
                 .orElseThrow(IllegalArgumentException::new);
 
-        String roadAddress = Optional.of(req.getParameter("road-address")).filter(Address::validateRoadAddress)
+        String roadAddress = Optional.of(req.getParameter("road-address"))
+                .filter(Address::validateRoadAddress)
                 .orElseThrow(IllegalArgumentException::new);
         
-        String lotAddress = Optional.of(req.getParameter("lot-address")).filter(Address::validateLotAddress)
+        String lotAddress = Optional.of(req.getParameter("lot-address"))
+                .filter(Address::validateLotAddress)
                 .orElseThrow(IllegalArgumentException::new);
         
-        String detailAddress = Optional.of(req.getParameter("detail-address")).filter(Address::validateDetailAddress)
+        String detailAddress = Optional.of(req.getParameter("detail-address"))
+                .filter(Address::validateDetailAddress)
                 .orElseThrow(IllegalArgumentException::new);
         
         return Address.builder()
-                .accountId(id)
                 .name(name)
                 .postAddress(postAddress)
                 .roadAddress(roadAddress)
@@ -50,15 +53,15 @@ public class Address {
     }
     
     public static Address of(ResultSet resultSet) throws SQLException {
-        resultSet.getLong(1);
-        resultSet.getLong(2);
-        resultSet.getString(3);
-        resultSet.getString(4);
-        resultSet.getString(5);
-        resultSet.getString(6);
-        resultSet.getString(7);
-        
-        return null;
+        return Address.builder()
+                .id(resultSet.getLong("id"))
+                .accountId(resultSet.getLong("account_id"))
+                .name(resultSet.getString("name"))
+                .postAddress(resultSet.getString("post_address"))
+                .roadAddress(resultSet.getString("road_address"))
+                .lotAddress(resultSet.getString("lot_address"))
+                .detailAddress(resultSet.getString("detail_address"))
+                .build();
     }
 
     private static Boolean validatePostAddress(String postAddress) {

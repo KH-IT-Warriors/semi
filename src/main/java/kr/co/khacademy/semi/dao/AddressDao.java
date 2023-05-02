@@ -16,9 +16,12 @@ public class AddressDao {
     private static final AddressDao instance = new AddressDao();
 
     private static final String INSERT_SQL = "INSERT INTO address VALUES (DEFAULT, DEFAULT, ?, ?, ?, ?, ?)";
-    private static final String SELECT_SQL = "SELECT * FROM address WHERE id = ? ";
+    private static final String SELECT_SQL = "SELECT * FROM address";
+    private static final String SELECT_BY_ID_SQL = "SELECT * FROM address WHERE id = ? ";
     private static final String UPDATE_BY_ID_SQL = "UPDATE address SET WHERE id = ?";
     private static final String DELETE_BY_ID_SQL = "DELETE FROM address WHERE id = ?";
+
+    private Object resultSet;
 
     private AddressDao() {
     }
@@ -62,27 +65,33 @@ public class AddressDao {
 
     public Address read(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SQL)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_SQL)) {
                 preparedStatement.setLong(1, id);
                 
+           
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
+                        return Address.of(resultSet); 
                         
-                    }
-                    return Address.of(resultSet);
+                    }     
+                    throw new SQLException();
                 }
+                
             }
         }
-        
     }
 
-    public boolean update(Address address) throws SQLException {
+    public void update(Address address) throws SQLException {
         try (Connection connection = DataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BY_ID_SQL)) {
             preparedStatement.setString(1, address.getName());
             preparedStatement.setString(2, address.getPostAddress());
 
-            return false;
+            int result = preparedStatement.executeUpdate();
+            if (result==0) {
+                throw new SQLException();
+            }
+            connection.commit();
         }
     }
 
@@ -91,6 +100,10 @@ public class AddressDao {
                 PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID_SQL)) {
             preparedStatement.setLong(1, id);
 
+            if (preparedStatement.executeUpdate() == 0) {
+                throw new SQLException();
+            }
+            connection.commit();
         }
     }
 }
