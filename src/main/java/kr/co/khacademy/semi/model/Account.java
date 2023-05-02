@@ -51,11 +51,11 @@ public class Account {
     }
 
     public static Account of(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getLong("id");
-        Long statusId = resultSet.getLong("status_id");
-        Long roleId = resultSet.getLong("role_id");
-        String username = resultSet.getString("username");
-        String password = resultSet.getString("password");
+        Long id = resultSet.getLong("A.id");
+        Long statusId = resultSet.getLong("A.status_id");
+        Long roleId = resultSet.getLong("A.role_id");
+        String username = resultSet.getString("A.username");
+        String password = resultSet.getString("A.password");
         return Account.builder()
             .id(id)
             .statusId(statusId)

@@ -31,8 +31,8 @@ public class Role {
     }
 
     public static Role of(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getLong("id");
-        String name = resultSet.getString("name");
+        Long id = resultSet.getLong("R.id");
+        String name = resultSet.getString("R.name");
         return Role.builder()
             .id(id)
             .name(name)

@@ -58,14 +58,14 @@ public class Profile {
     }
 
     public static Profile of(ResultSet resultSet) throws SQLException {
-        Long accountId = resultSet.getLong("account_id");
-        String name = resultSet.getString("name");
-        String phoneNumber = resultSet.getString("phone_number");
-        String email = resultSet.getString("email");
-        Long mileage = resultSet.getLong("mileage");
-        Long gradeId = resultSet.getLong("grade_id");
-        Timestamp created = resultSet.getTimestamp("created");
-        Timestamp lastLogin = resultSet.getTimestamp("last_login");
+        Long accountId = resultSet.getLong("P.account_id");
+        String name = resultSet.getString("P.name");
+        String phoneNumber = resultSet.getString("P.phone_number");
+        String email = resultSet.getString("P.email");
+        Long mileage = resultSet.getLong("P.mileage");
+        Long gradeId = resultSet.getLong("P.grade_id");
+        Timestamp created = resultSet.getTimestamp("P.created");
+        Timestamp lastLogin = resultSet.getTimestamp("P.last_login");
         return Profile.builder()
             .accountId(accountId)
             .name(name)
