@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import kr.co.khacademy.semi.dao.AnnouncementDao;
 import kr.co.khacademy.semi.model.Announcement;
 
-@WebServlet("/announcement/*")
+@WebServlet("/admin/announcement/*")
 public class AnnouncementController extends HttpServlet {
     
     private static final AnnouncementDao announcementDao = AnnouncementDao.getInstance();
@@ -33,6 +33,8 @@ public class AnnouncementController extends HttpServlet {
                 Announcement announcement = announcementDao.read(id);
                 req.setAttribute("announcement", announcement);
                 req.getRequestDispatcher("/WEB-INF/views/announcement/item.jsp").forward(req, resp);
+            }else if("/modify".equals(pathInfo)) {
+                resp.sendRedirect("/WEB-INF/views/announcement/modify.jsp");
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error");
@@ -46,16 +48,16 @@ public class AnnouncementController extends HttpServlet {
             if ("/register".equals(pathInfo)) {
                 Announcement announcement = Announcement.of(req);
                 announcementDao.create(announcement);
-                resp.sendRedirect("/announcement/list.jsp");
+                resp.sendRedirect("/admin/announcement/list.jsp");
             } else if ("/modify".equals(pathInfo)) {
                 Announcement announcement = Announcement.of(req);
                 announcementDao.update(announcement);
-                String location = String.format("/announcement/item?id=%d", announcement.getId());
+                String location = String.format("/admin/announcement/item?id=%d", announcement.getId());
                 resp.sendRedirect(location);
             } else if ("/delete".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
                 announcementDao.delete(id);
-                resp.sendRedirect("/announcement/list");
+                resp.sendRedirect("/admin/announcement/list");
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error");

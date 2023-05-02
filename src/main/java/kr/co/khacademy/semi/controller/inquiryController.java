@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import kr.co.khacademy.semi.dao.InquiryDao;
 import kr.co.khacademy.semi.model.Inquiry;
 
-@WebServlet("/inquiry/*")
+@WebServlet("/admin/inquiry/*")
 public class inquiryController extends HttpServlet {
     
     private static final InquiryDao inquiryDao = InquiryDao.getInstance();
@@ -23,16 +23,16 @@ public class inquiryController extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {
-                resp.sendRedirect("/WEB-INF/views/inquiry/register.jsp");
+                resp.sendRedirect("/WEB-INF/views/admin/inquiry/register.jsp");
             } else if ("/list".equals(pathInfo)) {
                 List<Inquiry> inquiries = inquiryDao.read();
                 req.setAttribute("inquiries", inquiries);
-                req.getRequestDispatcher("/WEB-INF/views/inquiry/list.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/inquiry/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
                 Inquiry inquiry = inquiryDao.read(id);
                 req.setAttribute("inquiry", inquiry);
-                req.getRequestDispatcher("/WEB-INF/views/inquiry/item.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/inquiry/item.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error");
@@ -46,16 +46,16 @@ public class inquiryController extends HttpServlet {
             if ("/register".equals(pathInfo)) {
                 Inquiry inquiry = Inquiry.of(req);
                 inquiryDao.create(inquiry);
-                resp.sendRedirect("/inquiry/list");
+                resp.sendRedirect("/admin/inquiry/list");
             } else if ("/modify".equals(pathInfo)) {
                 Inquiry inquiry = Inquiry.of(req);
                 inquiryDao.update(inquiry);
-                String location = String.format("/inquiry/item?id=%d", inquiry.getId());
+                String location = String.format("/admin/inquiry/item?id=%d", inquiry.getId());
                 resp.sendRedirect(location);
             } else if ("/delete".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
                 inquiryDao.delete(id);
-                resp.sendRedirect("/inquiry/list");
+                resp.sendRedirect("/admin/inquiry/list");
             }
         }catch (SQLException e) {
             resp.sendRedirect("/error");
