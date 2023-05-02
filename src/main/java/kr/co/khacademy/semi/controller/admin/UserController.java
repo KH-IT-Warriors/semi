@@ -1,6 +1,8 @@
 package kr.co.khacademy.semi.controller.admin;
 
+import kr.co.khacademy.semi.dao.GradeDao;
 import kr.co.khacademy.semi.dao.UserDao;
+import kr.co.khacademy.semi.model.Grade;
 import kr.co.khacademy.semi.model.User;
 import lombok.extern.java.Log;
 
@@ -19,32 +21,39 @@ import java.util.logging.Level;
 public class UserController extends HttpServlet {
 
     private static final UserDao userDao = UserDao.getInstance();
+    private static final GradeDao gradeDao = GradeDao.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String pathInfo = req.getPathInfo();
+            System.out.println(pathInfo);
             if ("/register".equals(pathInfo)) {
-                req.getRequestDispatcher("/WEB-INF/views/admin/user/signUp.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/user/register.jsp").forward(req, resp);
             } else if ("/list".equals(pathInfo)) {
                 String type = req.getParameter("type");
                 if ("normal".equals(type)) {
                     List<User> normalUsers = userDao.readNormalUser();
+                    req.setAttribute("type", "normal");
                     req.setAttribute("users", normalUsers);
                 } else {
                     List<User> adminUsers = userDao.readAdminUser();
+                    req.setAttribute("type", "admin");
                     req.setAttribute("users", adminUsers);
                 }
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
-                User normalUser = userDao.read(id);
-                req.setAttribute("normalUser", normalUser);
+                User user = userDao.read(id);
+                Grade grade = gradeDao.read(user.getProfile().getGradeId());
+                req.setAttribute("user", user);
+                req.setAttribute("grade", grade);
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/item.jsp").forward(req, resp);
             } else if ("/modify".equals(pathInfo)) {
                 resp.sendRedirect("WEB-INF/views/admin/user/modify.jsp");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             resp.sendRedirect("/error.jsp");
         }
     }
