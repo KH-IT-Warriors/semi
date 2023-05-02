@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.khacademy.semi.dao.AnnouncementDao;
 import kr.co.khacademy.semi.model.Announcement;
+import kr.co.khacademy.semi.model.Criteria;
 
 @WebServlet("/admin/announcement/*")
 public class AnnouncementController extends HttpServlet {
@@ -26,7 +27,15 @@ public class AnnouncementController extends HttpServlet {
             if ("/register".equals(pathInfo)) {
                 req.getRequestDispatcher("/WEB-INF/views/admin/announcement/register.jsp").forward(req, resp);
             } else if ("/list".equals(pathInfo)) {
-                List<Announcement> announcements = announcementDao.read();
+                Criteria criteria = Criteria.of(req);
+                Long pageNumber = criteria.getPageNumber();
+                Long amount = criteria.getAmount();
+                
+                Long start = pageNumber * amount - (amount-1);
+                Long end = pageNumber * amount;
+                
+                List<Announcement> announcements = announcementDao.read(start,end);
+                
                 req.setAttribute("announcements", announcements);
                 req.getRequestDispatcher("/WEB-INF/views/admin/announcement/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {

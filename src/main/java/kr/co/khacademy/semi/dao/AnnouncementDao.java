@@ -18,7 +18,7 @@ public class AnnouncementDao {
     private static final String INSERT_SQL = "INSERT INTO announcement VALUES (default,default,?, ?,default)";
     private static final String SELECT_SQL = "SELECT * FROM announcement";
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM announcement WHERE id = ?";
-    private static final String SELECT_BOUND_SQL = "SELECT * FROM(SELECT announcement.*, row_number() over(ORDER BY id DESC) rn FROM announcement)WHERE rn BETWEEN ? AND ?";
+    private static final String SELECT_BOUND_SQL = "SELECT * FROM(SELECT announcement.*, row_number() over(ORDER BY id DESC) rn FROM announcement)rrn WHERE rn BETWEEN ? AND ?";
     private static final String UPDATE_BY_ID_SQL = "UPDATE announcement SET title = ?, contents = ? WHERE id = ?";
     private static final String DELETE_BY_ID_SQL = "DELETE announcement WHERE id =?";
 
@@ -68,6 +68,23 @@ public class AnnouncementDao {
             }
         }
     }
+    
+    public List<Announcement> read(Long start, Long end) throws SQLException{
+        List<Announcement> announcements = new ArrayList<>();
+        try (Connection connection = DataSource.getConnection()){
+            try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BOUND_SQL)){
+                preparedStatement.setLong(1, start);
+                preparedStatement.setLong(2, end);
+                try (ResultSet resultSet = preparedStatement.executeQuery()){
+                    while(resultSet.next()) {
+                        Announcement announcement = Announcement.of(resultSet);
+                        announcements.add(announcement);
+                    }
+                    return Collections.unmodifiableList(announcements);
+                }
+            }
+        }
+    }
 
     public void update(Announcement announcement) throws SQLException {
         try (Connection connection = DataSource.getConnection()){
@@ -91,23 +108,6 @@ public class AnnouncementDao {
                     throw new SQLException();
                 }
                 connection.commit();
-            }
-        }
-    }
-
-    public List<Announcement> readBound(Long start, Long end) throws SQLException{
-        List<Announcement> announcements = new ArrayList<>();
-        try (Connection connection = DataSource.getConnection()){
-            try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BOUND_SQL)){
-                preparedStatement.setLong(1, start);
-                preparedStatement.setLong(2, end);
-                try (ResultSet resultSet = preparedStatement.executeQuery()){
-                    while(resultSet.next()) {
-                        Announcement announcement = Announcement.of(resultSet);
-                        announcements.add(announcement);
-                    }
-                    return Collections.unmodifiableList(announcements);
-                }
             }
         }
     }
