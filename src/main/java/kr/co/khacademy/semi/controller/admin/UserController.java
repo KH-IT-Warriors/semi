@@ -26,6 +26,9 @@ public class UserController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
         try {
             String pathInfo = req.getPathInfo();
             System.out.println(pathInfo);
@@ -35,15 +38,27 @@ public class UserController extends HttpServlet {
                 Criteria criteria = Criteria.of(req);
                 Long start = (criteria.getPageNumber() * criteria.getAmount()) - (criteria.getAmount() - 1);
                 Long end = criteria.getPageNumber() * criteria.getAmount();
+
                 if ("normal".equals(criteria.getType())) {
-                    List<User> normalUsers = userDao.readNormalUser(start, end);
-                    req.setAttribute("criteria", criteria);
-                    req.setAttribute("users", normalUsers);
+                    if ("".equals(criteria.getKeyword())) {
+                        List<User> normalUsers = userDao.readNormalUser(start, end);
+                        req.setAttribute("users", normalUsers);
+                    } else {
+                        List<User> searchUser = userDao.searchNormalUser(criteria.getKeyword(), start, end);
+                        req.setAttribute("users", searchUser);
+                    }
                 } else {
-                    List<User> adminUsers = userDao.readAdminUser(start, end);
-                    req.setAttribute("criteria", criteria);
-                    req.setAttribute("users", adminUsers);
+                    if ("".equals(criteria.getKeyword())) {
+                        List<User> adminUsers = userDao.readAdminUser(start, end);
+                        req.setAttribute("users", adminUsers);
+                    } else {
+                        List<User> searchUser = userDao.searchAdminUser(criteria.getKeyword(), start, end);
+                        req.setAttribute("users", searchUser);
+                    }
                 }
+                List<String> navi = userDao.getPageNavi(criteria);
+                req.setAttribute("criteria", criteria);
+                req.setAttribute("navi", navi);
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
@@ -63,7 +78,9 @@ public class UserController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("utf-8");
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
         try {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {

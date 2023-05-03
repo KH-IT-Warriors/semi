@@ -1,6 +1,7 @@
 package kr.co.khacademy.semi.dao;
 
 import kr.co.khacademy.semi.common.DataSource;
+import kr.co.khacademy.semi.model.Criteria;
 import kr.co.khacademy.semi.model.User;
 
 import java.sql.Connection;
@@ -42,6 +43,14 @@ public class UserDao {
     private static final String DELETE_ADMIN_PROFILE_SQL =
         "DELETE FROM profiles WHERE account_id = ?";
 
+    private static final String SELECT_NORMAL_USER_COUNT_SQL =
+        "SELECT count(*) FROM accounts JOIN profiles ON id = account_id WHERE role_id = 1 AND name LIKE ?";
+    private static final String SELECT_ADMIN_USER_COUNT_SQL =
+        "SELECT count(*) FROM accounts JOIN profiles ON id != account_id WHERE role_id = 1 AND name LIKE ?";
+    private static final String SEARCH_NORMAL_USER_SQL =
+        "SELECT A.*, P.*, R.* FROM (SELECT TMP.*, ROW_NUMBER() OVER(ORDER BY TMP.id ASC) N FROM accounts TMP WHERE TMP.role_id = 1) A JOIN (SELECT * FROM profiles WHERE name LIKE ?) P ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE N BETWEEN ? AND ?";
+    private static final String SEARCH_ADMIN_USER_SQL =
+        "SELECT A.*, P.*, R.* FROM (SELECT TMP.*, ROW_NUMBER() OVER(ORDER BY TMP.id ASC) N FROM accounts TMP WHERE TMP.role_id != 1) A JOIN (SELECT * FROM profiles WHERE name LIKE ?) P ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE N BETWEEN ? AND ?";
 
     public void create(User user) throws SQLException {
         try (Connection connection = DataSource.getConnection();) {
@@ -74,23 +83,16 @@ public class UserDao {
     }
 
     public List<User> readNormalUser(Long start, Long end) throws SQLException {
-        try (Connection connection = DataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_NORMAL_USER_SQL);) {
-            preparedStatement.setLong(1, start);
-            preparedStatement.setLong(2, end);
-            try (ResultSet resultSet = preparedStatement.executeQuery();) {
-                List<User> users = new ArrayList<>();
-                while (resultSet.next()) {
-                    users.add(User.of(resultSet));
-                }
-                return users;
-            }
-        }
+        return getUsers(start, end, SELECT_ALL_NORMAL_USER_SQL);
     }
 
     public List<User> readAdminUser(Long start, Long end) throws SQLException {
+        return getUsers(start, end, SELECT_ALL_ADMIN_USER_SQL);
+    }
+
+    private List<User> getUsers(Long start, Long end, String selectSQL) throws SQLException {
         try (Connection connection = DataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ADMIN_USER_SQL);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);) {
             preparedStatement.setLong(1, start);
             preparedStatement.setLong(2, end);
             try (ResultSet resultSet = preparedStatement.executeQuery();) {
@@ -178,4 +180,83 @@ public class UserDao {
         }
     } // TODO: 일반 유저 강제 삭제는 나중에 테이블이 다 만들어진 후에 만들기
 
+    public List<User> searchNormalUser(String keyword, Long start, Long end) throws SQLException {
+        return getUsers(keyword, start, end, SEARCH_NORMAL_USER_SQL);
+    }
+
+    public List<User> searchAdminUser(String keyword, Long start, Long end) throws SQLException {
+        return getUsers(keyword, start, end, SEARCH_ADMIN_USER_SQL);
+    }
+
+    private List<User> getUsers(String keyword, Long start, Long end, String searchSQL) throws SQLException {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(searchSQL)) {
+            System.out.println("%"+keyword+"%");
+            preparedStatement.setString(1, "%"+keyword+"%");
+            preparedStatement.setLong(2, start);
+            preparedStatement.setLong(3, end);
+            try (ResultSet resultSet = preparedStatement.executeQuery();) {
+                List<User> users = new ArrayList<>();
+                while (resultSet.next()) {
+                    users.add(User.of(resultSet));
+                }
+                return users;
+            }
+        }
+    }
+
+    public List<String> getPageNavi(Criteria criteria) throws SQLException {
+        Long recordTotalCount;
+        Long currentPage = criteria.getPageNumber();
+        if (criteria.getType().equals("normal")) {
+            recordTotalCount = getNormalUserCount(criteria.getKeyword());
+        } else {
+            recordTotalCount = getAdminUserCount(criteria.getKeyword());
+        }
+        Long pageTotalCount = (long) Math.ceil((double) recordTotalCount / criteria.getAmount());
+
+        if (currentPage > pageTotalCount) currentPage = pageTotalCount;
+
+        Long startNavi = (currentPage-1) / 10 * 10 + 1;
+        Long endNavi = startNavi + (9);
+
+        if (endNavi > pageTotalCount) {
+            endNavi = pageTotalCount;
+        }
+
+        List<String> navi = new ArrayList<>();
+        if (startNavi.equals(1L)) {
+        } else {
+            navi.add("<");
+        }
+        for (Long i = startNavi; i <= endNavi; i++) {
+            navi.add(String.valueOf(i));
+        }
+        if (endNavi.equals(pageTotalCount)) {
+        } else {
+            navi.add(">");
+        }
+        return navi;
+    }
+
+    private Long getNormalUserCount(String keyword) throws SQLException {
+        return getCount(keyword, SELECT_NORMAL_USER_COUNT_SQL);
+    }
+    private Long getAdminUserCount(String keyword) throws SQLException {
+        return getCount(keyword, SELECT_ADMIN_USER_COUNT_SQL);
+    }
+
+    private Long getCount(String keyword, String selectCountSQL) throws SQLException {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectCountSQL);) {
+            preparedStatement.setString(1, keyword);
+            try (ResultSet resultSet = preparedStatement.executeQuery();) {
+                if (resultSet.next()) {
+                    return resultSet.getLong(1);
+                } else {
+                    throw new SQLException();
+                }
+            }
+        }
+    }
 }
