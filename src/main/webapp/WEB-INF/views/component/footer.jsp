@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <style>
-div {
-	border: 1px solid black;
-}
 
 #title {
 	width: 100%;
@@ -46,24 +43,24 @@ ul {
 	<div class="row">
 		<div class="col-3">
 			<ul>
-				<li><strong>이용안내</strong></li>
-				<li><a href="" class="text-reset text-decoration-none">검수기준</a></li>
-				<li><a href="" class="text-reset text-decoration-none">이용정책</a></li>
-				<li><a href="" class="text-reset text-decoration-none">패널티
+				<strong>이용안내</strong>
+				<li class="mt-2"><a href="" class="text-reset text-decoration-none">검수기준</a></li>
+				<li class="mt-2"><a href="" class="text-reset text-decoration-none">이용정책</a></li>
+				<li class="mt-2"><a href="" class="text-reset text-decoration-none">패널티
 						정책</a></li>
-				<li><a href="" class="text-reset text-decoration-none">커뮤니티
+				<li class="mt-2"><a href="" class="text-reset text-decoration-none">커뮤니티
 						가이드라인</a></li>
 			</ul>
 		</div>
 		<div class="col-4">
 			<ul>
-				<li><strong>고객지원</strong></li>
-				<li><a href="" class="text-reset text-decoration-none">공지사항</a></li>
-				<li><a href="" class="text-reset text-decoration-none">서비스
+				<strong>고객지원</strong>
+				<li class="mt-2"><a href="" class="text-reset text-decoration-none">공지사항</a></li>
+				<li class="mt-2"><a href="" class="text-reset text-decoration-none">서비스
 						소개</a></li>
-				<li><a href="" class="text-reset text-decoration-none">쇼룸
+				<li class="mt-2"><a href="" class="text-reset text-decoration-none">쇼룸
 						안내</a></li>
-				<li><a href="" class="text-reset text-decoration-none">판매자
+				<li class="mt-2"><a href="" class="text-reset text-decoration-none">판매자
 						방문접수</a></li>
 			</ul>
 		</div>
