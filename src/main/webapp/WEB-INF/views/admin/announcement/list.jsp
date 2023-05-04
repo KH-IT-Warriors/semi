@@ -22,7 +22,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <title>Insert title here</title>
 </head>
-
+<style>
+  .ann-btn{
+    background-color:white;
+    color: black; 
+  }
+</style>
 <body>
 	<div class="container-md">
 		<div class="row header">
@@ -35,13 +40,18 @@
 			<div class="col-sm-12 col-md-8">
 				<div class="row">
 					<div class="col-12 announcement-list" align="center">
-						공지사항
+						<h3>공지사항</h3>
 						<div class="row">
 							<div class="col-2" align="center">No</div>
-							<div class="col-10" align="center">제목</div>
+							<div class="col-8" align="center">제목</div>
+							<div class="col-2">
+								<button class="ann-btn">
+									<a href="/admin/announcement/register" class="text-reset">공지 등록</a>
+								</button>
+							</div>
 							<c:forEach var="announcements" items="${announcements}">
 								<div class="col-2">${announcements.id}</div>
-								<div class="col-10">${announcements.title}</div>
+								<div class="col-10"><a href="/admin/announcement/item?id=${announcements.id}">${announcements.title}</a></div>
 							</c:forEach>
 
 							<div>
@@ -50,10 +60,12 @@
 										<c:when test="${search == null}">
 											<c:choose>
 												<c:when test="${item eq '<'}">
-													<a href="/admin/announcement/list?page-number=${pageNavi[status.index+1]-1}">${item}</a>
+													<a
+														href="/admin/announcement/list?page-number=${pageNavi[status.index+1]-1}">${item}</a>
 												</c:when>
 												<c:when test="${item eq '>'}">
-													<a href="/admin/announcement/list?page-number=${pageNavi[status.index-1]+1}">${item}</a>
+													<a
+														href="/admin/announcement/list?page-number=${pageNavi[status.index-1]+1}">${item}</a>
 												</c:when>
 												<c:otherwise>
 													<a href="/admin/announcement/list?page-number=${item}">${item}</a>
