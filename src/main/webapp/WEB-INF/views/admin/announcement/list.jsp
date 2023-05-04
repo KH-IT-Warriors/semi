@@ -44,25 +44,25 @@
 								<div class="col-10">${announcements.title}</div>
 							</c:forEach>
 
-							<c:forEach var="item" items="${pageNavi}" varStatus="status">
-								<c:choose>
-									<c:when test="${search == null}">
-										<c:choose>
-											<c:when test="${item eq '<'}">
-												<a href="/list?pageNumber=${pageNavi[status.index+1]-1}">${item}</a>
-											</c:when>
-											<c:when test="${item eq '>'}">
-												<a href="/list?pageNumber=${pageNavi[status.index-1]+1}">${item}</a>
-											</c:when>
-											<c:otherwise>
-												<div>
-													<a href="/list?pageNumber=${item}">${item}</a>
-												</div>
-											</c:otherwise>
-										</c:choose>
-									</c:when>
-								</c:choose>
-							</c:forEach>
+							<div>
+								<c:forEach var="item" items="${pageNavi}" varStatus="status">
+									<c:choose>
+										<c:when test="${search == null}">
+											<c:choose>
+												<c:when test="${item eq '<'}">
+													<a href="/admin/announcement/list?page-number=${pageNavi[status.index+1]-1}">${item}</a>
+												</c:when>
+												<c:when test="${item eq '>'}">
+													<a href="/admin/announcement/list?page-number=${pageNavi[status.index-1]+1}">${item}</a>
+												</c:when>
+												<c:otherwise>
+													<a href="/admin/announcement/list?page-number=${item}">${item}</a>
+												</c:otherwise>
+											</c:choose>
+										</c:when>
+									</c:choose>
+								</c:forEach>
+							</div>
 						</div>
 					</div>
 				</div>
