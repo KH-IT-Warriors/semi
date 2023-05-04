@@ -35,7 +35,9 @@ public class AnnouncementController extends HttpServlet {
                 Long end = pageNumber * amount;
                 
                 List<Announcement> announcements = announcementDao.read(start,end);
+                List<String> pageNavi = announcementDao.getPageNavi(criteria);
                 
+                req.setAttribute("pageNavi", pageNavi);
                 req.setAttribute("announcements", announcements);
                 req.getRequestDispatcher("/WEB-INF/views/admin/announcement/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {

@@ -19,6 +19,7 @@ public class AnnouncementDao {
     private static final String SELECT_SQL = "SELECT * FROM announcement";
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM announcement WHERE id = ?";
     private static final String SELECT_BOUND_SQL = "SELECT * FROM(SELECT announcement.*, row_number() over(ORDER BY id DESC) rn FROM announcement)rrn WHERE rn BETWEEN ? AND ?";
+    private static final String SELECT_TITLE_SQL = "SELECT COUNT(*) FROM announcement WHERE title LIKE ?";
     private static final String UPDATE_BY_ID_SQL = "UPDATE announcement SET title = ?, contents = ? WHERE id = ?";
     private static final String DELETE_BY_ID_SQL = "DELETE announcement WHERE id =?";
 
@@ -68,7 +69,7 @@ public class AnnouncementDao {
             }
         }
     }
-    
+
     public List<Announcement> read(Long start, Long end) throws SQLException{
         List<Announcement> announcements = new ArrayList<>();
         try (Connection connection = DataSource.getConnection()){
@@ -84,6 +85,65 @@ public class AnnouncementDao {
                 }
             }
         }
+    }
+
+    public Long getRecordCount(String search) throws SQLException {
+        try (Connection connection = DataSource.getConnection()){
+            try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_TITLE_SQL)){
+                preparedStatement.setString(1, "%"+search+"%");
+                try (ResultSet resultSet = preparedStatement.executeQuery()){
+                    resultSet.next();
+                    return resultSet.getLong(1);
+                }
+            }
+        }
+    }
+
+    public List<String> getPageNavi(Criteria criteria) throws SQLException{
+        
+        Long recordTotalCount = getRecordCount(criteria.getKeyword());
+
+        Long pageNumber = criteria.getPageNumber();
+        Long recordCountPerPage = criteria.getAmount();
+        Long naviCountPerPage = 10L;
+
+        Long pageTotalCount;
+
+        if (recordTotalCount % recordCountPerPage > 0) {
+            pageTotalCount = recordTotalCount / recordCountPerPage + 1;
+        } else {
+            pageTotalCount = recordTotalCount / recordCountPerPage;
+        }
+        
+        if (pageNumber < 1) {
+            pageNumber = 1L;
+        } else if (pageNumber > pageTotalCount) {
+            pageNumber = pageTotalCount;
+        }
+        Long startNavi = (((pageNumber - 1) / naviCountPerPage) * naviCountPerPage) + 1;
+        Long endNavi = startNavi + (naviCountPerPage-1);
+        
+        if (endNavi > pageTotalCount) {
+            endNavi = pageTotalCount;
+        }
+        Boolean needPrev = true;
+        Boolean needNext = true;
+        
+        if (startNavi == 1) {needPrev = false;}
+        if (endNavi == pageTotalCount) {needNext = false;}
+        
+        List<String> list = new ArrayList<>();
+        
+        if (needPrev) {
+            list.add("<");
+        }
+        for (Long i = startNavi; i <= endNavi; i++) {
+            list.add(""+i);
+        }
+        if (needNext) {
+            list.add(">");
+        }
+        return list;
     }
 
     public void update(Announcement announcement) throws SQLException {
