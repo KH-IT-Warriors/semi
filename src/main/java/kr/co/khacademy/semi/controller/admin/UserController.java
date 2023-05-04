@@ -68,6 +68,11 @@ public class UserController extends HttpServlet {
                 req.setAttribute("grade", grade);
                 req.getRequestDispatcher("/WEB-INF/views/admin/user/item.jsp").forward(req, resp);
             } else if ("/modify".equals(pathInfo)) {
+                Long id = Long.valueOf(req.getParameter("id"));
+                User user = userDao.read(id);
+                Grade grade = gradeDao.read(user.getProfile().getGradeId());
+                req.setAttribute("user", user);
+                req.setAttribute("grade", grade);
                 resp.sendRedirect("WEB-INF/views/admin/user/modify.jsp");
             }
         } catch (SQLException e) {

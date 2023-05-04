@@ -46,7 +46,7 @@ public class UserDao {
     private static final String SELECT_NORMAL_USER_COUNT_SQL =
         "SELECT count(*) FROM accounts JOIN profiles ON id = account_id WHERE role_id = 1 AND name LIKE ?";
     private static final String SELECT_ADMIN_USER_COUNT_SQL =
-        "SELECT count(*) FROM accounts JOIN profiles ON id != account_id WHERE role_id = 1 AND name LIKE ?";
+        "SELECT count(*) FROM accounts JOIN profiles ON id = account_id WHERE role_id != 1 AND name LIKE ?";
     private static final String SEARCH_NORMAL_USER_SQL =
         "SELECT A.*, P.*, R.* FROM (SELECT TMP.*, ROW_NUMBER() OVER(ORDER BY TMP.id ASC) N FROM accounts TMP WHERE TMP.role_id = 1) A JOIN (SELECT * FROM profiles WHERE name LIKE ?) P ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE N BETWEEN ? AND ?";
     private static final String SEARCH_ADMIN_USER_SQL =
@@ -249,7 +249,7 @@ public class UserDao {
     private Long getCount(String keyword, String selectCountSQL) throws SQLException {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(selectCountSQL);) {
-            preparedStatement.setString(1, keyword);
+            preparedStatement.setString(1, "%"+keyword+"%");
             try (ResultSet resultSet = preparedStatement.executeQuery();) {
                 if (resultSet.next()) {
                     return resultSet.getLong(1);
