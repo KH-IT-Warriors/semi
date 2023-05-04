@@ -52,6 +52,10 @@ public class UserDao {
     private static final String SEARCH_ADMIN_USER_SQL =
         "SELECT A.*, P.*, R.* FROM (SELECT TMP.*, ROW_NUMBER() OVER(ORDER BY TMP.id ASC) N FROM accounts TMP WHERE TMP.role_id != 1) A JOIN (SELECT * FROM profiles WHERE name LIKE ?) P ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE N BETWEEN ? AND ?";
 
+    private static final String UPDATE_PROFILE_IMAGE_SQL =
+        "UPDATE profiles SET profile_image = ? WHERE account_id = ?";
+
+
     public void create(User user) throws SQLException {
         try (Connection connection = DataSource.getConnection();) {
             Long generatedId;
@@ -257,6 +261,19 @@ public class UserDao {
                     throw new SQLException();
                 }
             }
+        }
+    }
+
+    public void uploadImage(Long id, String systemName) throws SQLException {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PROFILE_IMAGE_SQL);) {
+            preparedStatement.setString(1, systemName);
+            preparedStatement.setLong(2, id);
+            if (preparedStatement.executeUpdate() == 0) {
+                connection.rollback();
+                throw new SQLException();
+            }
+            connection.commit();
         }
     }
 }

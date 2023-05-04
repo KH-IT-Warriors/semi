@@ -1,5 +1,7 @@
 package kr.co.khacademy.semi.controller.admin;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import kr.co.khacademy.semi.dao.GradeDao;
 import kr.co.khacademy.semi.dao.UserDao;
 import kr.co.khacademy.semi.model.Criteria;
@@ -12,8 +14,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -98,6 +102,22 @@ public class UserController extends HttpServlet {
             } else if ("/delete".equals(pathInfo)) {
                 Long targetId = Long.valueOf(req.getParameter("target-id"));
                 userDao.forceDelete(targetId);
+            } else if ("/uploadImage".equals(pathInfo)) {
+                Long id = Long.valueOf(req.getParameter("target-id"));
+                String realPath = req.getServletContext().getRealPath("profileImage");
+                File realPathFile = new File(realPath);
+                if (!realPathFile.exists()) {
+                    realPathFile.mkdir();
+                }
+                MultipartRequest multipartRequest = new MultipartRequest(req, realPath, 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
+                Enumeration<String> names = multipartRequest.getFileNames();
+                while (names.hasMoreElements()) {
+                    String fileName = names.nextElement();
+                    if (multipartRequest.getFile(fileName) != null) {
+                        String systemName = multipartRequest.getFilesystemName(fileName);
+                        userDao.uploadImage(id, systemName);
+                    }
+                }
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error.jsp");
