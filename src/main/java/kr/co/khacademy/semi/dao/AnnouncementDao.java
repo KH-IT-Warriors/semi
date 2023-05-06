@@ -21,7 +21,7 @@ public class AnnouncementDao {
     private static final String SELECT_BOUND_SQL = "SELECT * FROM(SELECT announcement.*, row_number() over(ORDER BY id DESC) rn FROM announcement)rrn WHERE rn BETWEEN ? AND ?";
     private static final String SELECT_TITLE_SQL = "SELECT COUNT(*) FROM announcement WHERE title LIKE ?";
     private static final String UPDATE_BY_ID_SQL = "UPDATE announcement SET title = ?, contents = ? WHERE id = ?";
-    private static final String DELETE_BY_ID_SQL = "DELETE announcement WHERE id =?";
+    private static final String DELETE_BY_ID_SQL = "DELETE FROM announcement WHERE id =?";
 
     public static AnnouncementDao getInstance() {
         return instance;
@@ -164,6 +164,8 @@ public class AnnouncementDao {
     public void delete(Long id) throws SQLException {
         try (Connection connection = DataSource.getConnection()){
             try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID_SQL)){
+                preparedStatement.setLong(1, id);
+                
                 if (preparedStatement.executeUpdate() == 0) {
                     throw new SQLException();
                 }

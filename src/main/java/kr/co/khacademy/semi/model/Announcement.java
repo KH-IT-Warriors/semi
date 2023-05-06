@@ -24,11 +24,13 @@ public class Announcement {
     public static Announcement of(HttpServletRequest req) {
         String title = req.getParameter("title");
         String contents = req.getParameter("contents");
+        Long id = Long.valueOf(req.getParameter("id"));
         
         if(!validateTitle(title)) {
             throw new IllegalArgumentException();
         }
         return Announcement.builder()
+                .id(id)
                 .title(title)
                 .contents(contents)
                 .build();

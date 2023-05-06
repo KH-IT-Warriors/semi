@@ -46,7 +46,10 @@ public class AnnouncementController extends HttpServlet {
                 req.setAttribute("announcement", announcement);
                 req.getRequestDispatcher("/WEB-INF/views/admin/announcement/item.jsp").forward(req, resp);
             }else if("/modify".equals(pathInfo)) {
-                req.getRequestDispatcher("/WEB-INF/views/admin/announcement/item.jsp").forward(req, resp);
+                Long id = Long.valueOf(req.getParameter("id"));
+                Announcement announcement = announcementDao.read(id);
+                req.setAttribute("announcement", announcement);
+                req.getRequestDispatcher("/WEB-INF/views/admin/announcement/modify.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             e.printStackTrace();
