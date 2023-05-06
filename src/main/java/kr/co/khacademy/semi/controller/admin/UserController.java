@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.logging.Level;
 
 @WebServlet("/admin/user/*")
 @Log
@@ -77,7 +76,7 @@ public class UserController extends HttpServlet {
                 Grade grade = gradeDao.read(user.getProfile().getGradeId());
                 req.setAttribute("user", user);
                 req.setAttribute("grade", grade);
-                resp.sendRedirect("WEB-INF/views/admin/user/modify.jsp");
+                req.getRequestDispatcher("/WEB-INF/views/admin/user/modify.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             e.printStackTrace();

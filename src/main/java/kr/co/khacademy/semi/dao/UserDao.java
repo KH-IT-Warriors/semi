@@ -25,7 +25,7 @@ public class UserDao {
     private static final String INSERT_ACCOUNT_SQL =
         "INSERT INTO accounts VALUES (0, DEFAULT, ?, ?, ?)";
     private static final String INSERT_PROFILE_SQL =
-        "INSERT INTO profiles VALUES (?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, DEFAULT)";
+        "INSERT INTO profiles VALUES (?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, DEFAULT, null)";
     private static final String SELECT_ALL_NORMAL_USER_SQL =
         "SELECT A.*, P.*, R.* FROM (SELECT TMP.*, ROW_NUMBER() OVER(ORDER BY TMP.id ASC) N FROM accounts TMP WHERE TMP.role_id = 1) A JOIN profiles P ON P.account_id = A.id JOIN roles R ON A.role_id = R.id WHERE N BETWEEN ? AND ?";
     private static final String SELECT_ALL_ADMIN_USER_SQL =
