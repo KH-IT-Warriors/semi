@@ -44,7 +44,7 @@ public class AnnouncementController extends HttpServlet {
                 Long id = Long.valueOf(req.getParameter("id"));
                 Announcement announcement = announcementDao.read(id);
                 req.setAttribute("announcement", announcement);
-                req.getRequestDispatcher("/WEB-INF/views/announcement/item.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/announcement/item.jsp").forward(req, resp);
             }else if("/modify".equals(pathInfo)) {
                 req.getRequestDispatcher("/WEB-INF/views/admin/announcement/item.jsp").forward(req, resp);
             }
@@ -58,10 +58,8 @@ public class AnnouncementController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String pathInfo = req.getPathInfo();
-            System.out.println(req.getMethod());
             System.out.println(pathInfo);
             if ("/register".equals(pathInfo)) {
-                System.out.println(1);
                 Announcement announcement = Announcement.of(req);
                 announcementDao.create(announcement);
                 resp.sendRedirect("/admin/announcement/list");
