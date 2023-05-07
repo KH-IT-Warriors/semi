@@ -32,7 +32,7 @@
     </div>
     <div class="d-none d-md-block col-md-2">body side</div>
   </div>
-  <hr class="mt-3 mb-3">
+  <hr class="my-3">
   <div class="row footer">
     <jsp:include page="/WEB-INF/views/component/footer.jsp"></jsp:include>
   </div>
