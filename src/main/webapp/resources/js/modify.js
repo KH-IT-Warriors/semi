@@ -15,22 +15,7 @@ $('input').on('keydown', function (e) {
 
 
 $('.btn-mod').on('click', function () {
-  const target = $(this);
-  target.siblings('input').prop('readonly', false);
-  target.siblings('input').css({
-    'border-bottom': '1px solid black',
-  });
-  target.siblings('select').toggleClass('hidden').prop('disabled', false);
-  if (target.hasClass('confirm')) {
-    $('#modify-form').submit();
-    return;
-  }
-  target.toggleClass('confirm');
-  target.before($('<button type="button" class="btn btn-outline-secondary btn-sm-custom cancel" style="margin-right: 0.1rem;">').text('Cancel'));
-});
-
-$('li').on('click', '.cancel', function () {
-  location.reload();
+  $('#modify-form').submit();
 });
 
 $('#modify-form').on('submit', function (e) {
@@ -73,14 +58,9 @@ $('#modify-form').on('submit', function (e) {
     return false;
   }
   const role = $('#role option:selected').val();
-  if (!$('#role-id').prop('disabled')) {
-    $('#role-id').val(role);
-  }
+  $('#role-id').val(role);
   const grade = $('#grade option:selected').val();
-  if (!$('#grade-id').prop('disabled')) {
-    $('#grade-id').val(grade);
-  }
-  return false;
+  $('#grade-id').val(grade);
 });
 
 $('.btn-del').on('click', function () {
@@ -101,4 +81,10 @@ $('#profile-img').on('change', function () {
 $('.profile-img').on('click', function () {
   const profile_img = $('#profile-img');
   profile_img.click();
+});
+
+$('#pw-modify').on('click', function () {
+  $(this).prop('disabled', true);
+  $('#password').attr('name', 'password');
+  $('#password').prop('readonly', false);
 });

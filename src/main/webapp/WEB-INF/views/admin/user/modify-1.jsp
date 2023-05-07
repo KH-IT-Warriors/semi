@@ -9,7 +9,7 @@
   </div>
   <div class="row">
     <div
-      class="col-md-2 col-12 d-flex flex-md-column flex-row justify-content-md-start justify-content-between">
+      class="col-lg-2 col-12 d-flex flex-lg-column flex-row justify-content-lg-start justify-content-between">
       <C:if test="${requestScope.user.account.roleId == 1}">
         <img src="/resources/icon/woman-head.png" alt="프로필 사진" class="profile-img mb-lg-2 mb-0">
       </C:if>
@@ -17,8 +17,10 @@
         <img src="/resources/icon/man-head.png" alt="프로필 사진" class="profile-img mb-lg-2 mb-0">
       </C:if>
     </div>
-    <div class="col-md-10 col-12 p-sm-0 p-1">
-      <form action="/" method="post" id="modify-form">
+    <div class="col-lg-10 col-12 p-sm-0 p-1">
+      <form action="/admin/user/modify" method="post" id="modify-form">
+        <input type="hidden" name="account-id" value="${requestScope.user.account.id}">
+        <input type="hidden" name="status-id" value="${requestScope.user.account.statusId}">
         <ul>
           <li>
             <label>
@@ -33,8 +35,9 @@
             <label>
               회원 비밀번호
             </label>
-            <input type="password" name="password" id="password" class="modify-input">
+            <input type="password" name="dummy" id="password" class="modify-input" readonly>
             <div class="blank-div">
+              <button type="button" id="pw-modify" class="btn btn-outline-dark btn-sm-custom">Modify</button>
             </div>
           </li>
           <li>
@@ -122,7 +125,7 @@
       </button>
     </a>
     <button type="button" class="btn btn-outline-dark btn-sm-custom btn-mod align-self-end">
-      Modify
+      Confirm
     </button>
   </div>
   </form>
