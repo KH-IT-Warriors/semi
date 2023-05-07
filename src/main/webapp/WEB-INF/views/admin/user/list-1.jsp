@@ -20,7 +20,7 @@
       </select>
       <span class='d-flex justify-content-center'>
         <button class='btn btn-light align-self-center' id='search-button'>🔍</button>
-        <input class='form-control input-forms' type='text' name='keyword' id='search'>
+        <input class='form-control input-forms mb-4' type='text' name='keyword' id='search'>
       </span>
     </form>
   </div>
@@ -45,7 +45,7 @@
           <li>
             <div class='d-flex'>
               <div>
-                <img class='profileImg' src='' alt='프사'>
+                <img class='profile-img' src='' alt='프사'>
               </div>
               <div>
                 <C:choose>
