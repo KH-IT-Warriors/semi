@@ -1,60 +1,41 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page isELIgnored="false" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-
 <head>
-  <title>Login</title>
-  <link href='${pageContext.request.contextPath}/resources/css/bootstrap.css' rel='stylesheet'>
-  <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js'></script>
-  <script src='https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js'></script>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/register.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/5.2.3/css/bootstrap.css">
+  <script src="${pageContext.request.contextPath}/webjars/bootstrap/5.2.3/js/bootstrap.bundle.js"></script>
+  <script src="${pageContext.request.contextPath}/webjars/jquery/3.6.4/jquery.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
+  <link href='${pageContext.request.contextPath}/resources/css/register.css' rel='stylesheet'>
+  <title>Register</title>
+
 </head>
 
 <body>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12 text-center">
-      <h3>Log in</h3>
-    </div>
+
+<div class="container-md">
+  <div class="row header">
+    <jsp:include page="/WEB-INF/views/component/header.jsp"></jsp:include>
   </div>
-  <div class="row">
-    <div class="col-12 d-flex justify-content-center">
-      <form action="/login" method="post" class="account-form">
-        <div class="form-floating">
-          <input type="text" name="username" id="username" class="form-control input-forms mb-4"
-                 placeholder="아이디를 입력해주세요.">
-          <label for="username" class="input-forms-label">아이디를 입력해주세요.</label>
-        </div>
-        <div class="form-floating">
-          <input type="password" name="password" id="password" class="form-control input-forms mb-4"
-                 placeholder="비밀번호를 입력해주세요.">
-          <label for="password" class="input-forms-label">비밀번호를 입력해주세요.</label>
-        </div>
-      </form>
+  <div class="row body">
+    <div class="col-md-2 left side">
+      <jsp:include page="/WEB-INF/views/component/leftside.jsp"></jsp:include>
     </div>
-    <div class="col-12 d-flex justify-content-center">
-      <div class="link-bundle d-flex justify-content-end">
-        <a href="/account/find_username" class="links">아이디 찾기</a>
-        <a href="/account/find_password" class="links">비밀번호 찾기</a>
-        <a href="/account/register" class="links">회원가입</a>
-      </div>
+    <div class="col-sm-12 col-md-8">
+      <jsp:include page="/WEB-INF/views/admin/user/login-1.jsp"></jsp:include>
     </div>
-    <div class="col-12 d-flex justify-content-center">
-      <div class="login-button d-flex justify-content-between">
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="switch">
-          <label class="form-check-label" for="switch">스위치</label>
-        </div>
-        <button class="btn btn-outline-dark btn-custom" id="do-login">
-          로그인
-        </button>
-      </div>
-    </div>
+    <div class="d-none d-md-block col-md-2">body side</div>
+  </div>
+  <hr class="mt-3 mb-3">
+  <div class="row footer">
+    <jsp:include page="/WEB-INF/views/component/footer.jsp"></jsp:include>
   </div>
 </div>
-<script src="${pageContext.request.contextPath}/resources/js/register.js"></script>
+<script src='${pageContext.request.contextPath}/resources/js/modify.js'></script>
 </body>
-
 </html>
