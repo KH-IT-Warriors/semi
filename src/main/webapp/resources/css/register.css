@@ -198,6 +198,7 @@ li>.blank-list {
   border-radius: 50%;
   margin: 0px 1rem 0px 0.4rem;
   flex: 0 1 0;
+  padding: 1rem;
 }
 
 .title {

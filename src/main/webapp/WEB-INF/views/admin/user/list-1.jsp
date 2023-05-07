@@ -46,17 +46,21 @@
         <C:forEach items='${requestScope.users}' var='i'>
           <li>
             <div class='d-flex'>
-              <div>
-                <img class='profile-img' src='' alt='프사'>
-              </div>
-              <div>
                 <C:choose>
                   <C:when test="${requestScope.criteria.type == 'admin'}">
+              <div>
+                <img class='profile-img' src='/resources/icon/man-head.png' alt='프사'>
+              </div>
+              <div>
                     <p>Admin User ID : <a
                       href="/admin/user/item?id=${i.account.id}">${i.account.username}</a>
                     </p>
                   </C:when>
                   <C:otherwise>
+                <div>
+                  <img class='profile-img' src='/resources/icon/woman-head.png' alt='프사'>
+                </div>
+                <div>
                     <p>Normal User ID : <a
                       href="/admin/user/item?id=${i.account.id}">${i.account.username}</a>
                     </p>

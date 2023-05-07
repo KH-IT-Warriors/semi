@@ -10,7 +10,12 @@
   <div class="row">
     <div
       class="col-md-2 col-12 d-flex flex-md-column flex-row justify-content-md-start justify-content-between">
-      <img src="" alt="프로필 사진 업로드" class="profile-img mb-md-2 mb-0">
+      <C:if test="${requestScope.user.account.roleId == 1}">
+        <img src="/resources/icon/woman-head.png" alt="프로필 사진" class="profile-img mb-lg-2 mb-0">
+      </C:if>
+      <C:if test="${requestScope.user.account.roleId != 1}">
+        <img src="/resources/icon/man-head.png" alt="프로필 사진" class="profile-img mb-lg-2 mb-0">
+      </C:if>
     </div>
     <div class="col-md-10 col-12 p-sm-0 p-1">
       <form action="/" method="post" id="modify-form">

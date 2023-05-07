@@ -9,7 +9,12 @@
   </div>
   <div class="row">
     <div class="col-lg-2 col-12 d-flex flex-lg-column flex-row justify-content-lg-start justify-content-between">
-      <img src="" alt="프로필 사진" class="profile-img mb-lg-2 mb-0">
+      <C:if test="${requestScope.user.account.roleId == 1}">
+        <img src="/resources/icon/woman-head.png" alt="프로필 사진" class="profile-img mb-lg-2 mb-0">
+      </C:if>
+      <C:if test="${requestScope.user.account.roleId != 1}">
+        <img src="/resources/icon/man-head.png" alt="프로필 사진" class="profile-img mb-lg-2 mb-0">
+      </C:if>
     </div>
     <div class="col-lg-10 col-12 p-sm-0 p-1">
       <ul>
