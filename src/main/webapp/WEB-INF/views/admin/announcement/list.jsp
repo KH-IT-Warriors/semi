@@ -19,12 +19,9 @@
 <title>Insert title here</title>
 </head>
 <style>
-  .ann-btn{
-    background-color:white;
-    color: black; 
-  }
   #line-box{
     min-height: 40px;
+    line-height: 40px;
   }
 </style>
 <body>
@@ -39,18 +36,18 @@
 			<div class="col-sm-12 col-md-8">
 				<div class="row">
 					<div class="col-12 announcement-list" align="center">
-						<h3>공지사항</h3>
+						<h3 style="border-bottom: 1px solid black;">공지사항</h3>
 						<div class="row">
 							<div class="col-2" align="center">No</div>
 							<div class="col-8" align="center">제목</div>
 							<div class="col-2">
-								<button class="ann-btn">
+								<button class="btn btn-light">
 									<a href="/admin/announcement/register" class="text-reset">공지 등록</a>
 								</button>
 							</div>
 							<c:forEach var="announcements" items="${announcements}">
-								<div class="col-2" id="line-box">${announcements.id}</div>
-								<div class="col-10" id="line-box"><a class="text-reset" href="/admin/announcement/item?id=${announcements.id}">${announcements.title}</a></div>
+								<div class="col-2" id="line-box" style="border: 1px solid #ebebeb">${announcements.id}</div>
+								<div class="col-10" id="line-box" style="border: 1px solid #ebebeb"><a class="text-reset" href="/admin/announcement/item?id=${announcements.id}">${announcements.title}</a></div>
 							</c:forEach>
 
 							<div>
