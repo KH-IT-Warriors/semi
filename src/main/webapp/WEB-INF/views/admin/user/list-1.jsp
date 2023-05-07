@@ -7,7 +7,7 @@
       <h3 class="title">Account</h3>
     </div>
   </div>
-  <div class='col-12 d-flex justify-content-start'>
+  <div class='col-12 d-flex justify-content-end'>
     <form action="/admin/user/list" method="get" id="search-form">
       <select name="amount">
         <option value="10">10</option>
@@ -19,8 +19,10 @@
         <option value="normal">일반 사용자</option>
       </select>
       <span class='d-flex justify-content-center'>
-        <button class='btn btn-light align-self-center' id='search-button'>🔍</button>
         <input class='form-control input-forms mb-4' type='text' name='keyword' id='search'>
+        <button class='btn btn-light align-self-center' id='search-button'>
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
       </span>
     </form>
   </div>
