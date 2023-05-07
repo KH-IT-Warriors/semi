@@ -1,15 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 
 <head>
 <meta charset="UTF-8">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-	crossorigin="anonymous">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css"/>
 <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
@@ -19,13 +16,15 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
 	integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
 	crossorigin="anonymous"></script>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <title>Insert title here</title>
 </head>
 <style>
   .ann-btn{
     background-color:white;
     color: black; 
+  }
+  #line-box{
+    min-height: 40px;
   }
 </style>
 <body>
@@ -50,8 +49,8 @@
 								</button>
 							</div>
 							<c:forEach var="announcements" items="${announcements}">
-								<div class="col-2">${announcements.id}</div>
-								<div class="col-10"><a href="/admin/announcement/item?id=${announcements.id}">${announcements.title}</a></div>
+								<div class="col-2" id="line-box">${announcements.id}</div>
+								<div class="col-10" id="line-box"><a class="text-reset" href="/admin/announcement/item?id=${announcements.id}">${announcements.title}</a></div>
 							</c:forEach>
 
 							<div>
@@ -60,15 +59,15 @@
 										<c:when test="${search == null}">
 											<c:choose>
 												<c:when test="${item eq '<'}">
-													<a
+													<a class="text-reset"
 														href="/admin/announcement/list?page-number=${pageNavi[status.index+1]-1}">${item}</a>
 												</c:when>
 												<c:when test="${item eq '>'}">
-													<a
+													<a class="text-reset"
 														href="/admin/announcement/list?page-number=${pageNavi[status.index-1]+1}">${item}</a>
 												</c:when>
 												<c:otherwise>
-													<a href="/admin/announcement/list?page-number=${item}">${item}</a>
+													<a class="text-reset" href="/admin/announcement/list?page-number=${item}">${item}</a>
 												</c:otherwise>
 											</c:choose>
 										</c:when>

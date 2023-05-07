@@ -10,6 +10,11 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
+<style type="text/css">
+  #contents{
+   min-height: 400px; 
+  }
+</style>
 </head>
 <body>
 	<form action="/admin/announcement/delete" method="post">
@@ -23,14 +28,14 @@
 				</div>
 				<div class="col-sm-12 col-md-8">
 					<div class="row">
-						<div class="col-12 announcement-item" align="center">
+						<div class="col-12 announcement-item">
 							<div class="row">
-								<div class="col-2">${announcement.id}</div>
+								<div class="col-2" align="center">${announcement.id}</div>
 								<input type="text" name="id" value="${announcement.id}" style="display: none;">
-								<div class="col-8">${announcement.title}</div>
+								<div class="col-8" align="center">${announcement.title}</div>
 							</div>
 							<div class="col-12">
-								<textarea name="contents" id="contents" cols="100" rows="20" readonly>${announcement.contents}</textarea>
+								<div id="contents">${announcement.contents}</div>
 								<div class="col-12" align="right">
 									<a href="/admin/announcement/modify?id=${announcement.id}"><input type="button" value="수정"> </a> 
 									<input type="submit" value="삭제">

@@ -40,6 +40,7 @@ div {
 
 <body>
 	<form action="/admin/announcement/register" method="post">
+	 <input type="hidden" name="id" value="0" readonly>
 		<div class="container-md">
 			<div class="row header">
 				<jsp:include page="/WEB-INF/views/component/header.jsp"></jsp:include>
@@ -62,7 +63,7 @@ div {
 								<div class="col-12" align="right">
 									<input type="submit" value="등록"> 
 									<a href="/admin/announcement/list">
-									<input type="button" value="목록으로"></a>
+									<input type="button" value="취소"></a>
 								</div>
 							</div>
 						</div>
