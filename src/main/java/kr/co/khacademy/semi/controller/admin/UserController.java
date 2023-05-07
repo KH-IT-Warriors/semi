@@ -102,6 +102,7 @@ public class UserController extends HttpServlet {
             } else if ("/delete".equals(pathInfo)) {
                 Long targetId = Long.valueOf(req.getParameter("target-id"));
                 userDao.forceDelete(targetId);
+                resp.sendRedirect("/admin/user/list");
             } else if ("/uploadImage".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("target-id"));
                 String realPath = req.getServletContext().getRealPath("profileImage");
