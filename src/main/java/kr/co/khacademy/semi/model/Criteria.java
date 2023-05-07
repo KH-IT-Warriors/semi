@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @Value
@@ -37,6 +38,7 @@ public class Criteria {
             .orElse(DEFAULT_TYPE);
 
         String keyword = Optional.ofNullable(req.getParameter("keyword"))
+            .map(k -> new String(k.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8))
             .orElse(DEFAULT_KEYWORD);
 
         return Criteria.builder()
