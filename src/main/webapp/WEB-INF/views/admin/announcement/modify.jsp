@@ -13,6 +13,7 @@
 </head>
 <style type="text/css">
   #contents{
+   width:100%;
    min-height: 400px; 
    background-color: #ebebeb50;
   }
@@ -49,7 +50,7 @@
 								<hr>
 							</div>
 							<div class="col-12">
-								<div name="contents" id="contents">${announcement.contents}</div>
+								<textarea type="text" name="contents" id="contents" rows="20">${announcement.contents}</textarea>
 								<div class="col-12" align="right">
 									<input type="submit" class="btn btn-outline-dark btn-custom" value="수정"> 
 									<a href="/admin/announcement/list"> 
@@ -59,7 +60,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="d-none d-md-block col-md-2">body side</div>
+				<div class="d-none d-md-block col-md-2"></div>
 			</div>
 			<hr class="my-3">
 			<div class="row footer">

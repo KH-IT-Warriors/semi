@@ -48,7 +48,8 @@
 							<div class="col-12">
 								<div id="contents">${announcement.contents}</div>
 								<div class="col-12" align="right">
-									<a href="/admin/announcement/modify?id=${announcement.id}"><input type="button" class="btn btn-outline-dark btn-custom" value="수정"> </a> 
+									<a href="/admin/announcement/modify?id=${announcement.id}">
+									<input type="button" class="btn btn-outline-dark btn-custom" value="수정"> </a> 
 									<input type="submit" class="btn btn-outline-dark btn-custom" value="삭제">
 									<a href="/admin/announcement/list">
 									<input type="button" class="btn btn-outline-dark btn-custom" value="목록으로"></a>
@@ -57,7 +58,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="d-none d-md-block col-md-2">body side</div>
+				<div class="d-none d-md-block col-md-2"></div>
 			</div>
 			<hr class="my-3">
 			<div class="row footer">

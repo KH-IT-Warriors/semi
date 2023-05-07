@@ -29,7 +29,6 @@
 <title>Insert title here</title>
 </head>
 <style>
-
 #title {
 	width: 100%;
 }
@@ -75,7 +74,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="d-none d-md-block col-md-2">body side</div>
+				<div class="d-none d-md-block col-md-2"></div>
 			</div>
 			<hr class="my-3">
 			<div class="row footer">
