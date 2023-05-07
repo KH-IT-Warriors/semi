@@ -23,6 +23,15 @@
     min-height: 40px;
     line-height: 40px;
   }
+  .btn-custom {
+  padding: 8px 12px 8px 12px;
+  margin: 0px 0px 0px 10px;
+  font-size: 10pt;
+  border-radius: 15px;
+  background-color: #C6AD8A;
+  border-radius: 0.5rem;
+  border: none;
+}
 </style>
 <body>
 	<div class="container-md">
@@ -41,7 +50,7 @@
 							<div class="col-2" align="center">No</div>
 							<div class="col-8" align="center">제목</div>
 							<div class="col-2">
-								<button class="btn btn-light">
+								<button class="btn btn-outline-dark btn-custom">
 									<a href="/admin/announcement/register" class="text-reset">공지 등록</a>
 								</button>
 							</div>
@@ -77,6 +86,7 @@
 			</div>
 			<div class="d-none d-md-block col-md-2">body side</div>
 		</div>
+		<hr class="my-3">
 		<div class="row footer">
 			<jsp:include page="/WEB-INF/views/component/footer.jsp"></jsp:include>
 		</div>

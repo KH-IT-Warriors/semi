@@ -11,6 +11,21 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
 </head>
+<style type="text/css">
+  #contents{
+   min-height: 400px; 
+   background-color: #ebebeb50;
+  }
+  .btn-custom {
+  padding: 8px 12px 8px 12px;
+  margin: 0px 0px 0px 10px;
+  font-size: 10pt;
+  border-radius: 15px;
+  background-color: #C6AD8A;
+  border-radius: 0.5rem;
+  border: none;
+}
+</style>
 <body>
 	<form action="/admin/announcement/modify" method="post">
 		<div class="container-md">
@@ -23,21 +38,22 @@
 				</div>
 				<div class="col-sm-12 col-md-8">
 					<div class="row">
-						<div class="col-12 announcement-item" align="center">
+						<div class="col-12 announcement-item">
 							<div class="row">
-								<div class="col-2">
+								<div class="col-2" align="center">
 								  <input type="text" name="id" value="${announcement.id}" readonly>
 								</div>
-								<div class="col-8">
+								<div class="col-8" align="center">
 									<input type="text" name="title" value="${announcement.title}">
 								</div>
+								<hr>
 							</div>
 							<div class="col-12">
-								<textarea name="contents" id="contents" cols="100" rows="20">${announcement.contents}</textarea>
+								<div name="contents" id="contents">${announcement.contents}</div>
 								<div class="col-12" align="right">
-									<input type="submit" value="수정"> 
-									<a href="/admin/announcement/list"> <input type="button"
-										value="목록으로"></a>
+									<input type="submit" class="btn btn-outline-dark btn-custom" value="수정"> 
+									<a href="/admin/announcement/list"> 
+									<input type="button" class="btn btn-outline-dark btn-custom" value="목록으로"></a>
 								</div>
 							</div>
 						</div>
@@ -45,6 +61,7 @@
 				</div>
 				<div class="d-none d-md-block col-md-2">body side</div>
 			</div>
+			<hr class="my-3">
 			<div class="row footer">
 				<jsp:include page="/WEB-INF/views/component/footer.jsp"></jsp:include>
 			</div>

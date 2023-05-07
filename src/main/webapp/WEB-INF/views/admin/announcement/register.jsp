@@ -29,12 +29,18 @@
 <title>Insert title here</title>
 </head>
 <style>
-div {
-	border: 1px solid black;
-}
 
 #title {
 	width: 100%;
+}
+.btn-custom {
+  padding: 8px 12px 8px 12px;
+  margin: 0px 0px 0px 10px;
+  font-size: 10pt;
+  border-radius: 15px;
+  background-color: #C6AD8A;
+  border-radius: 0.5rem;
+  border: none;
 }
 </style>
 
@@ -61,9 +67,9 @@ div {
 						<div class="col-12">
 							<div class="row">
 								<div class="col-12" align="right">
-									<input type="submit" value="등록"> 
+									<input type="submit" class="btn btn-outline-dark btn-custom" value="등록"> 
 									<a href="/admin/announcement/list">
-									<input type="button" value="취소"></a>
+									<input type="button" class="btn btn-outline-dark btn-custom" value="취소"></a>
 								</div>
 							</div>
 						</div>
@@ -71,6 +77,7 @@ div {
 				</div>
 				<div class="d-none d-md-block col-md-2">body side</div>
 			</div>
+			<hr class="my-3">
 			<div class="row footer">
 				<jsp:include page="/WEB-INF/views/component/footer.jsp"></jsp:include>
 			</div>
