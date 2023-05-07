@@ -4,7 +4,7 @@
 <div class="container-fluid p-0">
   <div class="row">
     <div class="col-12">
-      <h3 class="title w-75">Profile</h3>
+      <h3 class="title">Profile</h3>
     </div>
   </div>
   <div class="row">
