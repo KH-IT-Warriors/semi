@@ -33,8 +33,8 @@ public class Product {
             .quantity(Long.valueOf(req.getParameter("quantity")))
             .category(req.getParameter("category"))
             .summary(req.getParameter("summary"))
-            .thumbnailImageUrl(req.getParameter("thumbnaile_imageurl"))
-            .detailImageUrl(req.getParameter("detail_imageurl"))
+            .thumbnailImageUrl(null)
+            .detailImageUrl(null)
             .build();
         
     }
@@ -42,7 +42,7 @@ public class Product {
     
      
    public static Product of (ResultSet resultSet) throws SQLException{
-      
+       
        return Product.builder()
                .id(resultSet.getLong("id"))
                .name(resultSet.getString("name"))
@@ -50,8 +50,8 @@ public class Product {
                .quantity(resultSet.getLong("quantity"))
                .category(resultSet.getString("category"))
                .summary(resultSet.getString("summary"))
-               .thumbnailImageUrl(resultSet.getString("thumbnaile_imageurl"))
-               .detailImageUrl(resultSet.getString("detail_imageurl"))
+               .thumbnailImageUrl(null)
+               .detailImageUrl(null)
                .build();    
    
    }
