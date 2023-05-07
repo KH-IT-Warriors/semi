@@ -46,11 +46,22 @@
 	line-height: 300px;
 	border: 1px solid #ebebeb;
 }
+
+.btn-custom {
+  padding: 8px 12px 8px 12px;
+  margin: 0px 0px 0px 10px;
+  font-size: 10pt;
+  border-radius: 15px;
+  background-color: #C6AD8A;
+  border-radius: 0.5rem;
+  border: none;
+}
+
+
 </style>
 </head>
 
 <body>
-
 	<div class="container-md">
 		<div class="row header">
 			<jsp:include page="/WEB-INF/views/component/header.jsp"></jsp:include>
@@ -98,14 +109,15 @@
 					</div>
 					<div class="row">
 						<div class="col text-end">
-							<button class="btn btn-sm btn-dark mt-2 mb-2" type="submit">상품
+							<button class="btn btn-outline-dark btn-custom btn-sm mt-2 mb-2" type="submit">상품
 								등록</button>
 						</div>
 					</div>
 				</form>
 			</div>
-			<div class="d-none d-md-block col-md-2">body side</div>
+			<div class="d-none d-md-block col-md-2"></div>
 		</div>
+	 <hr class="mt-5 mb-5">
 		<div class="row footer">
 			<jsp:include page="/WEB-INF/views/component/footer.jsp"></jsp:include>
 		</div>
