@@ -45,6 +45,28 @@ a {
 	margin: 0px;
 	padding: 0px;
 }
+
+.btn-custom {
+	padding: 8px 12px 8px 12px;
+	margin: 0px 0px 0px 10px;
+	font-size: 10pt;
+	border-radius: 15px;
+	background-color: #C6AD8A;
+	border-radius: 0.5rem;
+	border: none;
+}
+
+#search {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: 1px solid #ebebeb;
+	box-shadow: none;
+}
+
+#search:focus {
+	border-bottom: 2px solid #000000;
+}
 </style>
 </head>
 
@@ -59,18 +81,18 @@ a {
 			</div>
 			<div class="col-sm-12 col-md-8">
 				<div class="row">
-					<div class="d-none d-md-block col-8">
-						<span class="fs-3">상품 관리</span>
+					<div class="d-none d-md-block col-8 mt-3">
+						<h3>상품 관리</h3>
 					</div>
 					<div class="col-12 d-md-none d-flex justify-content-center">
-						<span class="fs-3">상품 관리</span>
+						<h3 class="mt-3">상품 관리</h3>
 					</div>
 					<div class="d-none d-md-block col-4">
 						<nav class="navbar">
 							<div class="container-fluid flex-d justify-content-end">
 								<form class="d-flex">
 									<input class="form-control me-3 " type="search"
-										placeholder="상품 검색" aria-label="Search">
+										placeholder="상품 검색" aria-label="Search" id="search">
 									<button class="btn btn-light btn-sm" type="submit">Search</button>
 								</form>
 							</div>
@@ -80,7 +102,7 @@ a {
 						<nav class="navbar">
 							<div class="container-fluid flex-d justify-content-center">
 								<form class="d-flex">
-									<input class="form-control me-3 " type="search"
+									<input class="form-control me-3 " type="search" id="search"
 										placeholder="상품 검색" aria-label="Search">
 									<button class="btn btn-light btn-sm" type="submit">
 										<i class="fa-solid fa-magnifying-glass"></i>
@@ -98,7 +120,8 @@ a {
 					</div>
 					<div class="col-12 col-md-4 text-end">
 						<a href="/admin/product/register"><button
-								class="btn btn-dark btn-sm mt-2 mb-2 me-2">상품 등록</button></a>
+								class="btn btn-outline-dark btn-custom mt-2 mb-2 me-2">상품
+								등록</button></a>
 					</div>
 				</div>
 				<div class="row mt-3">
@@ -120,17 +143,13 @@ a {
 						</c:forEach>
 					</div>
 				</div>
-				
-				<div>
-				
-				</div>
-			
-		
-		<div class="d-none d-md-block col-4"></div>
-</div>
-		<div class="row footer mt-5" style = "border-top : 1px solid #ebebeb" >
-			<jsp:include page="/WEB-INF/views/component/footer.jsp"></jsp:include>
+				<div class="d-none d-md-block col-4"></div>
+			</div>
+			</div>
+			<hr class="mt-5 mb-5">
+			<div class="row footer">
+				<jsp:include page="/WEB-INF/views/component/footer.jsp"></jsp:include>
+			</div>
 		</div>
-	</div>
 </body>
 </html>
