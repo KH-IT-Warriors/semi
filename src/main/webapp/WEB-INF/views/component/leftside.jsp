@@ -1,45 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <style>
-div {
-	border: 1px solid black;
-}
+
 
 ul {
 	margin: 0px;
 	padding: 0px;
 	list-style-type: none;
 }
+
 </style>
 
-<div class="d-none d-md-block">
-	<div class="w-100 mb-4 mt-4">
-		<strong class="fs-2">관리자</strong>
-	</div>
+<div class="d-none d-md-block" style = "border-right : 1px solid #ebebeb">
 	<div class="w-100 mb-3">
 		<strong>상품관리</strong>
 		<ul class="fw-lighter">
-			<li><a href="/" class="text-reset text-decoration-none">상품 정보 관리</a>
+			<li><a href="/admin/product/list" class="text-reset text-decoration-none">상품 정보 관리</a>
 		</ul>
 	</div>
 	<div class="w-100 mb-3">
 		<strong>회원 관리</strong>
 		<ul class="fw-lighter">
-			<li><a href="/" class="text-reset text-decoration-none">회원 계정 관리</a>
+			<li><a href="/admin/user/list" class="text-reset text-decoration-none">회원 계정 관리</a>
 		</ul>
 	</div>
 	 <div class="w-100 mb-3">
     <strong>주소록 관리</strong>
     <ul class="fw-lighter">
-      <li><a href="/" class="text-reset text-decoration-none">회원 주소 관리</a>
+      <li><a href="/admin/address/list" class="text-reset text-decoration-none">회원 주소 관리</a>
     </ul>
   </div>
-	<div class="w-100 mb-3">
-		<strong>관리자 관리</strong>
-		<ul class="fw-lighter">
-			<li><a href="/"class="text-reset text-decoration-none">관리자 계정 관리</a>
-		</ul>
-	</div>
 	<div class="w-100 mb-3">
 		<strong>주문 관리</strong>
 		<ul class="fw-lighter">
@@ -49,9 +39,9 @@ ul {
 	<div class="w-100 mb-3">
 		<strong>고객 센터 관리</strong>
 		<ul class="fw-lighter">	
-			<li><a href="/" class="text-reset text-decoration-none">공지사항</a>
-			<li><a href="/" class="text-reset text-decoration-none">자주 묻는 질문</a>
-			<li><a href="/" class="text-reset text-decoration-none">문의 내역</a>
+			<li><a href="/admin/announcement/list" class="text-reset text-decoration-none">공지사항</a>
+			<li><a href="/admin/announcement/wait.jsp" class="text-reset text-decoration-none">자주 묻는 질문</a>
+			<li><a href="/admin/announcement/wait.jsp" class="text-reset text-decoration-none">문의 내역</a>
 		</ul>
 	</div>
 </div>
