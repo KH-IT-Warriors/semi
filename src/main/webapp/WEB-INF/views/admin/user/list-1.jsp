@@ -4,10 +4,10 @@
 <div class='container-fluid'>
   <div class='row'>
     <div class="col-12">
-      <h3 class="title w-75">Account</h3>
+      <h3 class="title">Account</h3>
     </div>
   </div>
-  <div class='col-12 d-flex justify-content-start'>
+  <div class='col-12 d-flex justify-content-end'>
     <form action="/admin/user/list" method="get" id="search-form">
       <select name="amount">
         <option value="10">10</option>
@@ -19,23 +19,25 @@
         <option value="normal">일반 사용자</option>
       </select>
       <span class='d-flex justify-content-center'>
-        <button class='btn btn-light align-self-center' id='search-button'>🔍</button>
-        <input class='form-control input-forms' type='text' name='keyword' id='search'>
+        <input class='form-control input-forms mb-4' type='text' name='keyword' id='search'>
+        <button class='btn btn-light align-self-center' id='search-button'>
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
       </span>
     </form>
   </div>
   <div class='col-12 d-flex justify-content-between'>
     <C:choose>
       <C:when test="${requestScope.criteria.type == 'admin'}">
-        <button class='btn btn-outline-dark btn-sm-custom btn-custom-margin to-normal' id='switch-user-type'>일반
+        <button class='btn btn-outline-dark btn-sm-custom mt-2 mb-5 to-normal' id='switch-user-type'>일반
           사용자
         </button>
       </C:when>
       <C:otherwise>
-        <button class='btn btn-outline-dark btn-sm-custom btn-custom-margin to-admin' id='switch-user-type'>관리자</button>
+        <button class='btn btn-outline-dark btn-sm-custom mt-2 mb-5 to-admin' id='switch-user-type'>관리자</button>
       </C:otherwise>
     </C:choose>
-    <button class='btn btn-outline-dark btn-sm-custom btn-custom-margin' id='add-account'>추가</button>
+    <button class='btn btn-outline-dark btn-sm-custom mt-2 mb-5' id='add-account'>추가</button>
   </div>
   <div class='row'>
     <div class='col-12'>
@@ -45,7 +47,7 @@
           <li>
             <div class='d-flex'>
               <div>
-                <img class='profileImg' src='' alt='프사'>
+                <img class='profile-img' src='' alt='프사'>
               </div>
               <div>
                 <C:choose>

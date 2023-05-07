@@ -23,12 +23,12 @@
     <div class="col-12 d-flex justify-content-center">
       <form action="/login" method="post" class="account-form">
         <div class="form-floating">
-          <input type="text" name="username" id="username" class="form-control input-forms"
+          <input type="text" name="username" id="username" class="form-control input-forms mb-4"
                  placeholder="아이디를 입력해주세요.">
           <label for="username" class="input-forms-label">아이디를 입력해주세요.</label>
         </div>
         <div class="form-floating">
-          <input type="password" name="password" id="password" class="form-control input-forms"
+          <input type="password" name="password" id="password" class="form-control input-forms mb-4"
                  placeholder="비밀번호를 입력해주세요.">
           <label for="password" class="input-forms-label">비밀번호를 입력해주세요.</label>
         </div>

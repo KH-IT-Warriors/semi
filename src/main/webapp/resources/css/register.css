@@ -1,21 +1,13 @@
-/* @font-face {
-    font-family: "intervogue";
-    src: url(intervogue-light.otf);
-    font-weight: normal;
-    font-style: normal;
-} */
+@import
+url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,500;1,100;1,200;1,300&family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap');
 
-body {
-  font-family: "intervogue";
+* {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
 }
 
 .hidden {
   display: none;
-}
-
-h3 {
-  font-family: "intervogue";
-  margin: 10px 0px 25px 0px;
 }
 
 .term-form {
@@ -73,9 +65,8 @@ hr {
 }
 
 .btn-custom {
-  padding: 8px 12px 8px 12px;
-  margin: 0px 0px 0px 10px;
-  font-size: 10pt;
+  padding: 6px 9px 6px 9px;
+  font-size: 12pt;
   border-radius: 15px;
   background-color: #C6AD8A;
   border-radius: 0.5rem;
@@ -84,15 +75,11 @@ hr {
 
 .btn-sm-custom {
   padding: 3px 6px 3px 6px;
-  font-size: 8pt;
+  font-size: 10pt;
   border-radius: 15px;
   background-color: #C6AD8A;
   border-radius: 0.5rem;
   border: none;
-}
-
-.btn-custom-margin {
-  margin: 6px 0px 3rem 0px;
 }
 
 .account-form {
@@ -102,18 +89,15 @@ hr {
   flex-flow: column wrap;
   justify-content: flex-start;
   align-items: center;
-
-  overflow-y: auto;
 }
 
 .input-forms {
   width: 450px;
-  padding: 12px 10px 12px 10px;
-  margin: 0px 0px 20px 0px;
+  padding: 9px 6px 9px 6px;
   border-top: none;
   border-left: none;
   border-right: none;
-  border-bottom: 1px solid #00000040;
+  border-bottom: 1px solid #ebebeb;
   box-shadow: none;
   border-radius: 0;
 }
@@ -210,13 +194,15 @@ li>.blank-list {
   max-height: 100px;
   min-width: 100px;
   min-height: 100px;
-  border: 1px solid black;
+  border: 1px solid #ebebeb;
+  border-radius: 50%;
   margin: 0px 1rem 0px 0.4rem;
+  flex: 0 1 0;
 }
 
 .title {
+  margin: 1rem 0px 3rem 0px;
   border-bottom: 2px solid black;
-  margin-left: 1rem;
   padding-bottom: 0.7rem;
   text-indent: 1rem;
 }
@@ -261,13 +247,6 @@ li>.blank-div {
   margin: 0px 2rem 0px 0px;
 }
 
-.profile-img {
-  min-width: 100px;
-  min-height: 100px;
-  border: 1px solid black;
-  margin: 0px 1rem 0px 0.4rem;
-  flex: 0 1 0;
-}
 /*List*/
 
 #search-form{
@@ -289,13 +268,6 @@ li>.blank-div {
 
 li {
   list-style: none;
-}
-
-.profileImg {
-  min-width: 100px;
-  min-height: 100px;
-  border: 1px solid black;
-  margin-right: 10px;
 }
 
 select {

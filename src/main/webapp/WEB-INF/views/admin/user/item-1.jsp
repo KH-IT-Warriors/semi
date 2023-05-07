@@ -4,14 +4,14 @@
 <div class="container-fluid p-0">
   <div class="row">
     <div class="col-12">
-      <h3 class="title w-75">Profile</h3>
+      <h3 class="title">Profile</h3>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-2 col-12 d-flex flex-md-column flex-row justify-content-md-start justify-content-between">
-      <img src="" alt="프로필 사진 업로드" class="profile-img mb-md-2 mb-0">
+    <div class="col-lg-2 col-12 d-flex flex-lg-column flex-row justify-content-lg-start justify-content-between">
+      <img src="" alt="프로필 사진" class="profile-img mb-lg-2 mb-0">
     </div>
-    <div class="col-md-10 col-12 p-sm-0 p-1">
+    <div class="col-lg-10 col-12 p-sm-0 p-1">
       <ul>
         <li>
           <label>
@@ -84,7 +84,7 @@
         Return
       </button>
     </a>
-    <form action="/admin/user/delete" method="post" class="d-flex justify-content-md-start justify-content-end"
+    <form action="/admin/user/delete" method="post" class="d-flex justify-content-lg-start justify-content-end"
           id="delete-form">
       <input type="hidden" name="target-id" value="${requestScope.user.account.id}">
       <button type="button" class="btn btn-outline-dark btn-sm-custom btn-del align-self-end me-2">

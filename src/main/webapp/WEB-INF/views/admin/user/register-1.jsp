@@ -445,7 +445,7 @@
         <input type='hidden' name='created' value='1970-01-01 00:00:00'>
         <input type='hidden' name='last-login' value='1970-01-01 00:00:00'>
         <div class='form-floating accordion' id='username-input'>
-          <input type='text' name='username' id='username' class='form-control input-forms'
+          <input type='text' name='username' id='username' class='form-control input-forms mb-4'
                  placeholder='아이디: 영문, 숫자 조합으로 6~10자'>
           <label for='username' class='input-forms-label'>ID</label>
           <div class='accordion-item'>
@@ -461,7 +461,7 @@
           </div>
         </div>
         <div class='form-floating'>
-          <input type='password' name='password' id='password' class='form-control input-forms'
+          <input type='password' name='password' id='password' class='form-control input-forms mb-4'
                  placeholder='비밀번호: 영문(대,소문자), 숫자, 특수문자 조합으로 8~15자'>
           <label for='password' class='input-forms-label'>PASSWORD</label>
           <div class='password-condition'>
@@ -473,22 +473,22 @@
           </div>
         </div>
         <div class='form-floating'>
-          <input type='password' id='password-check' class='form-control input-forms'
+          <input type='password' id='password-check' class='form-control input-forms mb-4'
                  placeholder='비밀번호를 다시 입력해주세요.'>
           <label for='password-check' class='input-forms-label'>RE-CHECK PASSWORD</label>
         </div>
         <div class='form-floating'>
-          <input type='email' name='email' id='email' class='form-control input-forms'
+          <input type='email' name='email' id='email' class='form-control input-forms mb-4'
                  placeholder='이메일: example@example.com'>
           <label for='email' class='input-forms-label'>EMAIL</label>
         </div>
         <div class='form-floating'>
-          <input type='tel' name='phone-number' id='phone-number' class='form-control input-forms'
+          <input type='tel' name='phone-number' id='phone-number' class='form-control input-forms mb-4'
                  placeholder='전화번호: -는 생략하고 입력해주세요.'>
           <label for='phone-number' class='input-forms-label'>CONTACT</label>
         </div>
         <div class='form-floating'>
-          <input type='text' name='name' id='name' class='form-control input-forms'
+          <input type='text' name='name' id='name' class='form-control input-forms mb-4'
                  placeholder='이름: 홍길동'>
           <label for='name' class='input-forms-label'>NAME</label>
         </div>
