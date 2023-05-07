@@ -19,7 +19,7 @@ class UserDaoTest {
     @DisplayName("Create")
     @ParameterizedTest(name = "{index} : {arguments}")
     @CsvSource({
-        "0, 1, 2, 'testid552', 'asf@!132wqK', '더새로운', '01053112232', 'email617@email152.com', 670, 3, '선임 관리자'"
+        "0, 1, 1, 'myawesomeid2', 'aqK2@@1qQ', '김정우', '01014489341', 'kimjw@email.com', 0, 1, '일반 사용자'"
     })
     public void givenUser_whenSuccess_CreateTest(
         Long id,
@@ -35,7 +35,7 @@ class UserDaoTest {
         String roleName
     ) {
         Account account = Account.of(id, statusId, roleId, username, password);
-        Profile profile = Profile.of(id, name, phoneNumber, email, mileage, gradeId, null, null);
+        Profile profile = Profile.of(id, name, phoneNumber, email, mileage, gradeId, null, null, "");
         Role role = Role.of(roleId, roleName);
         User user = User.of(account, profile, role);
         try {
@@ -69,7 +69,7 @@ class UserDaoTest {
         String roleName
     ) {
         Account account = Account.of(id, statusId, roleId, username, password);
-        Profile profile = Profile.of(id, name, phoneNumber, email, mileage, gradeId, null, null);
+        Profile profile = Profile.of(id, name, phoneNumber, email, mileage, gradeId, null, null, "");
         Role role = Role.of(roleId, roleName);
         User user = User.of(account, profile, role);
         try {
@@ -85,10 +85,10 @@ class UserDaoTest {
     @AfterAll
     public static void readTest(){
         try {
-            List<User> users = UserDao.getInstance().readAdminUser();
+            List<User> users = UserDao.getInstance().readAdminUser(1L, 10L);
             users.forEach(System.out::println);
             System.out.println("============================");
-            users = UserDao.getInstance().readNormalUser();
+            users = UserDao.getInstance().readNormalUser(1L, 10L);
             users.forEach(System.out::println);
         } catch (SQLException e) {
             e.printStackTrace();

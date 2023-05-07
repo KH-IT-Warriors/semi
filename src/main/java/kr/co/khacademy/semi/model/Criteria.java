@@ -26,6 +26,7 @@ public class Criteria {
     public static Criteria of(HttpServletRequest req) {
         Long pageNumber = Optional.ofNullable(req.getParameter("page-number"))
             .map(Long::valueOf)
+            .filter(e -> e > 0)
             .orElse(DEFAULT_PAGE_NUMBER);
 
         Long amount = Optional.ofNullable(req.getParameter("amount"))

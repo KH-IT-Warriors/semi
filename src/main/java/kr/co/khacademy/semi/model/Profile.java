@@ -25,8 +25,9 @@ public class Profile {
     Long gradeId;
     Timestamp created;
     Timestamp lastLogin;
+    String profileImage;
 
-    public static Profile of(Long id, String name, String phoneNumber, String email, Long mileage, Long gradeId, Timestamp created, Timestamp lastLogin) {
+    public static Profile of(Long id, String name, String phoneNumber, String email, Long mileage, Long gradeId, Timestamp created, Timestamp lastLogin, String profileImage) {
         Optional.ofNullable(phoneNumber)
             .filter(Profile::validatePhoneNumber)
             .orElseThrow(RuntimeException::new);
@@ -42,6 +43,7 @@ public class Profile {
             .gradeId(gradeId)
             .created(created)
             .lastLogin(lastLogin)
+            .profileImage(profileImage)
             .build();
     }
 
@@ -54,7 +56,9 @@ public class Profile {
         Long gradeId = Long.valueOf(req.getParameter("grade-id"));
         Timestamp created = Timestamp.valueOf(req.getParameter("created"));
         Timestamp lastLogin = Timestamp.valueOf(req.getParameter("last-login"));
-        return Profile.of(id, name, phoneNumber, email, mileage, gradeId, created, lastLogin);
+        String profileImage = Optional.ofNullable(req.getParameter("profile-image"))
+            .orElse("");
+        return Profile.of(id, name, phoneNumber, email, mileage, gradeId, created, lastLogin, profileImage);
     }
 
     public static Profile of(ResultSet resultSet) throws SQLException {
@@ -66,6 +70,7 @@ public class Profile {
         Long gradeId = resultSet.getLong("P.grade_id");
         Timestamp created = resultSet.getTimestamp("P.created");
         Timestamp lastLogin = resultSet.getTimestamp("P.last_login");
+        String profileImage = resultSet.getString("P.profile_image");
         return Profile.builder()
             .accountId(accountId)
             .name(name)
@@ -75,6 +80,7 @@ public class Profile {
             .gradeId(gradeId)
             .created(created)
             .lastLogin(lastLogin)
+            .profileImage(profileImage)
             .build();
     }
 
