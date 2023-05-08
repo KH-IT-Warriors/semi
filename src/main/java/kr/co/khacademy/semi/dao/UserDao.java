@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserDao {
 
@@ -125,7 +126,7 @@ public class UserDao {
 
     public void update(User user) throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
-            if (user.getAccount().getPassword().isEmpty()) {
+            if (Optional.ofNullable(user.getAccount().getPassword()).isEmpty()) {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ACCOUNT_SQL)) {
                     preparedStatement.setLong(1, user.getAccount().getStatusId());
                     preparedStatement.setLong(2, user.getAccount().getRoleId());

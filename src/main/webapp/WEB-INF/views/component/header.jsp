@@ -8,6 +8,11 @@
   /*  font-style: normal;*/
   /*}*/
 
+  .header-box{
+    border-bottom: 1px solid #ebebeb;
+    margin-bottom: 12px;
+  }
+
   .row {
     margin: 0px;
   }
@@ -48,10 +53,6 @@
     border-radius: 15px;
   }
 
-  hr {
-    margin: 0.5rem 0;
-  }
-
   .logo-text {
     display: flex;
     justify-content: center;
@@ -59,7 +60,7 @@
     margin: 0px;
   }
 </style>
-<div class="container-fluid p-0">
+<div class="container-fluid p-0 header-box">
   <div class="row p-0">
     <div class="col-4 d-none d-md-flex justify-content-center align-items-center p-0">
       <span id="head-left">관리자 페이지</span>
@@ -86,10 +87,9 @@
         </a>
       </button>
     </div>
-    <div class="col-10 col-md-12 logo-text">
+    <div class="col-10 col-md-12 logo-text mb-2">
       Macaron
     </div>
     <div class="col-2 d-md-none"></div>
   </div>
-  <hr>
 </div>
