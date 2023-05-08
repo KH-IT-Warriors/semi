@@ -34,9 +34,12 @@ public class AnnouncementController extends HttpServlet {
                 Long start = pageNumber * amount - (amount-1);
                 Long end = pageNumber * amount;
                 
+                String search = req.getParameter("search");
+                
                 List<Announcement> announcements = announcementDao.read(start,end);
                 List<String> pageNavi = announcementDao.getPageNavi(criteria);
                 
+                req.setAttribute("search", search);
                 req.setAttribute("pageNavi", pageNavi);
                 req.setAttribute("announcements", announcements);
                 req.getRequestDispatcher("/WEB-INF/views/admin/announcement/list.jsp").forward(req, resp);
@@ -45,7 +48,7 @@ public class AnnouncementController extends HttpServlet {
                 Announcement announcement = announcementDao.read(id);
                 req.setAttribute("announcement", announcement);
                 req.getRequestDispatcher("/WEB-INF/views/admin/announcement/item.jsp").forward(req, resp);
-            }else if("/modify".equals(pathInfo)) {
+            }else if ("/modify".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
                 Announcement announcement = announcementDao.read(id);
                 req.setAttribute("announcement", announcement);
