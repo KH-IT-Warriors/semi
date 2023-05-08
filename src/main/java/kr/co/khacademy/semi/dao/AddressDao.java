@@ -10,6 +10,7 @@ import java.util.List;
 
 import kr.co.khacademy.semi.common.DataSource;
 import kr.co.khacademy.semi.model.Address;
+import kr.co.khacademy.semi.model.Criteria;
 
 public class AddressDao {
 
@@ -46,7 +47,79 @@ public class AddressDao {
             }
         }
     }
+    public List<Address> read(Long start, Long end) throws SQLException{
+        List<Address> addresses = new ArrayList<>();
+        try (Connection connection = DataSource.getConnection()){
+            try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SQL)){
+                preparedStatement.setLong(1, start);
+                preparedStatement.setLong(2, end);
+                try (ResultSet resultSet = preparedStatement.executeQuery()){
+                    while(resultSet.next()) {
+                        Address address = Address.of(resultSet);
+                        addresses.add(address);
+                    }
+                    return Collections.unmodifiableList(addresses);
+                }
+            }
+        }
+    }
+public List<String> getPageNavi(Criteria criteria) throws SQLException{
+        
+        Long recordTotalCount = getRecordCount(criteria.getKeyword());
 
+        Long pageNumber = criteria.getPageNumber();
+        Long recordCountPerPage = criteria.getAmount();
+        Long naviCountPerPage = 10L;
+
+        Long pageTotalCount;
+
+        if (recordTotalCount % recordCountPerPage > 0) {
+            pageTotalCount = recordTotalCount / recordCountPerPage + 1;
+        } else {
+            pageTotalCount = recordTotalCount / recordCountPerPage;
+        }
+        
+        if (pageNumber < 1) {
+            pageNumber = 1L;
+        } else if (pageNumber > pageTotalCount) {
+            pageNumber = pageTotalCount;
+        }
+        Long startNavi = (((pageNumber - 1) / naviCountPerPage) * naviCountPerPage) + 1;
+        Long endNavi = startNavi + (naviCountPerPage-1);
+        
+        if (endNavi > pageTotalCount) {
+            endNavi = pageTotalCount;
+        }
+        Boolean needPrev = true;
+        Boolean needNext = true;
+        
+        if (startNavi == 1) {needPrev = false;}
+        if (endNavi == pageTotalCount) {needNext = false;}
+        
+        List<String> list = new ArrayList<>();
+        
+        if (needPrev) {
+            list.add("<");
+        }
+        for (Long i = startNavi; i <= endNavi; i++) {
+            list.add(""+i);
+        }
+        if (needNext) {
+            list.add(">");
+        }
+        return list;
+    }
+public Long getRecordCount(String search) throws SQLException {
+    try (Connection connection = DataSource.getConnection()){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_SQL)){
+            preparedStatement.setString(1, "%"+search+"%");
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                resultSet.next();
+                return resultSet.getLong(1);
+            }
+        }
+    }
+}
     public List<Address> read() throws SQLException {
         try (Connection connection = DataSource.getConnection()) {
             try (

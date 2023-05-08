@@ -21,22 +21,28 @@ public class AddressController extends HttpServlet {
         try {
             String pathInfo = req.getPathInfo();
             if ("/register".equals(pathInfo)) {
-                req.getRequestDispatcher("/WEB-INF/views/address/register.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/address/register.jsp").forward(req, resp);
             } else if ("/list".equals(pathInfo)) {
                 List<Address> addresses = addressDao.read();
                 req.setAttribute("address", addresses);
-                req.getRequestDispatcher("/WEB-INF/views/address/list.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/address/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.parseLong(req.getParameter("id"));
                 Long accountId = Long.valueOf(req.getParameter("accountId"));
                 Address address = addressDao.read(accountId);
                 req.setAttribute("address", address);
-                req.getRequestDispatcher("/WEB-INF/views/product/item.jsp").forward(req, resp);
-            }
+                req.getRequestDispatcher("/WEB-INF/views/admin/address/item.jsp").forward(req, resp);
+            } else if ("/modify".equals(pathInfo)) {
+                req.getRequestDispatcher("/WEB-INF/views/admin/address/modify.jsp").forward(req, resp);
+            } 
         } catch (SQLException e) {
             resp.sendRedirect("/error");
         }
     }
+    
+    
+        
+    
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -49,12 +55,12 @@ public class AddressController extends HttpServlet {
             } else if ("/modify".equals(pathInfo)) {
                 Address address = Address.of(req);
                 addressDao.update(address);
-                String location = String.format("/address/item?id=%d", address.getId());
+                String location = String.format("/admin/address/item?id=%d", address.getId());
                 resp.sendRedirect(location);
             } else if ("/delete".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
                 addressDao.delete(id);
-                resp.sendRedirect("/address/list");
+                resp.sendRedirect("/admin/address/list");
             }
         } catch (SQLException e) {
             resp.sendRedirect("/error");
