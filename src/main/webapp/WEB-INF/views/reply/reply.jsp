@@ -1,28 +1,12 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
- <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/5.2.3/css/bootstrap.css">
-  <script src="${pageContext.request.contextPath}/webjars/bootstrap/5.2.3/js/bootstrap.bundle.js"></script>
-  <script src="${pageContext.request.contextPath}/webjars/jquery/3.6.4/jquery.js"></script>
-  <script
-</head>
+
+
+
+
+
 <style>
-  * {
-    box-sizing: border-box;
-  }
-
-  div {
-    /* border: 1px solid black; */
-
-  }
-
   .profile {
     width: 29px;
     height: 29px;
@@ -128,20 +112,20 @@
   }
 </style>
 
-<body>
+
 <form action="/admin/reply/register" method="post">
   <div class="container-fluid p-0">
     <div class="row m-0">
       <div class="col-1 p-0 " align="center">
         <div class="profile" style="background: #BDBDBD;">
-          <img class="img" src="raccoon-ga5593909a_1920.jpg" alt="..">
+          <img class="img" src="/resources/icon/raccoon-ga5593909a_1920.jpg" alt="..">
         </div>
       </div>
       <div class="col-11 p-0">
         <div class="row m-0">
           <div class="col-12 p-0">
             <div class="txt row m-0">
-              <div class="col-11  txt-dummy" contenteditable="true">
+              <div class="col-11 p-2 txt-dummy" contenteditable="true">
 
               </div>
               <div class="col-1 btn-box p-0" align="right" style="text-align: center;">
@@ -191,7 +175,7 @@
   </div>
 </form>
 
-</body>
+
 <script>
   $(".delete-Btn").click(function (){
     const form = $("<form action='/admin/reply/delete' method='post'>");
@@ -230,4 +214,3 @@
 
 </script>
 
-</html>
