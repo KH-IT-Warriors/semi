@@ -295,7 +295,7 @@ select:hover {
 }
 
 .modify-input {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #ebebeb;
 }
 
 .modify-input:focus {
