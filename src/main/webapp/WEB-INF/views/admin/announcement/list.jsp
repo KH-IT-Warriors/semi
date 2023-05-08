@@ -61,10 +61,10 @@
 						<h3 class="title">공지사항</h3>
 						<div class="row">
 							<form class="d-flex">
-								<div class="col-11">
-									<input class="form-control me-3 " name="search" type="search" placeholder="상품 검색" aria-label="Search" id="search">
+								<div class="col-11 mb-2">
+									<input class="form-control me-3" name="keyword" type="search" placeholder="상품 검색" aria-label="Search" id="search">
 								</div>
-								<div class="col-1" align="center">
+								<div class="col-1 mb-2" align="center">
 									<button class="btn btn-light btn-sm" type="submit">Search</button>
 								</div>
 							</form>
@@ -91,7 +91,7 @@
 							<div class="text-center">
 								<c:forEach var="item" items="${pageNavi}" varStatus="status">
 									<c:choose>
-										<c:when test="${search == null}">
+										<c:when test="${keyword == null}">
 											<c:choose>
 												<c:when test="${item eq '<'}">
 													<a class="text-reset"
@@ -110,7 +110,7 @@
 									</c:choose>
 
 									<c:choose>
-										<c:when test="${search != null}">
+										<c:when test="${keyword != null}">
 											<c:choose>
 												<c:when test="${item eq '<'}">
 													<a class="text-reset"

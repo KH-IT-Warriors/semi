@@ -30,18 +30,23 @@ public class AnnouncementController extends HttpServlet {
                 Criteria criteria = Criteria.of(req);
                 Long pageNumber = criteria.getPageNumber();
                 Long amount = criteria.getAmount();
+                String keyword = criteria.getKeyword();
                 
                 Long start = pageNumber * amount - (amount-1);
                 Long end = pageNumber * amount;
+
+                if (keyword != "") {
+                    List<Announcement> list = announcementDao.searchBoard(start, end, keyword);
+                    req.setAttribute("announcements", list);
+                } else if (keyword == "") {
+                    List<Announcement> announcements = announcementDao.read(start,end);
+                    req.setAttribute("announcements", announcements);
+                }
                 
-                String search = req.getParameter("search");
-                
-                List<Announcement> announcements = announcementDao.read(start,end);
                 List<String> pageNavi = announcementDao.getPageNavi(criteria);
                 
-                req.setAttribute("search", search);
+                req.setAttribute("keyword", keyword);
                 req.setAttribute("pageNavi", pageNavi);
-                req.setAttribute("announcements", announcements);
                 req.getRequestDispatcher("/WEB-INF/views/admin/announcement/list.jsp").forward(req, resp);
             } else if ("/item".equals(pathInfo)) {
                 Long id = Long.valueOf(req.getParameter("id"));
@@ -63,6 +68,8 @@ public class AnnouncementController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.setCharacterEncoding("utf8");
+            resp.setContentType("text/html; charset=utf8");
             String pathInfo = req.getPathInfo();
             System.out.println(pathInfo);
             if ("/register".equals(pathInfo)) {
