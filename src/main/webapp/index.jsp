@@ -47,6 +47,8 @@ li {
 #search {
   border: none;
   border-bottom: solid #aaaaaa 1px;
+  width : 177px;
+  
 }
 
 #bannertext {
@@ -222,7 +224,7 @@ li {
               <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link active"
                   aria-current="page" href="#">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/WEB-INF/views/user/product/shop.jsp" id="shop">Shop</a>
+                <li class="nav-item"><a class="nav-link" href="/user/product/list" id="shop">Shop</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="#">Event</a>
                 </li>
@@ -242,7 +244,7 @@ li {
       <div class="d-none d-md-block col-2">
         <ul class="m-4 w-100">
           <li style="float: left;" class="text-center mt-4"><a
-            href="/WEB-INF/views/admin/user/login.jsp"
+            href="/admin/logIn"
             class="text-reset text-decoration-none"> <i
               class="fa-solid fa-user"></i></a>
             <div style="font-size: xx-small; text-align: center;">Login</div>
@@ -253,7 +255,7 @@ li {
             <div style="font-size: xx-small; text-align: center;">My
               Page</div></li>
           <li style="float: left;" class="text-center mt-4 ms-4"><a
-            href="/" class="text-reset text-decoration-none"> <i
+            href="/admin/announcement/list" class="text-reset text-decoration-none"> <i
               class="fa-solid fa-hand-holding-heart" style="color: #04a9ad;"></i></a>
             <div style="font-size: xx-small; text-align: center;">Help</div></li>
         </ul>
