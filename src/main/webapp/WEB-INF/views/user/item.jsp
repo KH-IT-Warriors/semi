@@ -192,10 +192,8 @@ li {
       </div>
     </div>
     <div class="row body">
-      <div class="col-12">
-        <div id="reviewbox" class="mt-4">
+      <div class="col-12 mt-2">
        <jsp:include page="/WEB-INF/views/reply/reply.jsp"></jsp:include>
-        </div>
       </div>
     </div>
     <hr class="mt-5 mb-5">
