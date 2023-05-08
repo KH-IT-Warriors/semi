@@ -108,12 +108,12 @@ li {
 				style="height: 120px; background-color: white;">
 				<div class="d-none d-md-block col-2">
 					<div style="height: 120px;">
-						<img src="/로고.png" class="w-100 h-70 mt-4">
+						<img src="/resources/image/macaronLOGO.png" class="w-100 h-70 mt-4">
 					</div>
 				</div>
 				<div class="d-block d-md-none col-4">
 					<div style="height: 100px;" class="mt-3">
-						<img src="/로고.png" class="w-100 h-70 mt-4">
+						<img src="/resources/image/macaronLOGO.png" class="w-100 h-70 mt-4">
 					</div>
 				</div>
 				<div class="d-none d-md-block col-8">
