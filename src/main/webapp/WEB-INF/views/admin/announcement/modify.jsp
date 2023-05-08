@@ -12,6 +12,9 @@
 <title>Insert title here</title>
 </head>
 <style type="text/css">
+.left-side{
+  border-right: 1px solid #ebebeb; 
+}
   #contents{
    width:100%;
    min-height: 400px; 
@@ -34,7 +37,7 @@
 				<jsp:include page="/WEB-INF/views/component/header.jsp"></jsp:include>
 			</div>
 			<div class="row body">
-				<div class="col-md-2 left side">
+				<div class="col-md-2 left-side">
 					<jsp:include page="/WEB-INF/views/component/leftside.jsp"></jsp:include>
 				</div>
 				<div class="col-sm-12 col-md-8">

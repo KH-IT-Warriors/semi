@@ -11,6 +11,9 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
 <style type="text/css">
+.left-side{
+  border-right: 1px solid #ebebeb; 
+}
   #contents{
    min-height: 400px; 
    background-color: #ebebeb50;
@@ -33,7 +36,7 @@
 				<jsp:include page="/WEB-INF/views/component/header.jsp"></jsp:include>
 			</div>
 			<div class="row body">
-				<div class="col-md-2 left side">
+				<div class="col-md-2 left-side">
 					<jsp:include page="/WEB-INF/views/component/leftside.jsp"></jsp:include>
 				</div>
 				<div class="col-sm-12 col-md-8">

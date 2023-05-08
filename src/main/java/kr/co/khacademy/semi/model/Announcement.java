@@ -37,7 +37,7 @@ public class Announcement {
     }
         
     private static boolean validateTitle(String title) {
-        return (6 <= title.length()) && (title.length() <= 100);
+        return (2 <= title.length()) && (title.length() <= 100);
     }
 
     public static Announcement of(ResultSet resultSet) throws SQLException {
