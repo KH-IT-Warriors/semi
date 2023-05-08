@@ -54,21 +54,19 @@ ul {
         <div class="dropdown-menu w-100" style="width: 25rem;">
             <div class="list-group justify-content-center"
               style="text-align: center;">
-            <a href="#" class="list-group-item list-group-item-action">
+            <a href="/admin/product/list" class="list-group-item list-group-item-action">
             상품 정보 관리</a> 
-            <a href="#" class="list-group-item list-group-item-action">
+            <a href="/admin/user/list" class="list-group-item list-group-item-action">
             회원 계정 관리</a> 
-            <a href="#" class="list-group-item list-group-item-action">
+            <a href="/admin/address/list" class="list-group-item list-group-item-action">
             회원 주소록 관리</a> 
             <a href="#" class="list-group-item list-group-item-action">
-            관리자 계정 관리</a> 
-            <a href="#" class="list-group-item list-group-item-action">
             회원 주문 내역</a> 
-            <a href="#" class="list-group-item list-group-item-action">
+            <a href="/admin/announcement/list" class="list-group-item list-group-item-action">
             공지 사항</a>
-           <a href="#" class="list-group-item list-group-item-action">
+           <a href="/admin/announcement/wait.jsp" class="list-group-item list-group-item-action">
            자주 묻는 질문</a> 
-           <a href="#" class="list-group-item list-group-item-action">
+           <a href="/admin/announcement/wait.jsp" class="list-group-item list-group-item-action">
            문의 내역</a>
       </div>
     </div>
