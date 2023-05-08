@@ -192,9 +192,9 @@ li {
       </div>
     </div>
     <div class="row body">
-      <div class="col-12 d-flex justify-content-center">
+      <div class="col-12">
         <div id="reviewbox" class="mt-4">
-          <p style="border-bottom: 1px solid #aaaaaa;">Rivews(0)</p>
+       <jsp:include page="/WEB-INF/views/reply/reply.jsp"></jsp:include>
         </div>
       </div>
     </div>
