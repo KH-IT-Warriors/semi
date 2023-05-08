@@ -11,7 +11,7 @@ ul {
 
 </style>
 
-<div class="d-none d-md-block" style = "border-right : 1px solid #ebebeb">
+<div class="d-none d-md-block">
 	<div class="w-100 mb-3">
 		<strong>상품관리</strong>
 		<ul class="fw-lighter">
