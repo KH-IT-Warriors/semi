@@ -20,11 +20,14 @@
           <option value="normal">일반 사용자</option>
         </select>
         <span class='d-flex justify-content-center'>
-        <input class='form-control input-forms mb-4' type='text' name='keyword' id='search' placeholder="이름으로 검색">
-        <button class='btn btn-light align-self-center' id='search-button'>
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-      </span>
+          <input class='form-control input-forms mb-4' type='text' name='keyword' id='search' placeholder="이름으로 검색">
+          <button class='btn btn-light btn-sm align-self-center search-button d-md-inline-block d-none'>
+              Search
+          </button>
+          <button class='btn btn-light btn-sm align-self-center search-button d-md-none d-inline-block'>
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </span>
       </form>
     </div>
     <div class='col-12 d-flex justify-content-between'>
@@ -95,10 +98,10 @@
                 </a>
               </C:when>
               <C:otherwise>
-              <a
-                href="/admin/user/list?page-number=${i}&amount=${requestScope.criteria.amount}&type=${requestScope.criteria.type}">
-                  ${i}
-              </a>
+                <a
+                  href="/admin/user/list?page-number=${i}&amount=${requestScope.criteria.amount}&type=${requestScope.criteria.type}">
+                    ${i}
+                </a>
               </C:otherwise>
             </C:choose>
           </C:forEach>
@@ -119,10 +122,10 @@
                 </a>
               </C:when>
               <C:otherwise>
-              <a
-                href="/admin/user/list?page-number=${i}&amount=${requestScope.criteria.amount}&type=${requestScope.criteria.type}&keyword=${requestScope.criteria.keyword}">
-                  ${i}
-              </a>
+                <a
+                  href="/admin/user/list?page-number=${i}&amount=${requestScope.criteria.amount}&type=${requestScope.criteria.type}&keyword=${requestScope.criteria.keyword}">
+                    ${i}
+                </a>
               </C:otherwise>
             </C:choose>
           </C:forEach>
