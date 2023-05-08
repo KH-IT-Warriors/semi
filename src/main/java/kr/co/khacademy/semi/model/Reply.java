@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Value
@@ -60,4 +63,43 @@ public class Reply {
     public static Boolean validateContents(String contents){
         return contents.length() <= 500;
     }
+
+
+
+    public String getRelativeCreatedData(){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime createdData = created.toLocalDateTime();
+        Duration diffTime = Duration.between(createdData,now);
+
+        if (diffTime.toMinutes() < 1L) {
+            return String.format("%d초 전", diffTime.toSeconds());
+        } else if (diffTime.toMinutes() < 60L) {
+            String.format("%d분 전", diffTime.toMinutes());
+        } else if (diffTime.toHours() < 12L) {
+            String.format("%d시간 전", diffTime.toHours());
+        } else if (diffTime.toDays() < 1L) {
+            return String.format("%d일 이내", diffTime.toDays());
+        }
+
+        return createdData.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    public String getRelativeModifiedData(){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime modifiedData = modified.toLocalDateTime();
+        Duration diffTime = Duration.between(modifiedData, now);
+
+        if (diffTime.toMinutes() < 1L) {
+            return String.format("%d초 전(수정 됨)", diffTime.toSeconds());
+        } else if (diffTime.toMinutes() < 60L) {
+          return   String.format("%d분 전 (수정 됨)", diffTime.toMinutes());
+        } else if (diffTime.toHours() < 12L) {
+          return   String.format("%d시간 전 (수정 됨)", diffTime.toHours());
+        } else if (diffTime.toDays() < 1L) {
+            return String.format("%d일 이내 (수정 됨)", diffTime.toDays());
+        }
+        return modifiedData.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+
 }
